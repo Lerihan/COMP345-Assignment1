@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string>
+#include "Player.h"
+#include "Territory.h"
 
 class Player;
 
@@ -9,6 +11,7 @@ class Territory;
 
 class Order
 {
+
 public:
 	
 	Order(Player* player);
@@ -18,11 +21,19 @@ public:
 	virtual void execute() = 0;
 
 private:
+
 	Player* player;
 };
 
+std::ostream& operator << (std::ostream& out, const Order& o);
+
 class Deploy : public Order
 {
+private:
+
+	Territory* territory;
+	unsigned int numOfArmies;
+
 public:
 
 	Deploy(Player* player, Territory* territory, unsigned int numOfArmies);
@@ -30,14 +41,16 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Territory* territory;
-	unsigned int numOfArmies;
 };
 
 class Advance : public Order
 {
+private:
+
+	Territory* current;
+	Territory* adjacent;
+	unsigned int numOfArmies;
+
 public:
 
 	Advance(Player* player, Territory* current, Territory* adjacent, unsigned int numOfArmies);
@@ -45,15 +58,14 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Territory* current;
-	Territory* adjacent;
-	unsigned int numOfArmies;
 };
 
 class Bomb : public Order
 {
+private:
+
+	Territory* target;
+
 public:
 
 	Bomb(Player* player, Territory* target);
@@ -61,13 +73,14 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Territory* target;
 };
 
 class Blockade : public Order
 {
+private:
+
+	Territory* target;
+
 public:
 
 	Blockade(Player* player, Territory* target);
@@ -75,13 +88,16 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Territory* target;
 };
 
 class Airlift : public Order
 {
+private:
+
+	Territory* current;
+	Territory* next;
+	unsigned int numOfArmies;
+
 public:
 
 	Airlift(Player* player, Territory* current, Territory* next, unsigned int numOfArmies);
@@ -89,15 +105,14 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Territory* current;
-	Territory* next;
-	unsigned int numOfArmies;
 };
 
 class Negotiate : public Order
 {
+private:
+
+	Player* enemy;
+
 public:
 
 	Negotiate(Player* current, Player* enemy);
@@ -105,10 +120,6 @@ public:
 	virtual bool validate() override;
 
 	virtual void execute() override;
-
-private:
-	Player* enemy;
 };
 
-std::ostream & operator << (std::ostream &out, const Order &o);
 
