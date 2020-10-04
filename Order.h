@@ -13,6 +13,8 @@ class Order
 {
 
 public:
+
+	Order();
 	
 	Order(Player* player);
 
@@ -48,12 +50,12 @@ class Advance : public Order
 private:
 
 	Territory* current;
-	Territory* adjacent;
+	Territory* next;
 	unsigned int numOfArmies;
 
 public:
 
-	Advance(Player* player, Territory* current, Territory* adjacent, unsigned int numOfArmies);
+	Advance(Player* player, Territory* current, Territory* next, unsigned int numOfArmies);
 
 	virtual bool validate() override;
 
