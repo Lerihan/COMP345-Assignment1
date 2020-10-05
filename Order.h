@@ -20,14 +20,12 @@ public:
 
 	virtual bool validate() = 0;
 
-	virtual void execute() = 0;
+	virtual bool execute() = 0;
 
 private:
 
 	Player* player;
 };
-
-std::ostream& operator << (std::ostream& out, const Order& o);
 
 class Deploy : public Order
 {
@@ -42,7 +40,7 @@ public:
 	
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 class Advance : public Order
@@ -59,7 +57,7 @@ public:
 
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 class Bomb : public Order
@@ -74,7 +72,7 @@ public:
 
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 class Blockade : public Order
@@ -89,7 +87,7 @@ public:
 
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 class Airlift : public Order
@@ -106,7 +104,7 @@ public:
 
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 class Negotiate : public Order
@@ -121,7 +119,7 @@ public:
 
 	virtual bool validate() override;
 
-	virtual void execute() override;
+	virtual bool execute() override;
 };
 
 
