@@ -8,6 +8,8 @@
 
 int main()
 {
+
+	/*
 	//Map
 	//TODO:
 	// * Clean up stream override functions (+add it for Territory)
@@ -29,7 +31,7 @@ int main()
 	m.addAdjContinent(&c1, &c4);
 	m.addAdjContinent(&c2, &c4);
 	m.addAdjContinent(&c3, &c4);
-
+	
 	
 
 	//create territories
@@ -77,15 +79,16 @@ int main()
 	c1.printAdjContinents();
 	c3.printTerritories();
 	t4.printAdjTerritory();
-	
+	*/
 
 
 
 	//Map Loader
+	/*
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
 	std::cout << endl;
-
+	*/
 
 
 	
