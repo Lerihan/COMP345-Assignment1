@@ -8,8 +8,24 @@
 
 using namespace std;
 
+//Default Constructor
 MapLoader::MapLoader() {
 	this->dominationFileName = NULL;
+}
+
+//Copy Constructor
+MapLoader::MapLoader(MapLoader &map){
+	MapLoader::MapLoader();
+}
+
+//Assignment operator
+MapLoader& MapLoader:: operator = (const MapLoader &map){
+	return *this;
+}
+
+//Destructor
+MapLoader::~MapLoader(){
+	delete this;
 }
 
 MapLoader::MapLoader(string dominationFileName) {
@@ -23,13 +39,16 @@ Map* MapLoader::GetMap(string filePath) {
 
 void MapLoader::ReadMap(string dominationFileName) {
 	try {
-		//Map map;
+		Continent continent;
+		Map map;
+		this->finalMap = &map;
+		this->addFinalContinent = &continent;
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
 		std::vector<Continent*>* continents = new std::vector<Continent*>();
-		//std::vector<Country*>* countries = new std::vector<Country*>();
+		std::vector<Territory*>* countries = new std::vector<Territory*>();
 		int index = 1;
 		ifstream readFile;
 		readFile.open(dominationFileName);
@@ -47,7 +66,8 @@ void MapLoader::ReadMap(string dominationFileName) {
 						if (line == "")
 							break;
 						Continent* newContinent = new Continent(line);
-						continents->push_back(newContinent);
+						//continents->push_back(newContinent);
+						this->finalMap->addContinent(newContinent);
 						cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
@@ -59,9 +79,10 @@ void MapLoader::ReadMap(string dominationFileName) {
 					while (line.find("[borders]") != 0) {
 						if (line == "")
 							break;
-						/*Continent* newCountry = new Country(line);
-						continents->push_back(newCountry);
-						getline(readFile, line);*/
+						Territory* newCountry = new Territory(line);
+						//countries->push_back(newCountry);
+						this->addFinalContinent->addTerritory(newCountry);
+						getline(readFile, line);
 						cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
