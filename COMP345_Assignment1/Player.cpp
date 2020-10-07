@@ -1,4 +1,3 @@
-//
 //  Player.cpp
 //  
 //  COMP 345
@@ -31,10 +30,10 @@ Player::Player()
 Player::Player(Player& p)
 {
 	// copy orders
-	for (int i = 0; i < p.orders.size(); i++)
+	/*for (int i = 0; i < p.orders.size(); i++)
 	{
 		this->orders.push_back(p.orders.at(i));
-	}
+	}*/
 	// copy hand of cards
 	for (int i = 0; i < p.hand.size(); i++)
 	{
@@ -68,8 +67,8 @@ vector<Territory*> Player::getTerritories()
 // For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toAttack()
 {
-	Territory* attackTerritory1 = new Territory("Attack Territory 1");
-	Territory* attackTerritory2 = new Territory("Attack Territory 2");
+	Territory* attackTerritory1 = new Territory(0, "Attack Territory 1");
+	Territory* attackTerritory2 = new Territory(0, "Attack Territory 2");
 
 	vector<Territory*> attackList;
 	attackList.push_back(attackTerritory1);
@@ -82,8 +81,8 @@ vector<Territory*> Player::toAttack()
 // For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toDefend()
 {
-	Territory* defendTerritory1 = new Territory("Attack Territory 1");
-	Territory* defendTerritory2 = new Territory("Attack Territory 2");
+	Territory* defendTerritory1 = new Territory(0, "Attack Territory 1");
+	Territory* defendTerritory2 = new Territory(0, "Attack Territory 2");
 
 	vector<Territory*> defendList;
 	defendList.push_back(defendTerritory1);
@@ -121,10 +120,10 @@ Player& Player::operator =(const Player& player)
 	*/
 
 	// copy orders
-	for (int i = 0; i < player.orders.size(); i++)
+	/*for (int i = 0; i < player.orders.size(); i++)
 	{
 		this->orders.push_back(player.orders.at(i));
-	}
+	}*/
 	// copy hand of cards
 	for (int i = 0; i < player.hand.size(); i++)
 	{
@@ -152,5 +151,6 @@ ostream& operator <<(ostream& strm, Player& player)
 		s += ", ";
 	}
 	s += "\b \b.";
-	return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
+	//return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
+	return strm << "Player " << player.playerNumber << "\nNext order: " << "\nTerritories: " << s << endl;
 }

@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/x64/Debug
+/COMP345_Assignment1/x64/Debug
+/.vs/COMP345_Assignment1/v15

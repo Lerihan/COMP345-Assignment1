@@ -4,6 +4,10 @@
 
 using namespace std;
 
+Order::Order()
+{
+}
+
 Order::Order(Player* player)
 {
 	this->player = player;
@@ -14,8 +18,8 @@ Deploy::Deploy(Player* player, Territory* territory, unsigned int numOfArmies) :
 	this->territory = territory;
 	this->numOfArmies = numOfArmies;
 
-	std::ostream& operator << (std::ostream & o, const Deploy & d)
-		return o << "Deploy " << d.numOfArmies << " armies to " << d.player << "'s " << d.territory << " territory." << endl;
+	/*std::ostream& operator << (std::ostream & o, const Deploy & d)
+		return o << "Deploy " << d.numOfArmies << " armies to " << d.player << "'s " << d.territory << " territory." << endl;*/
 }
 
 bool Deploy::validate()
@@ -36,8 +40,8 @@ Advance::Advance(Player* player, Territory* current, Territory* next, unsigned i
 	this->next = next;
 	this->numOfArmies = numOfArmies;
 
-	std::ostream& operator << (std::ostream & o, const Advance & a)
-		return o << "Player " << a.player << " advances " << a.numOfArmies << " armies from " << a.current << " to " << a.next << endl;
+	/*std::ostream& operator << (std::ostream & o, const Advance & a)
+		return o << "Player " << a.player << " advances " << a.numOfArmies << " armies from " << a.current << " to " << a.next << endl;*/
 }
 
 bool Advance::validate()
@@ -56,8 +60,8 @@ Bomb::Bomb(Player* player, Territory* target) : Order(player)
 {
 	this->target = target;
 
-	std::ostream& operator << (std::ostream & o, const Bomb & b)
-		return o << "Player " << b.player << " bombs " << b.target << " enemy territory, destroying half of its troops." << endl;
+	/*std::ostream& operator << (std::ostream & o, const Bomb & b)
+		return o << "Player " << b.player << " bombs " << b.target << " enemy territory, destroying half of its troops." << endl;*/
 }
 
 bool Bomb::validate()
@@ -76,8 +80,8 @@ Blockade::Blockade(Player* player, Territory* target) : Order(player)
 {
 	this->target = target;
 
-	std::ostream& operator << (std::ostream & o, const Blockade & blck)
-		return o << "Player " << blck.player << " triples its number of troops on " << blck.target << endl;
+	/*std::ostream& operator << (std::ostream & o, const Blockade & blck)
+		return o << "Player " << blck.player << " triples its number of troops on " << blck.target << endl;*/
 }
 
 bool Blockade::validate()
@@ -98,8 +102,8 @@ Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned i
 	this->next = next;
 	this->numOfArmies = numOfArmies;
 
-	std::ostream& operator << (std::ostream & o, const Airlift & air)
-		return o << "Player " << air.player << " airlifts " << air.numOfArmies << " armies from " << air.current << " to " << air.next << endl;
+	/*std::ostream& operator << (std::ostream & o, const Airlift & air)
+		return o << "Player " << air.player << " airlifts " << air.numOfArmies << " armies from " << air.current << " to " << air.next << endl;*/
 }
 
 bool Airlift::validate()
@@ -118,8 +122,8 @@ Negotiate::Negotiate(Player* current, Player* enemy) : Order(current)
 {
 	this->enemy = enemy;
 
-	std::ostream& operator << (std::ostream & o, const Negotiate & n)
-		return o << "Player " << n.current << " negotiates with " << n.enemy << endl;
+	/*std::ostream& operator << (std::ostream & o, const Negotiate & n)
+		return o << "Player " << n.current << " negotiates with " << n.enemy << endl;*/
 }
 
 bool Negotiate::validate()
