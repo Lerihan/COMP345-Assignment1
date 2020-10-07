@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #pragma once
 
 #include <iostream>
@@ -195,4 +196,3 @@ private:
 
 	vector<Order*> ordersList;
 };
-

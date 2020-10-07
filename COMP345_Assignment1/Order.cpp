@@ -303,6 +303,7 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 	return *this;
 }
 
+
 bool Negotiate::validate()
 {
 	if (getPlayer() != enemy)
@@ -363,4 +364,3 @@ void OrdersList::move(int oldPosition, int newPosition)
 
 	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
 }
-
