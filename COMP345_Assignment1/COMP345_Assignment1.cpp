@@ -25,11 +25,11 @@ int main()
 	m.addContinent(&c3);
 	m.addContinent(&c4);
 
-	m.addAdjContinent(&c1, &c2);
-	m.addAdjContinent(&c1, &c3);
-	m.addAdjContinent(&c1, &c4);
-	m.addAdjContinent(&c2, &c4);
-	m.addAdjContinent(&c3, &c4);
+	//m.addAdjContinent(&c1, &c2);
+	//m.addAdjContinent(&c1, &c3);
+	//m.addAdjContinent(&c1, &c4);
+	//m.addAdjContinent(&c2, &c4);
+	//m.addAdjContinent(&c3, &c4);
 
 	//
 
@@ -78,8 +78,6 @@ int main()
 	//c1.printAdjContinents();
 	//c3.printTerritories();
 	//t4.printAdjTerritory();
-
-
 
 	//Map Loader
 	MapLoader* mapLoader = new MapLoader();

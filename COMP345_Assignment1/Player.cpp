@@ -153,4 +153,3 @@ ostream& operator <<(ostream& strm, Player& player)
 	s += "\b \b.";
 	return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
 }
-
