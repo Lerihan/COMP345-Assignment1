@@ -7,41 +7,45 @@
 //  Created by Michael Totarella on 2020-09-23.
 //
 
+#pragma once
+
 #include <iostream>
+#include <vector>
+#include <string>
 #include "Player.h"
 #include "Order.h"
 #include "Map.h"
+#include "Cards.h"
 
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
-	this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
-	this->hand = std::vector<Cards*>;
-	this->orders = std::vector<Order*>;
-	this->territories = std::vector<Territory*>;
+	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
+	//this->hand = std::vector<Cards*>;
+	//this->orders = std::vector<Order*>;
+	//this->territories = std::vector<Territory*>;
 }
 
 // Copy constructor, creates deep copy of each attribute.
-// change deep copy method if other classes have assignment operator
+// Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player::Player(Player& p)
 {
-	Player::Player(); // call default constructor to create empty attribute vectors
-
-	// then populate them
-	for (int i = 0; i < p.hand.size(); i++) {
-		Card c = *p.hand.at(i);
-		this.hand.push_back(new Card(*c));
+	// copy orders
+	for (int i = 0; i < p.orders.size(); i++)
+	{
+		this->orders.push_back(p.orders.at(i));
+	}
+	// copy hand of cards
+	for (int i = 0; i < p.hand.size(); i++)
+	{
+		this->hand.push_back(p.hand.at(i));
+	}
+	// copy territories
+	for (int i = 0; i < p.territories.size(); i++)
+	{
+		this->territories.push_back(p.territories.at(i));
 	}
 
-	for (int i = 0; i < p.orders.size(); i++) {
-		Order o = *p.orders.at(i);
-		this.orders.push_back(new Order(*o));
-	}
-
-	for (int i = 0; i < p.territories.size(); i++) {
-		Territory t = *p.territories.at(i);
-		this.territories.push_back(new Territory(*t));
-	}
 }
 
 // Destructor deletes thiss Player object.
@@ -51,32 +55,58 @@ Player::~Player()
 	delete this;
 }
 
-// Returns vector of Territories to attack.
-list<Territory*> Player::toAttack()
+// Returns vector of Territories.
+// Should return a new vector of pointers to the same Territory objects
+vector<Territory*> Player::getTerritories()
 {
-	return list<Territory*>;
+	vector<Territory*> t = this->territories;
+	
+	return t;
+}
+
+// Returns vector of Territories to attack.
+// For now, returns a vector of pointers to two default, newly generated Territories.
+vector<Territory*> Player::toAttack()
+{
+	Territory* attackTerritory1 = new Territory("Attack Territory 1");
+	Territory* attackTerritory2 = new Territory("Attack Territory 2");
+
+	vector<Territory*> attackList;
+	attackList.push_back(attackTerritory1);
+	attackList.push_back(attackTerritory2);
+
+	return attackList;
 }
 
 // Returns vector of Territories to defend.
-list<Territory*> Player::toDefend()
+// For now, returns a vector of pointers to two default, newly generated Territories.
+vector<Territory*> Player::toDefend()
 {
-	return list<Territory*>;
+	Territory* defendTerritory1 = new Territory("Attack Territory 1");
+	Territory* defendTerritory2 = new Territory("Attack Territory 2");
+
+	vector<Territory*> defendList;
+	defendList.push_back(defendTerritory1);
+	defendList.push_back(defendTerritory2);
+
+	return defendList;
 }
 
 // Adds argument Order to the Player's Order vector attribute.
-void Player::issueOrder(Order order)
+void Player::issueOrder(string orderType)
 {
-	this->orders.push_back(order); // add pointer to new order to end of order list
+	//this->orders.push_back(); // add pointer to new order to end of order list
 }
 
 // = operator, performs deep copy.
-// change deep copy method if other classes have assignment operator
-Player::Player& operator =(const Player& player);
+// Assume Cards, Order, Territory classes have correctly implemented assignment operators
+Player& Player::operator =(const Player& player)
 {
+	/*
 	// perform deep copy of each attribute, same as copy constructor
 	for (int i = 0; i < p.hand.size(); i++) {
-		Card c = *p.hand.at(i);
-		this.hand.push_back(new Card(*c));
+		Cards c = *p.hand.at(i);
+		this.hand.push_back(new Cards(*c));
 	}
 
 	for (int i = 0; i < p.orders.size(); i++) {
@@ -88,26 +118,39 @@ Player::Player& operator =(const Player& player);
 		Territory t = *p.territories.at(i);
 		this.territories.push_back(new Territory(*t));
 	}
+	*/
+
+	// copy orders
+	for (int i = 0; i < player.orders.size(); i++)
+	{
+		this->orders.push_back(player.orders.at(i));
+	}
+	// copy hand of cards
+	for (int i = 0; i < player.hand.size(); i++)
+	{
+		this->hand.push_back(player.hand.at(i));
+	}
+	// copy territories
+	for (int i = 0; i < player.territories.size(); i++)
+	{
+		this->territories.push_back(player.territories.at(i));
+	}
 
 	return *this;
 }
 
 // Out stream operator prints Player number, next Order, and occupied Territories.
-ostream& operator <<(ostream &strm, Player &player)
+ostream& operator <<(ostream& strm, Player& player)
 {
 	string s = "";
 	// create list of Territory names to output to console
-	for (Territory t : player.territories)
+	for (int i = 0; i < player.territories.size(); i++)
 	{
-		s += *t.name;
+		Territory t = *player.territories.at(i); // only works if I make this line separate from the one below for some reason
+		string name = t.name;
+		s += name;
 		s += ", ";
 	}
-	t += "\b \b.";
-	return (strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << t << endl;
-}
-
-
-int main()
-{
-	return 0;
+	s += "\b \b.";
+	return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
 }
