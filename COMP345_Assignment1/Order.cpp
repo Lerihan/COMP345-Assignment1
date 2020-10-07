@@ -24,6 +24,17 @@ Order& Order::operator=(const Order& order) {
 	return *this;
 }
 
+//define an equal operator that returns true if two orders are by the same player, and are not executed
+bool Order::operator==(const Order& other)
+{
+	return player == other.player && executed == other.executed;
+}
+
+const Player* Order::getPlayer() 
+{ 
+	return player; 
+}
+
 std::ostream& operator<<(std::ostream& o, const Order& order) 
 {
 	return o << "An order has been created";
@@ -56,7 +67,6 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 
 bool Deploy::validate()
 {
-	cout << "If player owns the territory" << endl;
 	return true;
 }
 
@@ -71,7 +81,7 @@ bool Deploy::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Deploy& deploy)
+ostream& operator << (std::ostream& o, const Deploy& deploy)
 {
 	return o << "A deploy order has been issued";
 }
@@ -121,7 +131,7 @@ bool Advance::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Advance& advance)
+ostream& operator << (std::ostream& o, const Advance& advance)
 {
 	return o << "An advance order has been issued";
 }
@@ -170,7 +180,7 @@ bool Bomb::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Bomb& bomb)
+ostream& operator << (std::ostream& o, const Bomb& bomb)
 {
 	return o << "A bomb order has been issued";
 }
@@ -214,7 +224,7 @@ bool Blockade::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Blockade& b)
+ostream& operator << (std::ostream& o, const Blockade& b)
 {
 	return o << "A blockade order has been issued";
 }
@@ -263,7 +273,7 @@ bool Airlift::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Airlift& airlift)
+ostream& operator << (std::ostream& o, const Airlift& airlift)
 {
 	return o << "An airlift order has been issued.";
 }
@@ -307,10 +317,41 @@ bool Negotiate::execute()
 	return false;
 }
 
-std::ostream& operator << (std::ostream& o, const Negotiate& negotiate)
+ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 {
 	return o << "A negotiate order has been issued.";
 }
 
+OrdersList::OrdersList(const OrdersList& oL) 
+{
+	ordersList = oL.ordersList;
+}
+
+OrdersList& OrdersList::operator=(const OrdersList& oL) 
+{
+	ordersList = oL.ordersList;
+	return *this;
+}
+
+void OrdersList::add(Order* order) 
+{ 
+	ordersList.push_back(order); 
+}
+
+void OrdersList::remove(Order* order)
+{
+	for (vector<Order*>::iterator it = ordersList.begin(); it != ordersList.end(); it++)
+		if (*order == *(*it))
+			ordersList.erase(it);
+}
+
+void OrdersList::move(int oldPosition, int newPosition)
+{
+	Order* toBeMoved = ordersList[oldPosition];
+
+	remove(ordersList[oldPosition]);
+
+	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
+}
 
 

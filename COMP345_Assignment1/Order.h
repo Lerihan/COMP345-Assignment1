@@ -19,9 +19,13 @@ public:
 
 	Order& operator = (const Order& other);
 
+	bool operator==(const Order& other);
+
 	virtual bool validate() = 0;
 
 	virtual bool execute() = 0;
+
+	const Player* getPlayer();
 
 protected:
 
@@ -49,9 +53,9 @@ public:
 
 	Deploy& operator = (const Deploy& deploy);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
 class Advance : public Order
@@ -72,9 +76,9 @@ public:
 
 	Advance& operator = (const Advance& advance);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
 class Bomb : public Order
@@ -94,9 +98,9 @@ public:
 
 	Bomb& operator = (const Bomb& bomb);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
 class Blockade : public Order
@@ -115,9 +119,9 @@ public:
 
 	Blockade& operator = (const Blockade& blockade);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
 class Airlift : public Order
@@ -138,9 +142,9 @@ public:
 
 	Airlift& operator = (const Airlift& airlift);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
 class Negotiate : public Order
@@ -159,10 +163,29 @@ public:
 
 	Negotiate& operator = (const Negotiate& negotiate);
 
-	virtual bool validate() override;
+	virtual bool validate();
 
-	virtual bool execute() override;
+	virtual bool execute();
 };
 
+class OrdersList 
+{
+public:
 
+	OrdersList();
+
+	OrdersList(const OrdersList& ordersList);
+
+	OrdersList& operator=(const OrdersList& ordersList);
+
+	void move(int oldPosition, int newPosition);
+
+	void add(Order* order);
+
+	void remove(Order* order);
+
+private:
+
+	vector<Order*> ordersList;
+};
 
