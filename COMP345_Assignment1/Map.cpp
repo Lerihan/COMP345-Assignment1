@@ -14,6 +14,20 @@ void Map::addAdjTerritory(Territory * t1, Territory * t2)
 	t1->listOfAdjTerritories.push_back(t2);
 }
 
+bool Map::isAdjacent(int id1, int id2)
+{
+	Territory* t1 = getTerritory(id1);
+	Territory* t2 = getTerritory(id2);
+
+	for (int i = 0; i < t1->listOfAdjTerritories.size(); i++)
+	{
+		if (t1->listOfAdjTerritories.at(i)->index == t2->index)
+			return true;
+		else
+			return false;
+	}
+}
+
 
 
 /*

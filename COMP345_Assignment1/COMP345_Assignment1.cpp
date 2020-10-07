@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include "Map.h"
 #include "MapLoader.h"
 
 int main()
@@ -83,12 +82,19 @@ int main()
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
 	std::cout << endl;
-	map->printContinents();
-	map->getContinent(2)->printTerritories();
-	map->getContinent(2)->getTerritory(8)->printAdjTerritory();
+	//map->printContinents();
+	//map->getContinent(2)->printTerritories();
+	//map->getContinent(2)->getTerritory(8)->printAdjTerritory();
+
+	for (int i = 0; i < map->listOfTerritories.size(); i++)
+	{
+		map->listOfTerritories[i]->printAdjTerritory();
+	}
+
+
 	std::cout << endl;
 
-
+	cout << map->isAdjacent(1, 9) << endl;
 	
 
 

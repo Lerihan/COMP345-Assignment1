@@ -49,7 +49,7 @@ public:
 
 	void addTerritory(Territory* t);
 	void printTerritories();
-	void printAdjContinents();
+	void printAdjContinents(); //not being used
 	Territory* getTerritory(int id);
 
 	int index;
@@ -79,6 +79,7 @@ public:
 	void addTerritory(Territory* t);
 	void addAdjContinent(Continent* c1, Continent* c2);
 	void addAdjTerritory(Territory* t1, Territory* t2); //TODO: maybe move this in Continent ?
+	bool isAdjacent(int id1, int id2);
 	void printContinents();
 	Continent* getContinent(int id);
 	Territory* getTerritory(int id);
