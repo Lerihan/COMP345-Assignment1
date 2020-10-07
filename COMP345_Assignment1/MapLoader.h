@@ -6,10 +6,9 @@
 class MapLoader {
 
 private:
-	string* dominationFileName = NULL;
+	string* dominationFileName;
 	Map* finalMap;
-	Continent* addFinalContinent = nullptr;
-
+	
 public:
 	MapLoader(); //default constructor
 	MapLoader(MapLoader& map); //copy constructor
