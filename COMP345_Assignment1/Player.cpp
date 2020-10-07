@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "Player.h"
 #include "Order.h"
 #include "Map.h"
@@ -19,7 +20,7 @@
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
-	this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
+	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
 	//this->hand = std::vector<Cards*>;
 	//this->orders = std::vector<Order*>;
 	//this->territories = std::vector<Territory*>;
@@ -145,7 +146,9 @@ ostream& operator <<(ostream& strm, Player& player)
 	// create list of Territory names to output to console
 	for (int i = 0; i < player.territories.size(); i++)
 	{
-		s += player.territories.at(i).name;
+		Territory t = *player.territories.at(i); // only works if I make this line separate from the one below for some reason
+		string name = t.name;
+		s += name;
 		s += ", ";
 	}
 	s += "\b \b.";
