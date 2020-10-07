@@ -25,18 +25,30 @@ Map::Map()
 {
 }
 
+Map::Map(string n)
+{
+	name = n;
+}
+
 // Map Copy Constructor
 Map::Map(const Map &m)
 {
-	cout << "Copy constructor called " << endl;
+	name = m.name;
+	listOfContinents = m.listOfContinents;
 }
 
 // Map Assignment Operator
 Map& Map::operator = (const Map &m)
 {
-	cout << "Assignment operator called " << endl;
+	name = m.name;
+	listOfContinents = m.listOfContinents;
 	return *this;
 }
+
+//Map::~Map()
+//{
+//	delete this;
+//}
 
 ostream& operator << (ostream &out, const Map &m)
 {
@@ -58,6 +70,13 @@ void Map::addContinent(Continent * c)
 {
 	listOfContinents.push_back(c);
 }
+
+void Map::addTerritory(Territory * t)
+{
+	listOfTerritories.push_back(t);
+}
+
+
 
 void Map::printContinents()
 {
@@ -105,23 +124,39 @@ Continent::Continent()
 }
 
 //TODO: Add player
-Continent::Continent(string n)
+Continent::Continent(int id, string n, int av)
 {
+	index = id;
 	name = n;
+	armyvalue = av;
 }
 
 // Continent Copy Constructor
 Continent::Continent(const Continent &c)
 {
-	cout << "Copy constructor called " << endl;
+	index = c.index;
+	name = c.name;
+	armyvalue = c.armyvalue;
+	listOfAdjContinents = c.listOfAdjContinents;
+	listOfTerritories = c.listOfTerritories;
 }
 
 // Continent Assignment Operator
 Continent& Continent::operator = (const Continent &c)
 {
-	cout << "Assignment operator called " << endl;
+	index = c.index;
+	name = c.name;
+	armyvalue = c.armyvalue;
+	listOfAdjContinents = c.listOfAdjContinents;
+	listOfTerritories = c.listOfTerritories;
+
 	return *this;
 }
+
+//Continent::~Continent()
+//{
+//	delete this;
+//}
 
 ostream& operator << (ostream &out, const Continent &c)
 {
@@ -149,7 +184,7 @@ void Continent::printTerritories()
 	cout << "List of Territories of Continent '" << this->name << "'" << endl;
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
-		cout << i + 1 << ". " << this->listOfTerritories.at(i)->name << endl;
+		cout << i + 1 << ". " << this->listOfTerritories.at(i)->index << " " << this->listOfTerritories.at(i)->name << endl;
 	}
 	cout << endl;
 }
@@ -164,6 +199,28 @@ void Continent::printAdjContinents()
 	cout << endl << endl;
 }
 
+Continent* Map::getContinent(int id)
+{
+	return listOfContinents[id - 1]; //indices start at 1
+}
+
+Territory* Map::getTerritory(int id)
+{
+	return listOfTerritories[id - 1];
+	/*for (int i = 0; i < listOfContinents.size(); i++)
+	{
+		Continent* c = listOfContinents[i];
+		cout << "checking territory #" << c->listOfTerritories.size() << endl;
+		for (int j = 0; j < c->listOfTerritories.size(); j++)
+		{
+			if(c->getTerritory(id) != NULL)
+				return c->getTerritory(id);
+		}
+	}
+	return NULL;*/
+}
+
+
 
 
 
@@ -177,8 +234,9 @@ Territory::Territory()
 {
 }
 
-Territory::Territory(string n)
+Territory::Territory(int id, string n)
 {
+	index = id;
 	name = n;
 	numberOfArmies = 0;
 }
@@ -186,15 +244,26 @@ Territory::Territory(string n)
 // Territory Copy Constructor
 Territory::Territory(const Territory &t)
 {
-	cout << "Copy constructor called " << endl;
+	index = t.index;
+	name = t.name;
+	listOfAdjTerritories = t.listOfAdjTerritories;
+	numberOfArmies = t.numberOfArmies;
 }
 
 // Territory Assignment Operator
 Territory& Territory::operator = (const Territory &t)
 {
-	cout << "Assignment operator called " << endl;
+	index = t.index;
+	name = t.name;
+	listOfAdjTerritories = t.listOfAdjTerritories;
+	numberOfArmies = t.numberOfArmies;
 	return *this;
 }
+
+//Territory::~Territory()
+//{
+//	delete this;
+//}
 
 void Territory::printAdjTerritory()
 {
@@ -205,4 +274,19 @@ void Territory::printAdjTerritory()
 	}
 	cout << endl << endl;
 }
+
+Territory* Continent::getTerritory(int id)
+{
+	for (int i = 0; i < listOfTerritories.size(); i++)
+	{
+		if (listOfTerritories[i]->index == id)
+			return listOfTerritories[i];
+	}
+
+	return NULL;
+}
+
+
+
+
 
