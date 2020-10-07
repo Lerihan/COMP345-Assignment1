@@ -7,12 +7,15 @@ class MapLoader {
 
 private:
 	string* dominationFileName = NULL;
-	Continent* createContinent(std::string line);
-	//Country* createCountry(std::string line);
 	Map* finalMap = nullptr;
+	Continent* addFinalContinent = nullptr;
 
 public:
-	MapLoader();
+	MapLoader(); //default constructor
+	MapLoader(MapLoader& map); //copy constructor
+	MapLoader& operator = (const MapLoader& map); //Assignment operator
+	~MapLoader(); //destructor
+
 	MapLoader(string dominationFileName);
 	void ReadMap(string dominationFileName);
 	Map* GetMap(std::string filePath);
