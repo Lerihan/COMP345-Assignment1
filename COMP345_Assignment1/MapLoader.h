@@ -7,7 +7,7 @@ class MapLoader {
 
 private:
 	string* dominationFileName = NULL;
-	Map* finalMap = nullptr;
+	Map* finalMap;
 	Continent* addFinalContinent = nullptr;
 
 public:
@@ -20,4 +20,5 @@ public:
 	void ReadMap(string dominationFileName);
 	Map* GetMap(std::string filePath);
 
+	vector<string> SplitWords(string s);
 };
