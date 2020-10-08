@@ -9,6 +9,7 @@
 #include <string>
 using namespace std;
 
+class Deck;
 
 class Player;
 
