@@ -6,8 +6,6 @@
 //  Created by Michael Totarella on 2020-09-23.
 //
 
-#pragma once
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -19,10 +17,16 @@
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
+	this->name = "NoName";
 	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
 	//this->hand = std::vector<Cards*>;
 	//this->orders = std::vector<Order*>;
 	//this->territories = std::vector<Territory*>;
+}
+
+Player::Player(string name)
+{
+	this->name = name;
 }
 
 // Copy constructor, creates deep copy of each attribute.
@@ -30,10 +34,10 @@ Player::Player()
 Player::Player(Player& p)
 {
 	// copy orders
-	/*for (int i = 0; i < p.orders.size(); i++)
+	for (int i = 0; i < p.orders.size(); i++)
 	{
 		this->orders.push_back(p.orders.at(i));
-	}*/
+	}
 	// copy hand of cards
 	for (int i = 0; i < p.hand.size(); i++)
 	{
@@ -44,6 +48,8 @@ Player::Player(Player& p)
 	{
 		this->territories.push_back(p.territories.at(i));
 	}
+
+	this->name = p.name;
 
 }
 
@@ -61,6 +67,12 @@ vector<Territory*> Player::getTerritories()
 	vector<Territory*> t = this->territories;
 	
 	return t;
+}
+
+// Adds the input Territory pointer this Player's Territories vector.
+void Player::addTerritory(Territory* t)
+{
+	this->territories.push_back(t);
 }
 
 // Returns vector of Territories to attack.
@@ -92,9 +104,11 @@ vector<Territory*> Player::toDefend()
 }
 
 // Adds argument Order to the Player's Order vector attribute.
-void Player::issueOrder(string orderType)
+// for now just adds a default Deploy order
+void Player::issueOrder()
 {
-	//this->orders.push_back(); // add pointer to new order to end of order list
+	Deploy* d = new Deploy();
+	this->orders.push_back(d); // add pointer to new order to end of order list
 }
 
 // = operator, performs deep copy.
@@ -120,10 +134,10 @@ Player& Player::operator =(const Player& player)
 	*/
 
 	// copy orders
-	/*for (int i = 0; i < player.orders.size(); i++)
+	for (int i = 0; i < player.orders.size(); i++)
 	{
 		this->orders.push_back(player.orders.at(i));
-	}*/
+	}
 	// copy hand of cards
 	for (int i = 0; i < player.hand.size(); i++)
 	{
@@ -151,6 +165,6 @@ ostream& operator <<(ostream& strm, Player& player)
 		s += ", ";
 	}
 	s += "\b \b.";
-	//return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	return strm << "Player " << player.playerNumber << "\nNext order: " << "\nTerritories: " << s << endl;
+	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
+	return strm << "Player " << player.name << "\nNumber of orders: " << player.orders.size() << "\nTerritories: " << s << endl;
 }
