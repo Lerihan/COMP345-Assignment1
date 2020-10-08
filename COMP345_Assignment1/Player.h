@@ -8,12 +8,14 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <list>
+#include <iostream>
+#include <vector>
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
 
+class Order;
+class Cards;
 
 class Player
 /*
@@ -31,17 +33,21 @@ Copy constructor and = assignment operator assumes all other class assignment op
 private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member
 	int playerNumber; // assign each player a number to keep track of which player is playing
-	//std::vector<Order*> orders; // player's list of orders to be carried out
+	std::vector<Order*> orders; // player's list of orders to be carried out
 	std::vector<Cards*> hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
 
+	string name; // name of player
+
 public:
 	Player(); // default constructor
+	Player(string name); // for now take string as name to differentiate players
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 	vector<Territory*> getTerritories();
-	//Order* getNextOrder(); // returns next order to be executed (first order in attribute vector)
-	void issueOrder(string orderType);
+	void addTerritory(Territory* r); // add input Territory pointer to data member vector
+	Order* getNextOrder(); // returns next order to be executed (first order in attribute vector)
+	void issueOrder(); // for now just adds default Deploy order
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 
