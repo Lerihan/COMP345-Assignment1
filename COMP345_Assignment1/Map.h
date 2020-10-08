@@ -1,9 +1,10 @@
 #pragma once
 #include "Map.h"
+#include "Player.h"
 #include <iostream>
 #include <vector>
 
-using namespace std;
+using namespace std; 
 
 /**
 * Melina Phan
@@ -13,6 +14,8 @@ using namespace std;
 *		Copy constructor & Assignment operator: GeeksForGeeks.org
 *		Graph Code from Moodle
 */
+
+class Player;
 
 class Territory
 {
@@ -24,9 +27,13 @@ public:
 	//~Territory(); // Destructor
 	
 	void printAdjTerritory();
+	Player* getOwner(); // get owner of this Territory
+	void setOwner(Player* p); // set the owner of this Territory
+
 
 	int index;
 	string name;
+	Player* owner; // player that owns this Territory
 	vector<Territory*> listOfAdjTerritories;
 	int continentIndex;
 	int numberOfArmies;

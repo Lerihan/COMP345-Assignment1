@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Map.h"
 
+class Territory;
 
 class Order
 {

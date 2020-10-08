@@ -264,6 +264,7 @@ Territory* Map::getTerritory(int id)
 // Territory Default Constructor
 Territory::Territory()
 {
+	this->owner = NULL;
 }
 
 Territory::Territory(int id, string n)
@@ -271,6 +272,8 @@ Territory::Territory(int id, string n)
 	index = id;
 	name = n;
 	numberOfArmies = 0;
+
+	this->owner = NULL;
 }
 
 // Territory Copy Constructor
@@ -280,6 +283,8 @@ Territory::Territory(const Territory &t)
 	name = t.name;
 	listOfAdjTerritories = t.listOfAdjTerritories;
 	numberOfArmies = t.numberOfArmies;
+
+	this->owner = t.owner;
 }
 
 // Territory Assignment Operator
@@ -318,6 +323,15 @@ Territory* Continent::getTerritory(int id)
 	return NULL;
 }
 
+Player* Territory::getOwner()
+{
+	return this->owner;
+}
+
+void Territory::setOwner(Player* p)
+{
+	this->owner = p;
+}
 
 
 

@@ -14,6 +14,8 @@
 #include "Map.h"
 #include "Cards.h"
 
+//class Territory;
+
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
@@ -74,6 +76,8 @@ vector<Territory*> Player::getTerritories()
 void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
+
+	(*t).setOwner(this); // set the owner of the input Territory to be this Player
 }
 
 // Returns vector of Territories to attack.
