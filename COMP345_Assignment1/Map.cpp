@@ -23,9 +23,9 @@ bool Map::isAdjacent(int id1, int id2)
 	{
 		if (t1->listOfAdjTerritories.at(i)->index == t2->index)
 			return true;
-		else
-			return false;
 	}
+
+	return false;
 }
 
 
@@ -121,6 +121,24 @@ void Map::printAdjTerritory(Territory* t)
 		cout << t->listOfAdjTerritories.at(i)->name << " -> ";
 	}
 	cout << endl << endl;
+}
+
+bool Map::validate()
+{
+	bool b = true;
+
+	//check if map is a connected graph (every territory has adjacent territories)
+	//check if continents are connected subgraphs (check if continents have adj cont ???)
+	//check if each territory has one continent
+	for (int i = 0; i < listOfTerritories.size(); i++)
+	{
+		if (listOfTerritories[i]->listOfAdjTerritories.empty() && listOfTerritories[i]->continentIndex != NULL)
+		{
+			b = false;
+		}
+	}
+
+	return b;
 }
 
 

@@ -94,8 +94,8 @@ int main()
 
 	std::cout << endl;
 
-	cout << map->isAdjacent(1, 9) << endl;
-	
+	cout << map->isAdjacent(1, 2) << endl;
+	cout << map->validate() << endl;
 
 
 	return 0;
