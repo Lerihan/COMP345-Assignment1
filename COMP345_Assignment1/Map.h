@@ -18,7 +18,7 @@ class Territory
 {
 public:
 	Territory(); // Default Constructor
-	Territory(int id, string n);
+	Territory(int id, string n); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
 	Territory(const Territory &t); // Copy Constructor
 	Territory& operator = (const Territory &t); // Assignment operator
 	//~Territory(); // Destructor
