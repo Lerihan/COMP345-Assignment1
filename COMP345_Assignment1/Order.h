@@ -5,9 +5,6 @@
 #include "Player.h"
 #include "Map.h"
 
-class Player;
-
-class Territory;
 
 class Order
 {
@@ -18,9 +15,21 @@ public:
 
 	Order(Player* player);
 
+	Order(const Order& other);
+
+	Order& operator = (const Order& other);
+
+	bool operator==(const Order& other);
+
 	virtual bool validate() = 0;
 
 	virtual bool execute() = 0;
+
+	const Player* getPlayer();
+
+protected:
+
+	bool executed = false;
 
 private:
 
@@ -36,11 +45,17 @@ private:
 
 public:
 
+	Deploy();
+
 	Deploy(Player* player, Territory* territory, unsigned int numOfArmies);
 
-	virtual bool validate() override;
+	Deploy(const Deploy& deploy);
 
-	virtual bool execute() override;
+	Deploy& operator = (const Deploy& deploy);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
 class Advance : public Order
@@ -53,26 +68,39 @@ private:
 
 public:
 
+	Advance();
+
 	Advance(Player* player, Territory* current, Territory* next, unsigned int numOfArmies);
 
-	virtual bool validate() override;
+	Advance(const Advance& advance);
 
-	virtual bool execute() override;
+	Advance& operator = (const Advance& advance);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
 class Bomb : public Order
 {
 private:
 
+	Territory* source;
 	Territory* target;
 
 public:
 
-	Bomb(Player* player, Territory* target);
+	Bomb();
 
-	virtual bool validate() override;
+	Bomb(Player* player, Territory* source,  Territory* target);
 
-	virtual bool execute() override;
+	Bomb(const Bomb& bomb);
+
+	Bomb& operator = (const Bomb& bomb);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
 class Blockade : public Order
@@ -83,11 +111,17 @@ private:
 
 public:
 
+	Blockade();
+
 	Blockade(Player* player, Territory* target);
 
-	virtual bool validate() override;
+	Blockade(const Blockade& blockade);
 
-	virtual bool execute() override;
+	Blockade& operator = (const Blockade& blockade);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
 class Airlift : public Order
@@ -100,11 +134,17 @@ private:
 
 public:
 
+	Airlift();
+
 	Airlift(Player* player, Territory* current, Territory* next, unsigned int numOfArmies);
 
-	virtual bool validate() override;
+	Airlift(const Airlift& airlift);
 
-	virtual bool execute() override;
+	Airlift& operator = (const Airlift& airlift);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
 class Negotiate : public Order
@@ -115,11 +155,37 @@ private:
 
 public:
 
+	Negotiate();
+
 	Negotiate(Player* current, Player* enemy);
 
-	virtual bool validate() override;
+	Negotiate(const Negotiate& negotiate);
 
-	virtual bool execute() override;
+	Negotiate& operator = (const Negotiate& negotiate);
+
+	virtual bool validate();
+
+	virtual bool execute();
 };
 
+class OrdersList 
+{
+public:
+
+	OrdersList();
+
+	OrdersList(const OrdersList& ordersList);
+
+	OrdersList& operator=(const OrdersList& ordersList);
+
+	void move(int oldPosition, int newPosition);
+
+	void add(Order* order);
+
+	void remove(Order* order);
+
+private:
+
+	vector<Order*> ordersList;
+};
 
