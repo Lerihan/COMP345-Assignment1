@@ -12,12 +12,16 @@
 int main()
 {
 
+	/*
 	Player* p = new Player("Michael"); // create player
 	Territory* t = new Territory(1, "Territory 1"); // create Territory
+	//Deck* d = new Deck();
 	
 	p->addTerritory(t); // add territory to player's data member which also sets the player as the territory's owner member
+	p->issueOrder();
+	cout << *p << endl; // this should print the player p that was created above
+	*/
 
-	cout << *(*t).getOwner() << endl; // this should print the player p that was created above
 
 	/*
 
