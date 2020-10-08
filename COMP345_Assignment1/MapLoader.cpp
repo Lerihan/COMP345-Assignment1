@@ -15,7 +15,7 @@ MapLoader::MapLoader() {
 
 //Copy Constructor
 MapLoader::MapLoader(MapLoader &map){
-	MapLoader::MapLoader();
+	dominationFileName = map.dominationFileName;
 }
 
 //Assignment operator
