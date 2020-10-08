@@ -40,17 +40,11 @@ Map* MapLoader::GetMap(string filePath) {
 Map map;
 void MapLoader::ReadMap(string dominationFileName) {
 	try {
-		//Continent continent;
-		
-		//this->finalMap = &map;
-		//this->addFinalContinent = &continent;
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
-		//std::vector<Continent*>* continents = new std::vector<Continent*>();
-		//std::vector<Territory*>* countries = new std::vector<Territory*>();
-		//int index = 1;
+
 		ifstream readFile;
 		readFile.open(dominationFileName);
 
