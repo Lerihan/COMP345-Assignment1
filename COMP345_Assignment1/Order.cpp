@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Order::Order()
+Order::Order() : player()
 {
 }
 
@@ -13,25 +13,83 @@ Order::Order(Player* player)
 	this->player = player;
 }
 
-Deploy::Deploy(Player* player, Territory* territory, unsigned int numOfArmies) : Order(player)
+Order::Order(const Order& order) {
+	player = order.player;
+	executed = order.executed;
+}
+
+Order& Order::operator=(const Order& order) {
+	player = order.player;
+	executed = order.executed;
+	return *this;
+}
+
+//define an equal operator that returns true if two orders are by the same player, and are not executed
+bool Order::operator==(const Order& other)
+{
+	return player == other.player && executed == other.executed;
+}
+
+const Player* Order::getPlayer() 
+{ 
+	return player; 
+}
+
+std::ostream& operator<<(std::ostream& o, const Order& order) 
+{
+	return o << "An order has been created";
+}
+
+Deploy::Deploy(): Order()
+{
+	Territory("current");
+}
+
+Deploy::Deploy(Player* player, Territory* territory, unsigned int numOfArmies): Order(player)
 {
 	this->territory = territory;
 	this->numOfArmies = numOfArmies;
+}
 
-	/*std::ostream& operator << (std::ostream & o, const Deploy & d)
-		return o << "Deploy " << d.numOfArmies << " armies to " << d.player << "'s " << d.territory << " territory." << endl;*/
+Deploy::Deploy(const Deploy& deploy): Order(deploy)
+{
+	this->territory = deploy.territory;
+	this->numOfArmies = deploy.numOfArmies;
+}
+
+Deploy& Deploy::operator=(const Deploy& deploy) 
+{
+	Order::operator=(deploy);
+	territory = deploy.territory;
+	numOfArmies = deploy.numOfArmies;
+	return *this;
 }
 
 bool Deploy::validate()
 {
-	cout << "If player owns the territory" << endl;
 	return true;
 }
 
 bool Deploy::execute()
 {
 	if (validate())
+	{ 
+		cout << "Deploying " << numOfArmies << " armies.\n";
+		executed = true;
 		return true;
+	}
+	return false;
+}
+
+ostream& operator << (std::ostream& o, const Deploy& deploy)
+{
+	return o << "A deploy order has been issued";
+}
+
+Advance::Advance(): Order()
+{
+	Territory("current");
+	Territory("Next");
 }
 
 Advance::Advance(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -39,9 +97,21 @@ Advance::Advance(Player* player, Territory* current, Territory* next, unsigned i
 	this->current = current;
 	this->next = next;
 	this->numOfArmies = numOfArmies;
+}
 
-	/*std::ostream& operator << (std::ostream & o, const Advance & a)
-		return o << "Player " << a.player << " advances " << a.numOfArmies << " armies from " << a.current << " to " << a.next << endl;*/
+Advance::Advance(const Advance& advance) : Order(advance)
+{
+	this->current = advance.current;
+	this->next = advance.next;
+}
+
+Advance& Advance::operator=(const Advance& advance)
+{
+	Order::operator=(advance);
+	current = advance.current;
+	next = advance.next;
+	numOfArmies = advance.numOfArmies;
+	return *this;
 }
 
 bool Advance::validate()
@@ -53,15 +123,44 @@ bool Advance::validate()
 bool Advance::execute()
 {
 	if (validate())
+	{
+		cout << "Advancing " << numOfArmies << " armies from " << current << " to " << next << ".\n";
+		executed = true;
 		return true;
+	}
+	return false;
 }
 
-Bomb::Bomb(Player* player, Territory* target) : Order(player)
+ostream& operator << (std::ostream& o, const Advance& advance)
 {
-	this->target = target;
+	return o << "An advance order has been issued";
+}
 
-	/*std::ostream& operator << (std::ostream & o, const Bomb & b)
-		return o << "Player " << b.player << " bombs " << b.target << " enemy territory, destroying half of its troops." << endl;*/
+Bomb::Bomb() : Order()
+{
+	Territory("source");
+	Territory("target");
+}
+
+Bomb::Bomb(Player* player, Territory* source, Territory* target): Order(player)
+{
+	this->source = source;
+	this->target = target;
+}
+
+Bomb::Bomb(const Bomb& bomb) : Order(bomb) 
+{
+	this->source = bomb.source;
+	this->target = bomb.target;
+}
+
+
+Bomb& Bomb::operator=(const Bomb& bomb) 
+{
+	Order::operator=(bomb);
+	source = bomb.source;
+	target = bomb.target;
+	return *this;
 }
 
 bool Bomb::validate()
@@ -73,15 +172,39 @@ bool Bomb::validate()
 bool Bomb::execute()
 {
 	if (validate())
+	{
+		cout << "Bombing " << target << " territory, reducing 1/2 of its forces.\n";
+		executed = true;
 		return true;
+	}
+	return false;
+}
+
+ostream& operator << (std::ostream& o, const Bomb& bomb)
+{
+	return o << "A bomb order has been issued";
+}
+
+Blockade::Blockade() : Order()
+{
+	Territory("target");
 }
 
 Blockade::Blockade(Player* player, Territory* target) : Order(player)
 {
 	this->target = target;
+}
 
-	/*std::ostream& operator << (std::ostream & o, const Blockade & blck)
-		return o << "Player " << blck.player << " triples its number of troops on " << blck.target << endl;*/
+Blockade::Blockade(const Blockade& blockade) : Order(blockade) 
+{
+	this->target = blockade.target;
+}
+
+Blockade& Blockade::operator=(const Blockade& blockade) 
+{
+	Order::operator=(blockade);
+	target = blockade.target;
+	return *this;
 }
 
 bool Blockade::validate()
@@ -93,7 +216,23 @@ bool Blockade::validate()
 bool Blockade::execute()
 {
 	if (validate())
+	{
+		cout << "Blockading " << target << " territory, tripling its forces.\n";
+		executed = true;
 		return true;
+	}
+	return false;
+}
+
+ostream& operator << (std::ostream& o, const Blockade& b)
+{
+	return o << "A blockade order has been issued";
+}
+
+Airlift::Airlift() : Order()
+{
+	Territory("current");
+	Territory("next");
 }
 
 Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -101,9 +240,20 @@ Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned i
 	this->current = current;
 	this->next = next;
 	this->numOfArmies = numOfArmies;
+}
 
-	/*std::ostream& operator << (std::ostream & o, const Airlift & air)
-		return o << "Player " << air.player << " airlifts " << air.numOfArmies << " armies from " << air.current << " to " << air.next << endl;*/
+Airlift::Airlift(const Airlift& airlift) : Order(airlift) 
+{
+	this->current = airlift.current;
+	this->next = airlift.next;
+}
+
+Airlift& Airlift::operator=(const Airlift& airlift) 
+{
+	Order::operator=(airlift);
+	current = airlift.current;
+	next = airlift.next;
+	return *this;
 }
 
 bool Airlift::validate()
@@ -115,16 +265,40 @@ bool Airlift::validate()
 bool Airlift::execute()
 {
 	if (validate())
+	{
+		cout << "Airlifting " << numOfArmies << " armies from " << current << " to " << next << " territory.\n";
+		executed = true;
 		return true;
+	}
+	return false;
+}
+
+ostream& operator << (std::ostream& o, const Airlift& airlift)
+{
+	return o << "An airlift order has been issued.";
+}
+
+Negotiate::Negotiate() : Order()
+{
 }
 
 Negotiate::Negotiate(Player* current, Player* enemy) : Order(current)
 {
 	this->enemy = enemy;
-
-	/*std::ostream& operator << (std::ostream & o, const Negotiate & n)
-		return o << "Player " << n.current << " negotiates with " << n.enemy << endl;*/
 }
+
+Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate) 
+{
+	this->enemy = negotiate.enemy;
+}
+
+Negotiate& Negotiate::operator=(const Negotiate& negotiate) 
+{
+	Order::operator=(negotiate);
+	this->enemy = negotiate.enemy;
+	return *this;
+}
+
 
 bool Negotiate::validate()
 {
@@ -135,24 +309,48 @@ bool Negotiate::validate()
 bool Negotiate::execute()
 {
 	if (validate())
+	{
+		cout << "Negotiating.. No attack is being performed this turn.\n";
+		executed = true;
 		return true;
+	}
+	return false;
 }
 
+ostream& operator << (std::ostream& o, const Negotiate& negotiate)
+{
+	return o << "A negotiate order has been issued.";
+}
 
+OrdersList::OrdersList(const OrdersList& oL) 
+{
+	ordersList = oL.ordersList;
+}
 
+OrdersList& OrdersList::operator=(const OrdersList& oL) 
+{
+	ordersList = oL.ordersList;
+	return *this;
+}
 
+void OrdersList::add(Order* order) 
+{ 
+	ordersList.push_back(order); 
+}
 
+void OrdersList::remove(Order* order)
+{
+	for (vector<Order*>::iterator it = ordersList.begin(); it != ordersList.end(); it++)
+		if (*order == *(*it))
+			ordersList.erase(it);
+}
 
+void OrdersList::move(int oldPosition, int newPosition)
+{
+	Order* toBeMoved = ordersList[oldPosition];
 
+	remove(ordersList[oldPosition]);
 
-
-
-
-
-
-
-
-
-
-
+	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
+}
 
