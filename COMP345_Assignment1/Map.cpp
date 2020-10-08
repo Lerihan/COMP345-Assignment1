@@ -23,9 +23,9 @@ bool Map::isAdjacent(int id1, int id2)
 	{
 		if (t1->listOfAdjTerritories.at(i)->index == t2->index)
 			return true;
-		else
-			return false;
 	}
+
+	return false;
 }
 
 
@@ -121,6 +121,24 @@ void Map::printAdjTerritory(Territory* t)
 		cout << t->listOfAdjTerritories.at(i)->name << " -> ";
 	}
 	cout << endl << endl;
+}
+
+bool Map::validate()
+{
+	bool b = true;
+
+	//check if map is a connected graph (every territory has adjacent territories)
+	//check if continents are connected subgraphs (check if continents have adj cont ???)
+	//check if each territory has one continent
+	for (int i = 0; i < listOfTerritories.size(); i++)
+	{
+		if (listOfTerritories[i]->listOfAdjTerritories.empty() && listOfTerritories[i]->continentIndex != NULL)
+		{
+			b = false;
+		}
+	}
+
+	return b;
 }
 
 
@@ -246,6 +264,7 @@ Territory* Map::getTerritory(int id)
 // Territory Default Constructor
 Territory::Territory()
 {
+	this->owner = NULL;
 }
 
 Territory::Territory(int id, string n)
@@ -253,6 +272,8 @@ Territory::Territory(int id, string n)
 	index = id;
 	name = n;
 	numberOfArmies = 0;
+
+	this->owner = NULL;
 }
 
 // Territory Copy Constructor
@@ -262,6 +283,8 @@ Territory::Territory(const Territory &t)
 	name = t.name;
 	listOfAdjTerritories = t.listOfAdjTerritories;
 	numberOfArmies = t.numberOfArmies;
+
+	this->owner = t.owner;
 }
 
 // Territory Assignment Operator
@@ -300,6 +323,15 @@ Territory* Continent::getTerritory(int id)
 	return NULL;
 }
 
+Player* Territory::getOwner()
+{
+	return this->owner;
+}
+
+void Territory::setOwner(Player* p)
+{
+	this->owner = p;
+}
 
 
 

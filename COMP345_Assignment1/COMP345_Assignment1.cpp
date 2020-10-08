@@ -4,9 +4,22 @@
 #include <iostream>
 #include <string>
 #include "MapLoader.h"
+#include "Map.h"
+#include "Player.h"
+#include "Cards.h"
+#include "Order.h"
 
 int main()
 {
+
+	Player* p = new Player("Michael"); // create player
+	Territory* t = new Territory(1, "Territory 1"); // create Territory
+	
+	p->addTerritory(t); // add territory to player's data member which also sets the player as the territory's owner member
+
+	cout << *(*t).getOwner() << endl; // this should print the player p that was created above
+
+	/*
 
 	//Map
 	//TODO:
@@ -95,9 +108,10 @@ int main()
 
 	std::cout << endl;
 
-	cout << map->isAdjacent(1, 9) << endl;
-	
+	cout << map->isAdjacent(1, 2) << endl;
+	cout << map->validate() << endl;
 
+	*/
 
 	return 0;
 }
