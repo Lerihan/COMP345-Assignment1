@@ -24,6 +24,7 @@ Player::Player()
 	//this->territories = std::vector<Territory*>;
 }
 
+// Constructor assigns input string to be Player name
 Player::Player(string name)
 {
 	this->name = name;

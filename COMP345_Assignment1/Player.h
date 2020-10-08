@@ -45,9 +45,9 @@ public:
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 	vector<Territory*> getTerritories();
-	void addTerritory(Territory* r);
+	void addTerritory(Territory* r); // add input Territory pointer to data member vector
 	Order* getNextOrder(); // returns next order to be executed (first order in attribute vector)
-	void issueOrder();
+	void issueOrder(); // for now just adds default Deploy order
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 
