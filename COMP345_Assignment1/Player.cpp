@@ -114,6 +114,8 @@ void Player::issueOrder()
 {
 	Deploy* d = new Deploy();
 	this->orders.push_back(d); // add pointer to new order to end of order list
+
+	//d.setPlayer(this);
 }
 
 // = operator, performs deep copy.
@@ -169,7 +171,18 @@ ostream& operator <<(ostream& strm, Player& player)
 		s += name;
 		s += ", ";
 	}
-	s += "\b \b.";
+	s += "\b\b.";
+
 	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	return strm << "Player " << player.name << "\nNumber of orders: " << player.orders.size() << "\nTerritories: " << s << endl;
+	return (strm << "Player " << player.name << "\nCards: " << player.orders.size() << "\nTerritories: " << s << endl);
+}
+
+bool operator ==(const Player& p1, const Player& p2)
+{
+	return (p1.name == p2.name);
+}
+
+bool operator !=(const Player& p1, const Player& p2)
+{
+	return !(p1 == p2);
 }
