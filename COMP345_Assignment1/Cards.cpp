@@ -14,12 +14,14 @@ Cards::Cards() {
 
 //copy constructor
 Cards::Cards(Cards& c) {
+	//copies cards from a different card set
 	for (int i = 0; i < (sizeof(c.cardsAvailable) / sizeof(c.cardsAvailable[0])) - 1; i++) {
 		cardsAvailable[i] = c.cardsAvailable[i];
 	}
 }
 
 Cards::Cards(char* newCards[5]) {
+	//creates a new assortment of cards from a specific list
 	for (int i = 0; i < (sizeof(newCards) / sizeof(newCards[0])) - 1; i++) {
 		cardsAvailable[i] = newCards[i];
 	}
@@ -45,6 +47,7 @@ Hand::Hand() = default;
 
 //copy constructor
 Hand::Hand(Hand& player) {
+	//copies hand of a  player
 	this->player = player.player;
 	for (int i = 0; i < (sizeof(player.cardsInHand) / sizeof(player.cardsInHand[0])) - 1; i++) {
 		cardsInHand[i] = player.cardsInHand[i];
@@ -52,6 +55,7 @@ Hand::Hand(Hand& player) {
 }
 
 Hand::Hand(Player* playerName, char* playersCard[5]){
+	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	for (int i = 0; i < (sizeof(playersCard) / sizeof(playersCard[0])) - 1; i++) {
 		cardsInHand[i] = playersCard[i];
@@ -61,6 +65,9 @@ Hand::Hand(Player* playerName, char* playersCard[5]){
 //assignment constructor
 Hand& Hand::operator = (const Hand& h) {
 	player = h.player;
+	for (int i = 0; i < (sizeof(h.cardsInHand) / sizeof(h.cardsInHand[0])) - 1; i++) {
+		cardsInHand[i] = h.cardsInHand[i];
+	}
 	return *this;
 }
 
@@ -72,26 +79,31 @@ istream& operator << (istream& in, const Hand& h) {
 	return in;
 }
 
-void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
+void Hand::play(char* cardToPlay, Deck& d, Player& p) {
 	int i;
-	int sizeOfHand = (sizeof(h.cardsInHand) / sizeof(h.cardsInHand[0]));
+	//getting player's hand
+	Hand* h = p.getHand();
+	//creating int values for the current size of player's and deck's hand
+	int sizeOfHand = (sizeof(h->cardsInHand) / sizeof(h->cardsInHand[0]));
 	int sizeOfDeck = (sizeof(d.cardsInDeck) / sizeof(d.cardsInDeck[0]));
+	//creating char values to call on the card within the cards available by index, instead of by string or etc.
 	char *bombCard = cardsAvailable[0];
 	char* diplomacyCard = cardsAvailable[1];
 	char* blockCard = cardsAvailable[2];
 	char* reinforcementCard = cardsAvailable[3];
 	char* airliftCard = cardsAvailable[4];
 	//implement function for the cards played
+	//checks desired card to be played, creates a new order in the player's orderlist & "plays" the card
 	if (*cardToPlay == *bombCard){
 		//Bomb
 		//create new order in orderlist
 		//create new bomb order
 		Bomb* bombCard;
-		OrdersList::add(bombCard);
+		(p.getOrders())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//searching for the card in the player's hand.
 		for (i = 0; i < sizeOfHand - 1; i++) {
-			char* cardSelection = h.cardsInHand[i];
+			char* cardSelection = h->cardsInHand[i];
 			if (*cardSelection == *cardToPlay)
 				break;
 		}
@@ -99,20 +111,21 @@ void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
 		if (i < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int j = i; j < sizeOfHand; j++) {
-				h.cardsInHand[j] = h.cardsInHand[j + 1];
+				h->cardsInHand[j] = h->cardsInHand[j + 1];
 			}
 			//adding the card into the deck
-			d.cardsInDeck[sizeOfDeck - 1] = h.cardsInHand[i];
+			d.cardsInDeck[sizeOfDeck - 1] = h->cardsInHand[i];
 		}
+		cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
 	}
 	else if (*cardToPlay == *bombCard) {
 		//Diplomacy
 		Negotiate* negotiateCard;
-		OrdersList::add(negotiateCard);
+		(p.getOrders())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//searching for the card in the player's hand.
 		for (i = 0; i < sizeOfHand - 1; i++) {
-			char* cardSelection = h.cardsInHand[i];
+			char* cardSelection = h->cardsInHand[i];
 			if (*cardSelection == *cardToPlay)
 				break;
 		}
@@ -120,20 +133,21 @@ void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
 		if (i < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int j = i; j < sizeOfHand; j++) {
-				h.cardsInHand[j] = h.cardsInHand[j + 1];
+				h->cardsInHand[j] = h->cardsInHand[j + 1];
 			}
 			//adding the card into the deck
-			d.cardsInDeck[sizeOfDeck - 1] = h.cardsInHand[i];
+			d.cardsInDeck[sizeOfDeck - 1] = h->cardsInHand[i];
 		}
+		cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
 	}
 	else if (*cardToPlay == *blockCard) {
 		//Blockade
 		Blockade* blockCard;
-		OrdersList::add(blockCard);
+		(p.getOrders())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//searching for the card in the player's hand.
 		for (i = 0; i < sizeOfHand - 1; i++) {
-			char* cardSelection = h.cardsInHand[i];
+			char* cardSelection = h->cardsInHand[i];
 			if (*cardSelection == *cardToPlay)
 				break;
 		}
@@ -141,20 +155,21 @@ void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
 		if (i < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int j = i; j < sizeOfHand; j++) {
-				h.cardsInHand[j] = h.cardsInHand[j + 1];
+				h->cardsInHand[j] = h->cardsInHand[j + 1];
 			}
 			//adding the card into the deck
-			d.cardsInDeck[sizeOfDeck - 1] = h.cardsInHand[i];
+			d.cardsInDeck[sizeOfDeck - 1] = h->cardsInHand[i];
 		}
+		cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
 	}
 	else if (*cardToPlay == *reinforcementCard) {
 		//Reinforcement
 		Deploy* reinforcementCard;
-		OrdersList::add(reinforcementCard);
+		(p.getOrders())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//searching for the card in the player's hand.
 		for (i = 0; i < sizeOfHand - 1; i++) {
-			char* cardSelection = h.cardsInHand[i];
+			char* cardSelection = h->cardsInHand[i];
 			if (*cardSelection == *cardToPlay)
 				break;
 		}
@@ -162,20 +177,21 @@ void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
 		if (i < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int j = i; j < sizeOfHand; j++) {
-				h.cardsInHand[j] = h.cardsInHand[j + 1];
+				h->cardsInHand[j] = h->cardsInHand[j + 1];
 			}
 			//adding the card into the deck
-			d.cardsInDeck[sizeOfDeck - 1] = h.cardsInHand[i];
+			d.cardsInDeck[sizeOfDeck - 1] = h->cardsInHand[i];
 		}
+		cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
 	}
 	else if (*cardToPlay == *airliftCard) {
 		//Airlift
 		Airlift* airliftCard;
-		OrdersList::add(airliftCard);
+		(p.getOrders())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//searching for the card in the player's hand.
 		for (i = 0; i < sizeOfHand - 1; i++) {
-			char* cardSelection = h.cardsInHand[i];
+			char* cardSelection = h->cardsInHand[i];
 			if (*cardSelection == *cardToPlay)
 				break;
 		}
@@ -183,13 +199,15 @@ void Hand::play(char* cardToPlay, Deck& d, Hand& h) {
 		if (i < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int j = i; j < sizeOfHand; j++) {
-				h.cardsInHand[j] = h.cardsInHand[j + 1];
+				h->cardsInHand[j] = h->cardsInHand[j + 1];
 			}
 			//adding the card into the deck
-			d.cardsInDeck[sizeOfDeck - 1] = h.cardsInHand[i];
+			d.cardsInDeck[sizeOfDeck - 1] = h->cardsInHand[i];
 		}
+		cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
 	}
-	cout << "Player has played " << *cardToPlay << "from their hand.\n" << *cardToPlay << " has been added to the deck." << endl;
+	else 
+	cout << "Player chose a card that they do not possess." << endl;
 }
 	
 
@@ -216,12 +234,14 @@ Deck::Deck(){
 
 //copy constructor
 Deck::Deck(Deck& deck) {
+	//copies the cards of another deck
 	for (int i = 0; i < (sizeof(deck.cardsInDeck) / sizeof(deck.cardsInDeck[0])) - 1; i++) {
 		cardsInDeck[i] = deck.cardsInDeck[i];
 	}
 }
 
-Deck::Deck(char* newCardsInDeck[52]) {
+Deck::Deck(char* newCardsInDeck[55]) {
+	//creates a deck of 55 cards, by taking another card set
 	for (int i = 0; i < (sizeof(newCardsInDeck) / sizeof(newCardsInDeck[0])) - 1; i++) {
 		cardsInDeck[i] = newCardsInDeck[i];
 	}
@@ -241,14 +261,18 @@ istream& operator << (istream& in, const Deck& d) {
 	return in;
 }
 
-void  Deck::draw(Deck& d, Hand& h) {	
-	//finds the randomCard to be drawn
+void  Deck::draw(Player& p) {	
 	int i;
-	int sizeOfDeck = (sizeof(d.cardsInDeck) / sizeof(d.cardsInDeck[0]));
-	int sizeOfHand = (sizeof(h.cardsInHand) / sizeof(h.cardsInHand[0]));
-	int randomCard = rand() % sizeOfDeck + 0; //random number from 0 to size of current deck;
+	//getting player's hand
+	Hand* h = p.getHand();
+	//creating int values for the current size of player's and deck's hand
+	int sizeOfDeck = (sizeof(this->cardsInDeck) / sizeof(this->cardsInDeck[0]));
+	int sizeOfHand = (sizeof(h->cardsInHand) / sizeof(h->cardsInHand[0]));
+	//random number from 0 to size of current deck;
+	int randomCard = rand() % sizeOfDeck + 0; 
+	//finds the randomCard to be drawn
 	for (i = 0; i < sizeOfDeck - 1; i++) {
-		if (d.cardsInDeck[i] == d.cardsInDeck[randomCard])
+		if (this->cardsInDeck[i] == this->cardsInDeck[randomCard])
 			break;
 	}
 	//want to add the randomCard into the Hand, only if the hand has space. otherwise, remove random card from hand to add new one
@@ -256,27 +280,28 @@ void  Deck::draw(Deck& d, Hand& h) {
 		int x;
 		int randomCardToRemove = rand() % sizeOfHand + 0;
 		for (x = 0; x < sizeOfHand - 1; x++) {
-			if (h.cardsInHand[x] == h.cardsInHand[randomCardToRemove])
+			if (h->cardsInHand[x] == h->cardsInHand[randomCardToRemove])
 			break;
 		}
 		if (x < sizeOfHand) {
 			sizeOfHand = sizeOfHand - 1;
 			for (int y = x; y < sizeOfHand; y++) {
-				h.cardsInHand[y] = h.cardsInHand[y + 1];
+				h->cardsInHand[y] = h->cardsInHand[y + 1];
 			}			
 		}
-		h.cardsInHand[sizeOfHand] = d.cardsInDeck[randomCard];
+		h->cardsInHand[sizeOfHand] = this->cardsInDeck[randomCard];
 		sizeOfHand++;
 	}
 	else {
-		h.cardsInHand[sizeOfHand] = d.cardsInDeck[randomCard];
+		//simply add the card to the end of the player's hand
+		h->cardsInHand[sizeOfHand] = this->cardsInDeck[randomCard];
 		sizeOfHand++;
 	}
 	//Removes the randomCard from the deck & reduces the deck's size
 	if (i < sizeOfDeck) {
 		sizeOfDeck = sizeOfDeck - 1;
 		for (int j = i; j < sizeOfDeck; j++){
-			d.cardsInDeck[j] = d.cardsInDeck[j + 1];
+			this->cardsInDeck[j] = this->cardsInDeck[j + 1];
 		}
 	}
 	cout << "Player has added a card into their hand" << endl;
