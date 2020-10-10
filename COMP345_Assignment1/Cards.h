@@ -43,7 +43,7 @@ public:
 	Hand& operator = (const Hand &h);
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
-	static void play(char* cardToPlay, Deck& d, Hand& h);
+	static void play(char* cardToPlay, Deck& d, Player& p);
 };
 
 class Deck : public Cards{
@@ -58,5 +58,5 @@ public:
 	Deck& operator = (const Deck &d);
 	friend ostream& operator << (ostream& out, const Deck& d);
 	friend istream& operator << (istream& in, const Deck& d);
-	static void draw(Deck& d, Hand& h);
+	void draw(Player& p);
 };
