@@ -2,7 +2,7 @@
 //  
 //  COMP 345
 //  Assignment 1, Part 3
-//  Due Date: October 9, 2020
+//  Due Date: October 12, 2020
 //  Created by Michael Totarella on 2020-09-23.
 //
 
@@ -20,6 +20,7 @@
 Player::Player()
 {
 	this->name = "NoName";
+	this->hand = new Hand();
 	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
 	//this->hand = std::vector<Cards*>;
 	//this->orders = std::vector<Order*>;
@@ -30,6 +31,7 @@ Player::Player()
 Player::Player(string name)
 {
 	this->name = name;
+	this->hand = new Hand();
 }
 
 // Copy constructor, creates deep copy of each attribute.
@@ -37,15 +39,8 @@ Player::Player(string name)
 Player::Player(Player& p)
 {
 	// copy orders
-	for (int i = 0; i < p.orders.size(); i++)
-	{
-		this->orders.push_back(p.orders.at(i));
-	}
-	// copy hand of cards
-	for (int i = 0; i < p.hand.size(); i++)
-	{
-		this->hand.push_back(p.hand.at(i));
-	}
+	this->orders = p.orders; // assumes OrderList = operator is correctly implemented
+
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
 	{
@@ -53,6 +48,7 @@ Player::Player(Player& p)
 	}
 
 	this->name = p.name;
+	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 
 }
 
@@ -70,6 +66,18 @@ vector<Territory*> Player::getTerritories()
 	vector<Territory*> t = this->territories;
 	
 	return t;
+}
+
+// Returns the Hand object of this Player
+Hand* Player::getHand()
+{
+	return this->hand;
+}
+
+// Returns the OrdersList of this Player
+OrdersList* Player::getOrders()
+{
+	return this->orders;
 }
 
 // Adds the input Territory pointer this Player's Territories vector.
@@ -113,8 +121,8 @@ vector<Territory*> Player::toDefend()
 void Player::issueOrder()
 {
 	Deploy* d = new Deploy();
-	this->orders.push_back(d); // add pointer to new order to end of order list
-
+	this->getOrders()->add(d);
+	
 	//d.setPlayer(this);
 }
 
@@ -141,20 +149,15 @@ Player& Player::operator =(const Player& player)
 	*/
 
 	// copy orders
-	for (int i = 0; i < player.orders.size(); i++)
-	{
-		this->orders.push_back(player.orders.at(i));
-	}
-	// copy hand of cards
-	for (int i = 0; i < player.hand.size(); i++)
-	{
-		this->hand.push_back(player.hand.at(i));
-	}
+	this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
+
 	// copy territories
 	for (int i = 0; i < player.territories.size(); i++)
 	{
 		this->territories.push_back(player.territories.at(i));
 	}
+
+	this->hand = player.hand; // assumes Hand assignment operator is correctly implemented
 
 	return *this;
 }
@@ -174,7 +177,7 @@ ostream& operator <<(ostream& strm, Player& player)
 	s += "\b\b.";
 
 	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	return (strm << "Player " << player.name << "\nCards: " << player.orders.size() << "\nTerritories: " << s << endl);
+	//return (strm << "Player " << player.name << "\nCards: " << player.orders.size() << "\nTerritories: " << s << endl);
 }
 
 bool operator ==(const Player& p1, const Player& p2)

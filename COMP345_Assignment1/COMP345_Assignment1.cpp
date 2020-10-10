@@ -9,18 +9,19 @@
 #include "Cards.h"
 #include "Order.h"
 
+//#include "PlayerDriver.cpp" // I know I'm not supposed to import a cpp file
+
 int main()
 {
 
-	/*
-	Player* p = new Player("Michael"); // create player
-	Territory* t = new Territory(1, "Territory 1"); // create Territory
-	//Deck* d = new Deck();
-	
-	p->addTerritory(t); // add territory to player's data member which also sets the player as the territory's owner member
-	p->issueOrder();
-	cout << *p << endl; // this should print the player p that was created above
-	*/
+	Player* p1 = new Player(); // default constructor
+	Player* p2 = new Player("Michael"); // parameterized constructor
+	Deck d;
+
+	// draw five cards and add them to Player p2's Hand
+	for (int i = 1; i <= 5; i++) {
+		d.draw(d, *(*p2).getHand());
+	}
 
 
 	/*
