@@ -2,10 +2,14 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Player.h"
 #include "Map.h"
 
+using namespace std;
+
 class Territory;
+class Player;
 
 class Order
 {
