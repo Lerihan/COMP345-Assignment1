@@ -22,7 +22,7 @@ Cards::Cards(Cards& c) {
 
 Cards::Cards(char* newCards[5]) {
 	//creates a new assortment of cards from a specific list
-	for (int i = 0; i < (sizeof(newCards) / sizeof(newCards[0])) - 1; i++) {
+	for (int i = 0; i < (*(&cardsAvailable + 1) - cardsAvailable); i++) {
 		cardsAvailable[i] = newCards[i];
 	}
 }
@@ -43,14 +43,15 @@ istream& operator << (istream& in, const Cards& c) {
 
 //HAND
 //default constructor
-Hand::Hand() = default; 
+Hand::Hand() {
+}
 
 //copy constructor
 Hand::Hand(Hand& player) {
 	//copies hand of a  player
 	this->player = player.player;
 	for (int i = 0; i < (player.cardsInHand)->size() - 1; i++) {
-		cardsInHand[i] = player.cardsInHand[i];
+		cardsInHand->at(i) = player.cardsInHand->at(i);
 	}
 }
 
@@ -58,7 +59,7 @@ Hand::Hand(Player* playerName, std::vector<char*> playersCards[]){
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	for (int i = 0; i < (playersCards)->size() - 1; i++) {
-		cardsInHand[i] = playersCards[i];
+		cardsInHand->at(i) = playersCards->at(i);
 	}
 }
 
@@ -66,7 +67,7 @@ Hand::Hand(Player* playerName, std::vector<char*> playersCards[]){
 Hand& Hand::operator = (const Hand& h) {
 	player = h.player;
 	for (int i = 0; i < (h.cardsInHand)->size() - 1; i++) {
-		cardsInHand[i] = h.cardsInHand[i];
+		cardsInHand->at(i) = h.cardsInHand->at(i);
 	}
 	return *this;
 }
@@ -179,14 +180,14 @@ Deck::Deck(){
 Deck::Deck(Deck& deck) {
 	//copies the cards of another deck
 	for (int i = 0; i < deck.cardsInDeck->size() -1; i++) {
-		cardsInDeck[i] = deck.cardsInDeck[i];
+		cardsInDeck->at(i) = deck.cardsInDeck->at(i);
 	}
 }
 
 Deck::Deck(std::vector<char*> newCardsInDeck[]) {
 	//creates a deck of 55 cards, by taking another card set
 	for (int i = 0; i < newCardsInDeck->size() - 1; i++) {
-		cardsInDeck[i] = newCardsInDeck[i];
+		cardsInDeck->at(i) = newCardsInDeck->at(i);
 	}
 }
 
