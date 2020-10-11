@@ -100,7 +100,7 @@ int main()
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
 	std::cout << endl;
-	
+  
 	for (int i = 0; i < map->listOfTerritories.size(); i++)
 	{
 		map->listOfTerritories[i]->printAdjTerritory();
@@ -113,9 +113,15 @@ int main()
 
 	std::cout << endl;
 
-	cout << map->isAdjacent(1, 2) << endl;
-	cout << map->validate() << endl;
+	cout << *map;
+	cout << *map->getContinent(2);
+	cout << *map->getContinent(2)->getTerritory(8);
+	//cout << map->isAdjacent(1, 2) << endl;
+	//cout << map->validate() << endl;
 
+//Todo List:
+// * Fix map constructor (missing something, might give errors to others)
+// * Make Driver!
 	*/
 
 	return 0;

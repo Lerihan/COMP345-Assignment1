@@ -8,7 +8,7 @@ class MapLoader {
 private:
 	string* dominationFileName;
 	Map* finalMap;
-	
+  
 public:
 	MapLoader(); //default constructor
 	MapLoader(MapLoader& map); //copy constructor
@@ -20,4 +20,5 @@ public:
 	Map* GetMap(std::string filePath);
 
 	vector<string> SplitWords(string s);
+	string FirstComponent(string s);
 };
