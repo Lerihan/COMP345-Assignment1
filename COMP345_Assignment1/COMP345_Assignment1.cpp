@@ -18,7 +18,7 @@ int main()
 	Player* p2 = new Player("Michael"); // parameterized constructor
 	Deck d;
 
-	//draw five cards and add them to Player p2's Hand
+	// draw five cards and add them to Player p2's Hand
 	for (int i = 1; i <= 5; i++) {
 		d.draw(d, *(*p2).getHand());
 	}
@@ -100,7 +100,7 @@ int main()
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
 	std::cout << endl;
-
+  
 	for (int i = 0; i < map->listOfTerritories.size(); i++)
 	{
 		map->listOfTerritories[i]->printAdjTerritory();

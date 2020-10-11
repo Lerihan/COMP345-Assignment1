@@ -2,11 +2,9 @@
 //  
 //  COMP 345
 //  Assignment 1, Part 3
-//  Due Date: October 9, 2020
+//  Due Date: October 12, 2020
 //  Created by Michael Totarella on 2020-09-23.
 //
-
-#pragma once
 
 #include <iostream>
 #include <vector>
@@ -16,13 +14,24 @@
 #include "Map.h"
 #include "Cards.h"
 
+//class Territory;
+
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
+	this->name = "NoName";
+	this->hand = new Hand();
 	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
 	//this->hand = std::vector<Cards*>;
 	//this->orders = std::vector<Order*>;
 	//this->territories = std::vector<Territory*>;
+}
+
+// Constructor assigns input string to be Player name
+Player::Player(string name)
+{
+	this->name = name;
+	this->hand = new Hand();
 }
 
 // Copy constructor, creates deep copy of each attribute.
@@ -30,20 +39,16 @@ Player::Player()
 Player::Player(Player& p)
 {
 	// copy orders
-	/*for (int i = 0; i < p.orders.size(); i++)
-	{
-		this->orders.push_back(p.orders.at(i));
-	}*/
-	// copy hand of cards
-	for (int i = 0; i < p.hand.size(); i++)
-	{
-		this->hand.push_back(p.hand.at(i));
-	}
+	this->orders = p.orders; // assumes OrderList = operator is correctly implemented
+
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
 	{
 		this->territories.push_back(p.territories.at(i));
 	}
+
+	this->name = p.name;
+	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 
 }
 
@@ -61,6 +66,26 @@ vector<Territory*> Player::getTerritories()
 	vector<Territory*> t = this->territories;
 	
 	return t;
+}
+
+// Returns the Hand object of this Player
+Hand* Player::getHand()
+{
+	return this->hand;
+}
+
+// Returns the OrdersList of this Player
+OrdersList* Player::getOrders()
+{
+	return this->orders;
+}
+
+// Adds the input Territory pointer this Player's Territories vector.
+void Player::addTerritory(Territory* t)
+{
+	this->territories.push_back(t);
+
+	(*t).setOwner(this); // set the owner of the input Territory to be this Player
 }
 
 // Returns vector of Territories to attack.
@@ -92,9 +117,13 @@ vector<Territory*> Player::toDefend()
 }
 
 // Adds argument Order to the Player's Order vector attribute.
-void Player::issueOrder(string orderType)
+// for now just adds a default Deploy order
+void Player::issueOrder()
 {
-	//this->orders.push_back(); // add pointer to new order to end of order list
+	Deploy* d = new Deploy();
+	this->getOrders()->add(d);
+	
+	//d.setPlayer(this);
 }
 
 // = operator, performs deep copy.
@@ -120,20 +149,15 @@ Player& Player::operator =(const Player& player)
 	*/
 
 	// copy orders
-	/*for (int i = 0; i < player.orders.size(); i++)
-	{
-		this->orders.push_back(player.orders.at(i));
-	}*/
-	// copy hand of cards
-	for (int i = 0; i < player.hand.size(); i++)
-	{
-		this->hand.push_back(player.hand.at(i));
-	}
+	this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
+
 	// copy territories
 	for (int i = 0; i < player.territories.size(); i++)
 	{
 		this->territories.push_back(player.territories.at(i));
 	}
+
+	this->hand = player.hand; // assumes Hand assignment operator is correctly implemented
 
 	return *this;
 }
@@ -150,7 +174,18 @@ ostream& operator <<(ostream& strm, Player& player)
 		s += name;
 		s += ", ";
 	}
-	s += "\b \b.";
-	//return strm << "Player " << player.playerNumber << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	return strm << "Player " << player.playerNumber << "\nNext order: " << "\nTerritories: " << s << endl;
+	s += "\b\b.";
+
+	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
+	//return (strm << "Player " << player.name << "\nCards: " << player.orders.size() << "\nTerritories: " << s << endl);
+}
+
+bool operator ==(const Player& p1, const Player& p2)
+{
+	return (p1.name == p2.name);
+}
+
+bool operator !=(const Player& p1, const Player& p2)
+{
+	return !(p1 == p2);
 }

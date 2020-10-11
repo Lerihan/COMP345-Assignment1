@@ -7,42 +7,53 @@
 
 #include <iostream>
 #include <string>
-using namespace std;
+#include "Player.h"
+#include "Order.h"
 
 
 class Player;
 
-class Cards {
+class Deck;
+
+class Cards {	
 protected:
-	char *cardsAvailable[5];
+	static const char *cardsAvailable[5];
 public:
 	Cards();
 	Cards(Cards& c);
 	Cards(char* newCards[5]);
-	//must be able to change array size somehow
+	//we are using 5 different types of cards
+	Cards& operator = (const Cards &c);
+	friend ostream& operator << (ostream& out, const Cards& c);
+	friend istream& operator << (istream& in, const Cards& c);
 };
 
-class Hand : public Cards {
-	friend class Deck;
+class Hand : public Cards{
+friend class Deck;
 protected:
 	Player* player;
-	string cardsInHand[5];
-	//must be able to change array size somehowpublic:
+	std::vector<char*> cardsInHand[];
 public:
 	Hand();
 	Hand(Hand& player);
-	Hand(Player* player, char* cardsInHand[5]);
-	void play(Hand& h, Deck& d);
+	Hand(Player* playerName, std::vector<char*> playersCards[]);
+	Hand& operator = (const Hand &h);
+	std::vector<char*> getCardsInHand();
+	friend ostream& operator << (ostream& out, const Hand& h);
+	friend istream& operator << (istream& in, const Hand& h);
+	static void play(char* cardToPlay, Deck& d, Player& p);
 };
 
-class Deck : public Cards {
-	friend class Hand;
+class Deck : public Cards{
+friend class Hand;
 protected:
-	char* cardsInDeck[52];
-	//must be able to change array size somehow
+	std::vector<char*> cardsInDeck[];
 public:
 	Deck();
 	Deck(Deck& d);
-	Deck(char* cardsInDeck[52]);
-	void draw(Deck& d, Hand& h);
+	Deck(std::vector<char*> cardsInDeck[]);
+	Deck& operator = (const Deck &d);
+	friend ostream& operator << (ostream& out, const Deck& d);
+	friend istream& operator << (istream& in, const Deck& d);
+	void draw(Player& p);
 };

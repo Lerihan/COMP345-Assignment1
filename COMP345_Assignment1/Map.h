@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
+using namespace std; 
 
 /**
 * Melina Phan
@@ -30,7 +30,6 @@ public:
 	void setOwner(Player* p); // set the owner of this Territory
 
 	friend ostream & operator << (ostream &out, const Territory &c);
-
 
 	int index;
 	string name;

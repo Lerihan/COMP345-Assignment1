@@ -357,7 +357,6 @@ Territory::Territory()
 	name = "";
 	continentIndex = 0;
 	numberOfArmies = 0;
-
 	this->owner = NULL;
 }
 
