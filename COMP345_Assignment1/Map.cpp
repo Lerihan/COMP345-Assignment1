@@ -2,18 +2,27 @@
 #include <string>
 
 /*
-* TODO: structure better......
+* Function that connects continent 2 to continent 1 (adjacency) by adding it to a listOfAdjContinents vector
+* c1 is first continent, c2 is second continent
 */
 void Map::addAdjContinent(Continent * c1, Continent * c2)
 {
 	c1->listOfAdjContinents.push_back(c2);
 }
 
+/*
+* Function that connects territory 2 to territory 1 (adjacency) by adding it to a listOfAdjTerritories vector
+* t1 is first territory, t2 is second territory
+*/
 void Map::addAdjTerritory(Territory * t1, Territory * t2)
 {
 	t1->listOfAdjTerritories.push_back(t2);
 }
 
+/*
+* Function that checks if 2 territories are adjacent
+* id1 is id of first territory, id2 is id of second territory
+*/
 bool Map::isAdjacent(int id1, int id2)
 {
 	Territory* t1 = getTerritory(id1);
@@ -37,61 +46,65 @@ bool Map::isAdjacent(int id1, int id2)
 // Map Default Constructor
 Map::Map()
 {
+	name = "";
 }
 
+/*
+* Constructor of Map
+* n is the name of Map
+*/
 Map::Map(string n)
 {
 	name = n;
 }
 
-// Map Copy Constructor
+/*
+*  Copy Constructor of Map
+*/
 Map::Map(const Map &m)
 {
 	name = m.name;
 	listOfContinents = m.listOfContinents;
 }
 
-// Map Assignment Operator
+/*
+* Assignment Operator override of map
+*/
 Map& Map::operator = (const Map &m)
 {
 	name = m.name;
 	listOfContinents = m.listOfContinents;
+	listOfTerritories = m.listOfTerritories;
 	return *this;
 }
 
-//Map::~Map()
-//{
-//	delete this;
-//}
-
-ostream& operator << (ostream &out, const Map &m)
+/*
+* Destructor
+*/
+Map::~Map()
 {
-	out << m.name << endl;
-
-	return out;
 }
 
-istream & operator >> (istream &in, Map &m)
-{
-	/*cout << "Enter Real Part ";
-	in >> c.real;
-	cout << "Enter Imaginary Part ";
-	in >> c.imag;*/
-	return in;
-}
 
+/*
+* Add a continent to listOfContinents vector
+*/
 void Map::addContinent(Continent * c)
 {
 	listOfContinents.push_back(c);
 }
 
+/*
+* Add a territory to listOfTerritories vector
+*/
 void Map::addTerritory(Territory * t)
 {
 	listOfTerritories.push_back(t);
 }
 
-
-
+/*
+* Print all continents of map
+*/
 void Map::printContinents()
 {
 	cout << "List of Continents of Map:" << endl;
@@ -103,6 +116,9 @@ void Map::printContinents()
 }
 
 //Might delete these 2
+/*
+* Prints all adjacent continents of given continent (c param)
+*/
 void Map::printAdjContinents(Continent* c)
 {
 	cout << "Adjacent Continents of Continent '" << c->name << "'" << endl;
@@ -113,6 +129,9 @@ void Map::printAdjContinents(Continent* c)
 	cout << endl << endl;
 }
 
+/*
+* Prints all adjacent territories of given territory (t param)
+*/
 void Map::printAdjTerritory(Territory* t)
 {
 	cout << "Adjacent Territories of Territory '" << t->name << "'" << endl;
@@ -123,12 +142,16 @@ void Map::printAdjTerritory(Territory* t)
 	cout << endl << endl;
 }
 
+/*
+* Function that validates a map
+* Checks if connected graph, continents are connected subgraphs, and that each territory has only one continent !
+*/
 bool Map::validate()
 {
 	bool b = true;
 
 	//check if map is a connected graph (every territory has adjacent territories)
-	//check if continents are connected subgraphs (check if continents have adj cont ???)
+	//check if continents are connected subgraphs (check if continents have adj cont ???) *** this is not implemented but i dont think theres a need for it
 	//check if each territory has one continent
 	for (int i = 0; i < listOfTerritories.size(); i++)
 	{
@@ -141,8 +164,55 @@ bool Map::validate()
 	return b;
 }
 
+/*
+* Stream override
+* cout << MapOBJ; will print the following
+*/
+ostream& operator << (ostream &out, const Map &m)
+{
+	out << endl;
+	out << "--------------------------------------" << endl;
+	cout << endl;
+	out << "The map name is '" << m.name << "'" << endl;
+	out << endl;
 
+	out << "List of Continents of '" << m.name << "' and their Territories (id, name)" << endl;
+	out << endl;
+	for (int i = 0; i < m.listOfContinents.size(); i++)
+	{
+		out << m.listOfContinents.at(i)->index << " " << m.listOfContinents.at(i)->name << endl;
 
+		out << "List of Territories of '" << m.listOfContinents.at(i)->name << "'" << endl;
+		for (int j = 0; j < m.listOfContinents.at(i)->listOfTerritories.size(); j++)
+		{
+			out << "   " << j + 1 << ". " << m.listOfContinents.at(i)->listOfTerritories.at(j)->index << " " <<
+				m.listOfContinents.at(i)->listOfTerritories.at(j)->name << endl;
+		}
+		out << endl;
+	}
+
+	out << "--------------------------------------" << endl;
+	out << endl;
+
+	return out;
+}
+
+//istream & operator >> (istream &in, Map &m)
+//{
+//	string input;
+//	cout << "--------------------------------------" << endl;
+//	cout << "Map Creation ! Enter 'e' to end." << endl;
+//	cout << endl;
+//
+//	cout << "Enter map name: ";
+//	in >> m.name;
+//
+//	cout << "Enter continent name (make sure you have created a continent first!):";
+//	in >> input;
+//	
+//
+//	return in;
+//}
 
 
 /*
@@ -150,12 +220,18 @@ bool Map::validate()
 */
 
 // Continent Default Constructor
-
 Continent::Continent()
 {
+	index = 0;
+	name = "";
+	int armyvalue = 0;
 }
 
 //TODO: Add player
+/*
+* Constructor of Continent
+* id is index, n is name, av is armyvalue
+*/
 Continent::Continent(int id, string n, int av)
 {
 	index = id;
@@ -185,32 +261,48 @@ Continent& Continent::operator = (const Continent &c)
 	return *this;
 }
 
-//Continent::~Continent()
-//{
-//	delete this;
-//}
+/*
+* Destructor
+*/
+Continent::~Continent()
+{
+	delete this;
+}
 
+//Stream override
+//cout << ContinentOBJ; will print the following
 ostream& operator << (ostream &out, const Continent &c)
 {
-	//out << c.name << endl;
+	out << endl;
+	out << "--------------------------------------" << endl;
+	cout << endl;
+	out << "The continent name is '" << c.name << "'" << endl;
+	out << endl;
+
+	out << "List of Territories of '" << c.name << "' (id, name)" << endl;
+	out << endl;
+	for (int i = 0; i < c.listOfTerritories.size(); i++)
+	{
+		out << i + 1 << ". " << c.listOfTerritories.at(i)->index << " " << c.listOfTerritories.at(i)->name << endl;
+	}
+	out << endl;
+	out << "--------------------------------------" << endl;
+	out << endl;
 
 	return out;
 }
 
-istream & operator >> (istream &in, Continent &c)
-{
-	/*cout << "Enter Real Part ";
-	in >> c.real;
-	cout << "Enter Imaginary Part ";
-	in >> c.imag;*/
-	return in;
-}
-
+/*
+* Adds a territory (t) to a continent
+*/
 void Continent::addTerritory(Territory * t)
 {
 	listOfTerritories.push_back(t);
 }
 
+/*
+* Prints all territories of a continent
+*/
 void Continent::printTerritories()
 {
 	cout << "List of Territories of Continent '" << this->name << "'" << endl;
@@ -221,6 +313,9 @@ void Continent::printTerritories()
 	cout << endl;
 }
 
+/*
+* Prints all adjacent continents of continent obj.
+*/
 void Continent::printAdjContinents()
 {
 	cout << "Adjacent Continents of '" << this->name << "'" << endl;
@@ -231,29 +326,23 @@ void Continent::printAdjContinents()
 	cout << endl << endl;
 }
 
+/*
+* Returns a continent object
+* id is index of that continent (assigned in maploader from file) and NOT the vector id
+*/
 Continent* Map::getContinent(int id)
 {
 	return listOfContinents[id - 1]; //indices start at 1
 }
 
+/*
+* Returns a territory object
+* id is index of that territory (assigned in maploader from file) and NOT the vector id
+*/
 Territory* Map::getTerritory(int id)
 {
 	return listOfTerritories[id - 1];
-	/*for (int i = 0; i < listOfContinents.size(); i++)
-	{
-		Continent* c = listOfContinents[i];
-		cout << "checking territory #" << c->listOfTerritories.size() << endl;
-		for (int j = 0; j < c->listOfTerritories.size(); j++)
-		{
-			if(c->getTerritory(id) != NULL)
-				return c->getTerritory(id);
-		}
-	}
-	return NULL;*/
 }
-
-
-
 
 
 
@@ -264,13 +353,24 @@ Territory* Map::getTerritory(int id)
 // Territory Default Constructor
 Territory::Territory()
 {
+	index = 0;
+	name = "";
+	continentIndex = 0;
+	numberOfArmies = 0;
+
+	this->owner = NULL;
 }
 
+// Constructor for Territory
+// id is index, n is name
 Territory::Territory(int id, string n)
 {
 	index = id;
 	name = n;
+	continentIndex = 0;
 	numberOfArmies = 0;
+
+	this->owner = NULL;
 }
 
 // Territory Copy Constructor
@@ -279,7 +379,10 @@ Territory::Territory(const Territory &t)
 	index = t.index;
 	name = t.name;
 	listOfAdjTerritories = t.listOfAdjTerritories;
+	continentIndex = t.continentIndex;
 	numberOfArmies = t.numberOfArmies;
+
+	this->owner = t.owner;
 }
 
 // Territory Assignment Operator
@@ -292,11 +395,15 @@ Territory& Territory::operator = (const Territory &t)
 	return *this;
 }
 
-//Territory::~Territory()
-//{
-//	delete this;
-//}
+// Destructor
+Territory::~Territory()
+{
+	delete this;
+}
 
+/*
+* Prints all adjacent territories of current territory obj
+*/
 void Territory::printAdjTerritory()
 {
 	cout << "Adjacent Territories of '" << this->name << "'" << endl;
@@ -307,6 +414,10 @@ void Territory::printAdjTerritory()
 	cout << endl << endl;
 }
 
+/*
+* Get territory by id
+* Id is the index of that territory and NOT the id of the vector
+*/
 Territory* Continent::getTerritory(int id)
 {
 	for (int i = 0; i < listOfTerritories.size(); i++)
@@ -318,7 +429,44 @@ Territory* Continent::getTerritory(int id)
 	return NULL;
 }
 
+/*
+* Get the owner of the territory
+*/
+Player* Territory::getOwner()
+{
+	return this->owner;
+}
 
+/*
+* Set the owner of the territory
+*/
+void Territory::setOwner(Player* p)
+{
+	this->owner = p;
+}
+
+// Stream Override for territory
+// cout << TerritoryOBJ will print the following
+ostream& operator << (ostream &out, const Territory &t)
+{
+	out << endl;
+	out << "--------------------------------------" << endl;
+	cout << endl;
+	out << "The Territory name is '" << t.name << "'" << endl;
+	out << endl;
+
+	cout << "Adjacent Territories of '" << t.name << "'" << endl;
+	for (int i = 0; i < t.listOfAdjTerritories.size(); i++)
+	{
+		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
+	}
+
+	cout << endl << endl;
+	out << "--------------------------------------" << endl;
+	out << endl;
+
+	return out;
+}
 
 
 

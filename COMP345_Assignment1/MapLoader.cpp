@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -14,17 +15,17 @@ MapLoader::MapLoader() {
 }
 
 //Copy Constructor
-MapLoader::MapLoader(MapLoader &map){
-	MapLoader::MapLoader();
+MapLoader::MapLoader(MapLoader &map) {
+	dominationFileName = map.dominationFileName;
 }
 
 //Assignment operator
-MapLoader& MapLoader:: operator = (const MapLoader &map){
+MapLoader& MapLoader:: operator = (const MapLoader &map) {
 	return *this;
 }
 
 //Destructor
-MapLoader::~MapLoader(){
+MapLoader::~MapLoader() {
 	delete this;
 }
 
@@ -40,17 +41,13 @@ Map* MapLoader::GetMap(string filePath) {
 Map map;
 void MapLoader::ReadMap(string dominationFileName) {
 	try {
-		//Continent continent;
-		
-		//this->finalMap = &map;
-		//this->addFinalContinent = &continent;
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
-		//std::vector<Continent*>* continents = new std::vector<Continent*>();
-		//std::vector<Territory*>* countries = new std::vector<Territory*>();
-		//int index = 1;
+
+		map.name = FirstComponent(dominationFileName);
+
 		ifstream readFile;
 		readFile.open(dominationFileName);
 
@@ -89,8 +86,7 @@ void MapLoader::ReadMap(string dominationFileName) {
 
 						//Split line to access different attributes of territories
 						vector<string> attributes = SplitWords(line); //index name continent x y
-						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]); //TODOLATER: PUT THIS IN CONSTRUCTOR 
-						newCountry->continentIndex = stoi(attributes[2]);
+						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
 						map.listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map.addTerritory(newCountry); //add territory in full list of territories (in map)
 						//countries->push_back(newCountry);
@@ -150,4 +146,11 @@ vector<string> MapLoader::SplitWords(string s)
 		v.push_back(s);
 	}
 	return v;
+}
+
+string MapLoader::FirstComponent(string s)
+{
+	s[0] = toupper(s[0]);
+	size_t pos = s.find('.');
+	return s.substr(0, pos);
 }

@@ -6,9 +6,8 @@
 class MapLoader {
 
 private:
-	string* dominationFileName = NULL;
+	string* dominationFileName;
 	Map* finalMap;
-	Continent* addFinalContinent = nullptr;
 
 public:
 	MapLoader(); //default constructor
@@ -21,4 +20,5 @@ public:
 	Map* GetMap(std::string filePath);
 
 	vector<string> SplitWords(string s);
+	string FirstComponent(string s);
 };

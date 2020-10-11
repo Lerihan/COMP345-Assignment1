@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.h"
+#include "Player.h"
 #include <iostream>
 #include <vector>
 
@@ -11,8 +12,9 @@ using namespace std;
 *
 * Code borrowed:
 *		Copy constructor & Assignment operator: GeeksForGeeks.org
-*		Graph Code from Moodle
 */
+
+class Player;
 
 class Territory
 {
@@ -21,12 +23,18 @@ public:
 	Territory(int id, string n); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
 	Territory(const Territory &t); // Copy Constructor
 	Territory& operator = (const Territory &t); // Assignment operator
-	//~Territory(); // Destructor
-	
+	~Territory(); // Destructor
+
 	void printAdjTerritory();
+	Player* getOwner(); // get owner of this Territory
+	void setOwner(Player* p); // set the owner of this Territory
+
+	friend ostream & operator << (ostream &out, const Territory &c);
+
 
 	int index;
 	string name;
+	Player* owner; // player that owns this Territory
 	vector<Territory*> listOfAdjTerritories;
 	int continentIndex;
 	int numberOfArmies;
@@ -40,17 +48,17 @@ class Continent
 {
 public:
 	Continent(); // Default Constructor
-	Continent(int id, string n, int av); 
+	Continent(int id, string n, int av);
 	Continent(const Continent &c); // Copy Constructor
 	Continent& operator = (const Continent &c); // Assignment operator
-	//~Continent(); // Destructor
-	friend ostream & operator << (ostream &out, const Continent &c);
-	friend istream & operator >> (istream &in, Continent &c);
+	~Continent(); // Destructor
 
 	void addTerritory(Territory* t);
 	void printTerritories();
 	void printAdjContinents(); //not being used
 	Territory* getTerritory(int id);
+
+	friend ostream & operator << (ostream &out, const Continent &c);
 
 	int index;
 	string name;
@@ -71,9 +79,8 @@ public:
 	Map(string n);
 	Map(const Map &m); // Copy Constructor
 	Map& operator = (const Map &m); // Assignment operator
-	//~Map(); // Destructor
-	friend ostream & operator << (ostream &out, const Map &m);
-	friend istream & operator >> (istream &in, Map &c);
+	~Map(); // Destructor
+
 
 	void addContinent(Continent* c);
 	void addTerritory(Territory* t);
@@ -88,10 +95,13 @@ public:
 	void printAdjContinents(Continent* c);
 	void printAdjTerritory(Territory* t);
 
+	friend ostream & operator << (ostream &out, const Map &m);
+	//friend istream & operator >> (istream &in, Map &c);
+
 	string name;
 	vector<Continent*> listOfContinents;
 	vector<Territory*> listOfTerritories; //all territories
-	
+
 
 	bool validate(); // goes through a few points to validate the map
 };

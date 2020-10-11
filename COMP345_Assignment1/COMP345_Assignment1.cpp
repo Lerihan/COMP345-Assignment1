@@ -4,9 +4,27 @@
 #include <iostream>
 #include <string>
 #include "MapLoader.h"
+#include "Map.h"
+#include "Player.h"
+#include "Cards.h"
+#include "Order.h"
+
+//#include "PlayerDriver.cpp" // I know I'm not supposed to import a cpp file
 
 int main()
 {
+
+	Player* p1 = new Player(); // default constructor
+	Player* p2 = new Player("Michael"); // parameterized constructor
+	Deck d;
+
+	//draw five cards and add them to Player p2's Hand
+	for (int i = 1; i <= 5; i++) {
+		d.draw(d, *(*p2).getHand());
+	}
+
+
+	/*
 
 	//Map
 	//TODO:
@@ -82,21 +100,29 @@ int main()
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
 	std::cout << endl;
-	//map->printContinents();
-	//map->getContinent(2)->printTerritories();
-	//map->getContinent(2)->getTerritory(8)->printAdjTerritory();
 
 	for (int i = 0; i < map->listOfTerritories.size(); i++)
 	{
 		map->listOfTerritories[i]->printAdjTerritory();
 	}
 
+	for (int i = 0; i < map->listOfContinents.size();i++) {
+		map->listOfContinents[i]->printTerritories();
+	}
+
 
 	std::cout << endl;
 
-	cout << map->isAdjacent(1, 2) << endl;
-	cout << map->validate() << endl;
+	cout << *map;
+	cout << *map->getContinent(2);
+	cout << *map->getContinent(2)->getTerritory(8);
+	//cout << map->isAdjacent(1, 2) << endl;
+	//cout << map->validate() << endl;
 
+//Todo List:
+// * Fix map constructor (missing something, might give errors to others)
+// * Make Driver!
+	*/
 
 	return 0;
 }
