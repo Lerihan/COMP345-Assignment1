@@ -10,8 +10,6 @@
 #include "Player.h"
 #include "Order.h"
 
-using namespace std;
-
 
 class Player;
 
@@ -19,7 +17,7 @@ class Deck;
 
 class Cards {	
 protected:
-	static char *cardsAvailable[5];
+	static const char *cardsAvailable[5];
 public:
 	Cards();
 	Cards(Cards& c);
@@ -34,13 +32,13 @@ class Hand : public Cards{
 friend class Deck;
 protected:
 	Player* player;
-	char*cardsInHand[5];
-	//a standard game of risk, which is what warzone is based of off, has 5 cards in the hand
+	std::vector<char*> cardsInHand[];
 public:
 	Hand();
 	Hand(Hand& player);
-	Hand(Player* player, char* cardsInHand[5]);
+	Hand(Player* playerName, std::vector<char*> playersCards[]);
 	Hand& operator = (const Hand &h);
+	std::vector<char*> getCardsInHand();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
 	static void play(char* cardToPlay, Deck& d, Player& p);
@@ -49,12 +47,11 @@ public:
 class Deck : public Cards{
 friend class Hand;
 protected:
-	char* cardsInDeck[55];
-	//a standard game of risk, which is what warzone is based of off, has 55 cards in the deck
+	std::vector<char*> cardsInDeck[];
 public:
 	Deck();
 	Deck(Deck& d);
-	Deck(char* cardsInDeck[55]);
+	Deck(std::vector<char*> cardsInDeck[]);
 	Deck& operator = (const Deck &d);
 	friend ostream& operator << (ostream& out, const Deck& d);
 	friend istream& operator << (istream& in, const Deck& d);
