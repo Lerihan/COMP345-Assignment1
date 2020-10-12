@@ -28,6 +28,7 @@ public:
 	void printAdjTerritory();
 	Player* getOwner(); // get owner of this Territory
 	void setOwner(Player* p); // set the owner of this Territory
+	bool isAdjacent(int id);
 
 	friend ostream & operator << (ostream &out, const Territory &c);
 

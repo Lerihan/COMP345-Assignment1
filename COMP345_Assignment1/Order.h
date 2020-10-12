@@ -32,6 +32,8 @@ public:
 
 	const Player* getPlayer();
 
+	void setPlayer(Player* player);
+
 protected:
 
 	bool executed = false;
@@ -60,6 +62,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -83,6 +87,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -98,6 +104,10 @@ public:
 	Bomb();
 
 	Bomb(Player* player, Territory* source,  Territory* target);
+
+	Bomb(const Bomb& bomb);
+
+	Bomb& operator = (const Bomb& bomb);
 
 	Bomb(const Bomb& bomb);
 
@@ -126,6 +136,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -149,6 +161,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -165,6 +179,8 @@ public:
 	Negotiate(Player* current, Player* enemy);
 
 	Negotiate(const Negotiate& negotiate);
+
+	Negotiate& operator = (const Negotiate& negotiate);
 
 	Negotiate& operator = (const Negotiate& negotiate);
 
