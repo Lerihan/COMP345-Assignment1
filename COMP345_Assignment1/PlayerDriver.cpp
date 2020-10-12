@@ -19,17 +19,17 @@ int main()
 
     Player* p1 = new Player(); // default constructor
 	cout << "Default Constructor Player\n";
-	cout << "--------------------------\n";
+	cout << "==========================\n";
 	cout << *p1 << endl << endl;
 
 	Player* p2 = new Player("ParameterizedPlayer"); // parameterized constructor
 	cout << "Parameterized Constructor Player\n";
-	cout << "--------------------------------\n";
+	cout << "================================\n";
 	cout << *p2 << "\n" << endl;
 
 	Player* p3 = new Player(*p2); // copy constructor
 	cout << "Copy Constructor Player (copy of parameterized Player)\n";
-	cout << "------------------------------------------------------\n";
+	cout << "======================================================\n";
 	cout << *p3 << endl << endl;
 
 
@@ -51,13 +51,13 @@ int main()
 	p1->addTerritory(t1);
 	p1->addTerritory(t2);
 	cout << "Added 2 Territories to Default Constructor Player\n";
-	cout << "-------------------------------------------------\n";
+	cout << "=================================================\n";
 	cout << *p1 << endl << endl;
 
 	p2->addTerritory(t3);
 	p2->addTerritory(t4);
 	cout << "Added 2 Territories to Parameterized Constructor Player\n";
-	cout << "-------------------------------------------------\n";
+	cout << "=======================================================\n";
 	cout << *p2 << endl << endl;
 
 	// draw five cards and add them to Player p1's Hand
@@ -65,7 +65,7 @@ int main()
 	for (int i = 1; i <= 5; i++) {
 		(*d).draw(*p1);
 	}
-	cout << "---------------------------------------\n";
+	cout << "=======================================\n";
 	cout << *p1 << endl << endl;
 
 	// draw five cards and add them to Player p2's Hand
@@ -73,13 +73,13 @@ int main()
 	for (int i = 1; i <= 5; i++) {
 		(*d).draw(*p2);
 	}
-	cout << "---------------------------------------\n";
+	cout << "=======================================\n";
 	cout << *p2 << endl << endl;
 
 	// test issueOrder()
 	p1->issueOrder();
 	cout << "Default Constructor Player has issued 1 Order:\n";
-	cout << "-------------------------------------------------\n";
+	cout << "==============================================\n";
 	for (int i = 0; i < (*p1).getOrders().size(); i++)
 	{
 		cout << typeid(*(*p1).getOrders().at(i)).name() << " ";
@@ -88,17 +88,17 @@ int main()
 	p1->issueOrder();
 	cout << endl << endl;
 	cout << "Default Constructor Player has issued another Order. There should now be 2:\n";
-	cout << "---------------------------------------------------------------------------\n";
+	cout << "===========================================================================\n";
 	for (int i = 0; i < (*p1).getOrders().size(); i++)
 	{
 		cout << typeid(*(*p1).getOrders().at(i)).name();
 		cout << " ";
 	}
 
-	cout << endl;
+	cout << endl << endl;
 	cout << "Parameterized Constructor Player will now call toDefend(). Note this returns a list of arbitrary (newly-created) Territories.\n";
 	cout << "The returned Territories will NOT be those owned by the Player.\n";
-	cout << "-----------------------------------------------------------------------------------------------------------------------------\n";
+	cout << "=============================================================================================================================\n";
 	vector<Territory*> toDefend = p2->toDefend(); // return vector of arbitrary Territories
 	for (int i = 0; i < toDefend.size(); i++) // print them out using the output stream of Territory class
 	{
@@ -108,7 +108,7 @@ int main()
 	cout << endl;
 	cout << "Parameterized Constructor Player will now call toAttack(). Note this returns a list of arbitrary (newly-created) Territories.\n";
 	cout << "The returned Territories will NOT be those owned by the Player.\n";
-	cout << "-----------------------------------------------------------------------------------------------------------------------------\n";
+	cout << "=============================================================================================================================\n";
 	vector<Territory*> toAttack = p2->toAttack(); // return vector of arbitrary Territories
 	for (int i = 0; i < toAttack.size(); i++) // print them out using the output stream of Territory class
 	{
@@ -123,27 +123,27 @@ int main()
     cout << "####################################################\n\n";
 
 	cout << "Recall the Parameterized Constructor Player\n";
-	cout << "-------------------------------------------\n";
+	cout << "===========================================\n";
 	cout << *p2 << endl << endl;
 
 	Player* p4 = new Player(*p2); // create another copy of parameterized Player 2
 	cout << "Create another copy of the Parameterized Constructor Player\n";
-	cout << "-----------------------------------------------------------\n";
+	cout << "===========================================================\n";
 	cout << *p4 << endl << endl;
 
 	Territory* t5 = new Territory(3, "Mongolia");
 	p4->addTerritory(t5);
-	cout << "Will add the following Territory to the copy of the Parameterized Constructor Player and show it doesn't affect the original Parameterized\n";
-	cout << "Constructor Player\n";
-	cout << "-------------------------------------------------------------------------------------------------------------------\n";
+	cout << "Will add the following Territory to the copy of the Parameterized Constructor Player and show it doesn't affect the\n";
+	cout << "original Parameterized Constructor Player\n";
+	cout << "===================================================================================================================\n";
 	cout << *t5 << endl;
 
 	cout << "Original Parameterized Constructor Player SHOULD NOT have Mongolia in their Territories\n";
-	cout << "---------------------------------------------------------------------------------------\n";
+	cout << "=======================================================================================\n";
 	cout << *p2 << endl << endl;
 
 	cout << "New copy of Parameterized Constructor Player SHOULD have Mongolia in their Territories\n";
-	cout << "---------------------------------------------------------------------------------------\n";
+	cout << "======================================================================================\n";
 	cout << *p4 << endl << endl;
 
 	return 0;

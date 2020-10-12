@@ -194,6 +194,16 @@ ostream& operator <<(ostream& strm, Player& player)
 	return strm << "Player: " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
 }
 
+// In stream operator, allows user to choose the Player's name.
+istream & operator >> (istream& strm,  Player& player)
+{
+    cout << "Enter Player name: ";
+    strm >> player.name;
+    return strm;
+}
+
+// Equality operator for two Player objects.
+// For now, considers two Players equal if they share the same name. Note this is not enforce
 bool operator ==(const Player& p1, const Player& p2)
 {
 	return (p1.name == p2.name);

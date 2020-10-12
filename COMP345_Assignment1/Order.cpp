@@ -431,6 +431,17 @@ ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 	return o << "A negotiate order has been issued.";
 }
 
+// Create a new vector of the Orders in this OrdersList and return it
+vector<Order*> OrdersList::getOrdersList()
+{
+	vector<Order*> o;
+	for (int i = 0; i < ordersList.size(); i++)
+	{
+		o.push_back(ordersList.at(i));
+	}
+	return o;
+}
+
 /*Copy constructor for the OrdersList class
 */
 OrdersList::OrdersList(const OrdersList& oL) 
