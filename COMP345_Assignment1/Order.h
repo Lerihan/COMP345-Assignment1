@@ -14,6 +14,7 @@ class Player;
 class Order
 {
 
+//Order base class
 public:
 
 	Order();
@@ -25,8 +26,6 @@ public:
 	Order& operator = (const Order& other);
 
 	bool operator==(const Order& other);
-
-	friend ostream& operator <<(std::ostream& o, const Order& order);
 
 	virtual bool validate() = 0;
 
@@ -45,6 +44,7 @@ private:
 	Player* player;
 };
 
+// Deploy armies to one of player's territories
 class Deploy : public Order
 {
 private:
@@ -61,8 +61,6 @@ public:
 	Deploy(const Deploy& deploy);
 
 	Deploy& operator = (const Deploy& deploy);
-	friend ostream& operator <<(std::ostream& o, const Deploy& deploy);
-
 
 	virtual bool validate();
 
@@ -71,6 +69,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Deploy& deploy);
 };
 
+//Advance armies from one territory to the target territory
 class Advance : public Order
 {
 private:
@@ -96,6 +95,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Advance& advance);
 };
 
+//Bomb order, shrinking target territory forces by 1/2
 class Bomb : public Order
 {
 private:
@@ -120,6 +120,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Bomb& bomb);
 };
 
+//Blockade order, increasing target territory armies by 3 fold
 class Blockade : public Order
 {
 private:
@@ -143,6 +144,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Blockade& blockade);
 };
 
+//Airlift armies to any target territories
 class Airlift : public Order
 {
 private:
@@ -168,6 +170,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Airlift& airlift);
 };
 
+//Negotiate order that does nothing during current turn
 class Negotiate : public Order
 {
 private:
@@ -191,6 +194,7 @@ public:
 	friend ostream& operator<<(std::ostream& o, const Negotiate& negotiate);
 };
 
+//OrderList class, implementing a vector
 class OrdersList 
 {
 public:
@@ -205,12 +209,11 @@ public:
 
 	void add(Order* order);
 
-	void remove(Order* order);
+	void remove(int index);
 
-	vector<Order*> getOrdersList();
+	friend ostream& operator <<(std::ostream& o, const OrdersList& oL);
 
 private:
 
 	vector<Order*> ordersList;
 };
-
