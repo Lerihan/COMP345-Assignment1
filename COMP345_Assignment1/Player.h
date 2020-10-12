@@ -30,6 +30,7 @@ private:
 
 	string name; // name of player
 
+
 public:
 	Player(); // default constructor
 	Player(string name); // for now take string as name to differentiate players
@@ -37,7 +38,8 @@ public:
 	~Player(); // destructor
 	vector<Territory*> getTerritories();
 	void addTerritory(Territory* r); // add input Territory pointer to data member vector
-	OrdersList* getOrders(); // returns next order to be executed (first order in attribute vector)
+	OrdersList* getOrdersList(); // returns this Player's OrdersList member
+	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
 	void issueOrder(); // for now just adds default Deploy order
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories

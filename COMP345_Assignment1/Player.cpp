@@ -19,7 +19,7 @@
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
-	this->name = "NoName";
+	this->name = "DefaultPlayer";
 	this->hand = new Hand();
 	this->orders = new OrdersList();
 
@@ -84,9 +84,16 @@ Hand* Player::getHand()
 }
 
 // Returns the OrdersList of this Player
-OrdersList* Player::getOrders()
+OrdersList* Player::getOrdersList()
 {
 	return this->orders;
+}
+
+// Returns the vector of Orders* contained in the OrdersList member of this Player
+// Used for testing only
+vector<Order*> Player::getOrders()
+{
+	return orders->getOrdersList();
 }
 
 // Adds the input Territory pointer this Player's Territories vector.
