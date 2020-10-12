@@ -35,6 +35,11 @@ const Player* Order::getPlayer()
 	return player; 
 }
 
+void Order::setPlayer(Player* player)
+{
+	this->player = player;
+}
+
 std::ostream& operator<<(std::ostream& o, const Order& order) 
 {
 	return o << "An order has been created";
@@ -42,7 +47,7 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 
 Deploy::Deploy(): Order()
 {
-	Territory("current");
+	Territory(0, "current");
 }
 
 Deploy::Deploy(Player* player, Territory* territory, unsigned int numOfArmies): Order(player)
@@ -67,7 +72,8 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 
 bool Deploy::validate()
 {
-	return true;
+	if (territory->getOwner() == getPlayer())
+		return true;
 }
 
 bool Deploy::execute()
@@ -88,8 +94,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 
 Advance::Advance(): Order()
 {
-	Territory("current");
-	Territory("Next");
+	Territory(0, "current");
+	Territory(0, "Next");
 }
 
 Advance::Advance(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -138,8 +144,8 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 
 Bomb::Bomb() : Order()
 {
-	Territory("source");
-	Territory("target");
+	Territory(0, "source");
+	Territory(0, "target");
 }
 
 Bomb::Bomb(Player* player, Territory* source, Territory* target): Order(player)
@@ -153,7 +159,6 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 	this->source = bomb.source;
 	this->target = bomb.target;
 }
-
 
 Bomb& Bomb::operator=(const Bomb& bomb) 
 {
@@ -187,7 +192,7 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 
 Blockade::Blockade() : Order()
 {
-	Territory("target");
+	Territory(0, "target");
 }
 
 Blockade::Blockade(Player* player, Territory* target) : Order(player)
@@ -209,8 +214,8 @@ Blockade& Blockade::operator=(const Blockade& blockade)
 
 bool Blockade::validate()
 {
-	cout << "If player owns target territory" << endl;
-	return true;
+	if (target->getOwner() == getPlayer())
+		return true;
 }
 
 bool Blockade::execute()
@@ -231,8 +236,8 @@ ostream& operator << (std::ostream& o, const Blockade& b)
 
 Airlift::Airlift() : Order()
 {
-	Territory("current");
-	Territory("next");
+	Territory(0, "current");
+	Territory(0, "next");
 }
 
 Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -240,6 +245,12 @@ Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned i
 	this->current = current;
 	this->next = next;
 	this->numOfArmies = numOfArmies;
+}
+
+Airlift::Airlift(const Airlift& airlift) : Order(airlift) 
+{
+	this->current = airlift.current;
+	this->next = airlift.next;
 }
 
 Airlift::Airlift(const Airlift& airlift) : Order(airlift) 
@@ -258,8 +269,8 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 
 bool Airlift::validate()
 {
-	cout << "If player owns current territory, AND current territory has more armies than numOfArmies to be airlifted " << endl;
-	return true;
+	if (current->getOwner() == getPlayer() && this->numOfArmies > 0)
+		return true;
 }
 
 bool Airlift::execute()
@@ -292,6 +303,11 @@ Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate)
 	this->enemy = negotiate.enemy;
 }
 
+Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate) 
+{
+	this->enemy = negotiate.enemy;
+}
+
 Negotiate& Negotiate::operator=(const Negotiate& negotiate) 
 {
 	Order::operator=(negotiate);
@@ -302,8 +318,8 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 
 bool Negotiate::validate()
 {
-	cout << "If ??" << endl;
-	return true;
+	if (getPlayer() != enemy)
+		return true;
 }
 
 bool Negotiate::execute()
