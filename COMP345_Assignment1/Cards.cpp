@@ -108,7 +108,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		//Bomb
 		//create new order in orderlist
 		//create new bomb order
-		Bomb* bombCard;
+		Bomb* bombCard = new Bomb();
 		(p.getOrders())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
@@ -119,7 +119,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	}
 	else if (cardToPlay == cardsAvailable[1]) {
 		//Diplomacy
-		Negotiate* negotiateCard;
+		Negotiate* negotiateCard = new Negotiate();
 		(p.getOrders())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
@@ -130,7 +130,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	}
 	else if (cardToPlay == cardsAvailable[2]) {
 		//Blockade
-		Blockade* blockCard;
+		Blockade* blockCard = new Blockade();
 		(p.getOrders())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
@@ -141,7 +141,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	}
 	else if (cardToPlay == cardsAvailable[3]) {
 		//Reinforcement
-		Deploy* reinforcementCard;
+		Deploy* reinforcementCard = new Deploy();
 		(p.getOrders())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
@@ -152,7 +152,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	}
 	else if (cardToPlay == cardsAvailable[4]) {
 		//Airlift
-		Airlift* airliftCard;
+		Airlift* airliftCard = new Airlift();
 		(p.getOrders())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.

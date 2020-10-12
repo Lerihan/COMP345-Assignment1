@@ -13,7 +13,7 @@
 
 int main()
 {
-
+	
 	Player* p1 = new Player(); // default constructor
 	Player* p2 = new Player("Michael"); // parameterized constructor
 	Deck* d = new Deck();
@@ -44,6 +44,7 @@ int main()
 	cout << *p1 << endl; // problem with OrdersList default constructor, throws seg fault
 	cout << endl;
 	cout << *p2 << endl;
+
 
 	/*
 

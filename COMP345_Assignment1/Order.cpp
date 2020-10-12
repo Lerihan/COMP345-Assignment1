@@ -252,12 +252,6 @@ Airlift::Airlift(const Airlift& airlift) : Order(airlift)
 	this->next = airlift.next;
 }
 
-Airlift::Airlift(const Airlift& airlift) : Order(airlift) 
-{
-	this->current = airlift.current;
-	this->next = airlift.next;
-}
-
 Airlift& Airlift::operator=(const Airlift& airlift) 
 {
 	Order::operator=(airlift);
@@ -302,18 +296,12 @@ Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate)
 	this->enemy = negotiate.enemy;
 }
 
-Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate) 
-{
-	this->enemy = negotiate.enemy;
-}
-
 Negotiate& Negotiate::operator=(const Negotiate& negotiate) 
 {
 	Order::operator=(negotiate);
 	this->enemy = negotiate.enemy;
 	return *this;
 }
-
 
 bool Negotiate::validate()
 {
