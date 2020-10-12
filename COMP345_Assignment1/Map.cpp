@@ -444,6 +444,17 @@ void Territory::setOwner(Player* p)
 	this->owner = p;
 }
 
+bool Territory::isAdjacent(int id)
+{
+	for (int i = 0; i < listOfAdjTerritories.size(); i++)
+	{
+		if (listOfAdjTerritories.at(i)->index == id)
+			return true;
+	}
+
+	return false;
+}
+
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
 ostream& operator << (ostream &out, const Territory &t)
