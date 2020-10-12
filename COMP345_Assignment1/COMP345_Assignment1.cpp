@@ -13,7 +13,7 @@
 
 int main()
 {
-	/**
+	
 	Player* p1 = new Player(); // default constructor
 	Player* p2 = new Player("Michael"); // parameterized constructor
 	Deck* d = new Deck();
@@ -44,35 +44,35 @@ int main()
 	cout << *p1 << endl; // problem with OrdersList default constructor, throws seg fault
 	cout << endl;
 	cout << *p2 << endl;
-	*/
-
 	
 
 	
-	//Map Loader
-	MapLoader* mapLoader = new MapLoader();
-	Map* map = mapLoader->GetMap("europe.map");
-	std::cout << endl;
-  
-	/*for (int i = 0; i < map->listOfTerritories.size(); i++)
-	{
-		map->listOfTerritories[i]->printAdjTerritory();
-	}
 
-	for (int i = 0; i < map->listOfContinents.size();i++) {
-		map->listOfContinents[i]->printTerritories();
-	}*/
+	//
+	////Map Loader
+	//MapLoader* mapLoader = new MapLoader();
+	//Map* map = mapLoader->GetMap("europe.map");
+	//std::cout << endl;
+ // 
+	///*for (int i = 0; i < map->listOfTerritories.size(); i++)
+	//{
+	//	map->listOfTerritories[i]->printAdjTerritory();
+	//}
+
+	//for (int i = 0; i < map->listOfContinents.size();i++) {
+	//	map->listOfContinents[i]->printTerritories();
+	//}*/
 
 
-	std::cout << endl;
+	//std::cout << endl;
 
-	cout << *map;
-	cout << *map->getContinent(2);
-	cout << *map->getContinent(2)->getTerritory(8);
-	//cout << map->isAdjacent(1, 2) << endl;
-	//cout << map->validate() << endl;
+	//cout << *map;
+	//cout << *map->getContinent(2);
+	//cout << *map->getContinent(2)->getTerritory(8);
+	////cout << map->isAdjacent(1, 2) << endl;
+	////cout << map->validate() << endl;
 
-	
+	//
 
 	return 0;
 }
