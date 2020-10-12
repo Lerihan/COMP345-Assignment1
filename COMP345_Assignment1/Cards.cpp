@@ -82,7 +82,7 @@ vector<string> Hand::getCardsInHand() {
 }
 
 //stream insertion operators
-// Returns a string of all the cards in the input Hand
+// Returns a string of all the cards in the input Hand.
 ostream& operator << (ostream& out, const Hand& h) {
 	string s = "";
 	for (int i = 0; i < h.cardsInHand.size(); i++)

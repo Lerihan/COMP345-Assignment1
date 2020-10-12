@@ -33,7 +33,7 @@ Player::Player(string name)
 	this->name = name;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
-	
+
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
 }
@@ -43,7 +43,7 @@ Player::Player(string name)
 Player::Player(Player& p)
 {
 	// copy orders
-	this->orders = p.orders; // assumes OrderList = operator is correctly implemented
+	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
 
 	// copy territories
 	this->territories = p.territories; // assumes Territory = operator is correctly implemented
@@ -131,7 +131,7 @@ void Player::issueOrder()
 {
 	Deploy* d = new Deploy();
 	this->getOrders()->add(d);
-	
+	cout << "issue order test" << endl;
 	//d.setPlayer(this);
 }
 

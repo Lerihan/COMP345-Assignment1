@@ -10,9 +10,7 @@
 #include "Player.h"
 #include "Order.h"
 
-
 class Player;
-
 class Deck;
 
 class Cards {	

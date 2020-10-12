@@ -36,7 +36,10 @@ int main()
 	for (int i = 1; i <= 5; i++) {
 		(*d).draw(*p2);
 	}
-
+	cout << "test 1" << endl;
+	p1->issueOrder();
+	p2->issueOrder();
+	cout << "test 2" << endl;
 	cout << endl;
 	cout << *p1 << endl; // problem with OrdersList default constructor, throws seg fault
 	cout << endl;
