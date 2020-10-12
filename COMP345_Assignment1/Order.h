@@ -213,6 +213,8 @@ public:
 
 	friend ostream& operator <<(std::ostream& o, const OrdersList& oL);
 
+	vector<Order*> getOrdersList();
+
 private:
 
 	vector<Order*> ordersList;

@@ -47,6 +47,7 @@ public:
 
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);
+	friend istream & operator >>(istream& strm,  Player& player);
 	friend bool operator ==(const Player &p1, const Player &p2);
 	friend bool operator !=(const Player &p1, const Player &p2);
 };
