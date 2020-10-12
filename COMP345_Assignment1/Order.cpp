@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include"Order.h"
 
@@ -338,6 +337,13 @@ ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 	return o << "A negotiate order has been issued.";
 }
 
+OrdersList::OrdersList()	
+{	
+	// create empty vector of Order	
+	vector<Order*> o;	
+	this->ordersList = o;	
+}
+
 OrdersList::OrdersList(const OrdersList& oL) 
 {
 	ordersList = oL.ordersList;
@@ -369,5 +375,4 @@ void OrdersList::move(int oldPosition, int newPosition)
 
 	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
 }
-
 
