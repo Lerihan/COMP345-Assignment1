@@ -34,14 +34,11 @@ const Player* Order::getPlayer()
 	return player; 
 }
 
-<<<<<<< HEAD
 void Order::setPlayer(Player* player)
 {
 	this->player = player;
 }
 
-=======
->>>>>>> 401e990... added orderslist
 std::ostream& operator<<(std::ostream& o, const Order& order) 
 {
 	return o << "An order has been created";
@@ -74,12 +71,8 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 
 bool Deploy::validate()
 {
-<<<<<<< HEAD
 	if (territory->getOwner() == getPlayer())
 		return true;
-=======
-	return true;
->>>>>>> 401e990... added orderslist
 }
 
 bool Deploy::execute()
@@ -333,44 +326,11 @@ ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 	return o << "A negotiate order has been issued.";
 }
 
-<<<<<<< HEAD
-OrdersList::OrdersList()	
-{	
+OrdersList::OrdersList()
+{
 	// create empty vector of Order	
-	vector<Order*> o;	
-	this->ordersList = o;	
-=======
-OrdersList::OrdersList(const OrdersList& oL) 
-{
-	ordersList = oL.ordersList;
-}
-
-OrdersList& OrdersList::operator=(const OrdersList& oL) 
-{
-	ordersList = oL.ordersList;
-	return *this;
-}
-
-void OrdersList::add(Order* order) 
-{ 
-	ordersList.push_back(order); 
-}
-
-void OrdersList::remove(Order* order)
-{
-	for (vector<Order*>::iterator it = ordersList.begin(); it != ordersList.end(); it++)
-		if (*order == *(*it))
-			ordersList.erase(it);
-}
-
-void OrdersList::move(int oldPosition, int newPosition)
-{
-	Order* toBeMoved = ordersList[oldPosition];
-
-	remove(ordersList[oldPosition]);
-
-	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
->>>>>>> 401e990... added orderslist
+	vector<Order*> o;
+	this->ordersList = o;
 }
 
 OrdersList::OrdersList(const OrdersList& oL) 
