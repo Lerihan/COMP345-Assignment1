@@ -16,6 +16,7 @@
 
 class Order;
 class Cards;
+class OrdersList;
 class Hand;
 
 class Player
