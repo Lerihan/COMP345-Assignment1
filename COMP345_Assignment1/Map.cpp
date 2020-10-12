@@ -149,13 +149,12 @@ void Map::printAdjTerritory(Territory* t)
 bool Map::validate()
 {
 	bool b = true;
-
 	//check if map is a connected graph (every territory has adjacent territories)
 	//check if continents are connected subgraphs (check if continents have adj cont ???) *** this is not implemented but i dont think theres a need for it
 	//check if each territory has one continent
 	for (int i = 0; i < listOfTerritories.size(); i++)
 	{
-		if (listOfTerritories[i]->listOfAdjTerritories.empty() && listOfTerritories[i]->continentIndex != NULL)
+		if (listOfTerritories[i]->listOfAdjTerritories.empty() || listOfTerritories[i]->continentIndex != NULL)
 		{
 			b = false;
 		}
@@ -266,7 +265,7 @@ Continent& Continent::operator = (const Continent &c)
 */
 Continent::~Continent()
 {
-	delete this;
+	//delete this;
 }
 
 //Stream override
@@ -397,7 +396,7 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	delete this;
+	delete owner;
 }
 
 /*

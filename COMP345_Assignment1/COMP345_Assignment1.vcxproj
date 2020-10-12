@@ -153,8 +153,11 @@
   <ItemGroup>
     <ClCompile Include="Cards.cpp" />
     <ClCompile Include="CardsDriver.cpp" />
-    <ClCompile Include="COMP345_Assignment1.cpp" />
+    <ClCompile Include="COMP345_Assignment1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="MapLoaderDriver.cpp" />
     <ClCompile Include="Order.cpp" />
