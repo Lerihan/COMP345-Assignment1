@@ -2,9 +2,14 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Player.h"
 #include "Map.h"
 
+using namespace std;
+
+class Territory;
+class Player;
 
 class Order
 {
@@ -26,6 +31,8 @@ public:
 	virtual bool execute() = 0;
 
 	const Player* getPlayer();
+
+	void setPlayer(Player* player);
 
 protected:
 
@@ -55,6 +62,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -78,6 +87,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -93,6 +104,10 @@ public:
 	Bomb();
 
 	Bomb(Player* player, Territory* source,  Territory* target);
+
+	Bomb(const Bomb& bomb);
+
+	Bomb& operator = (const Bomb& bomb);
 
 	Bomb(const Bomb& bomb);
 
@@ -121,6 +136,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -144,6 +161,8 @@ public:
 
 	virtual bool validate();
 
+	virtual bool validate();
+
 	virtual bool execute();
 };
 
@@ -160,6 +179,8 @@ public:
 	Negotiate(Player* current, Player* enemy);
 
 	Negotiate(const Negotiate& negotiate);
+
+	Negotiate& operator = (const Negotiate& negotiate);
 
 	Negotiate& operator = (const Negotiate& negotiate);
 
