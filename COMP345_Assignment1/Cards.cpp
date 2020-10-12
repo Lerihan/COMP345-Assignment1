@@ -111,7 +111,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		//create new order in orderlist
 		//create new bomb order
 		Bomb* bombCard = new Bomb();
-		(p.getOrders())->add(bombCard);
+		(p.getOrdersList())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]));
@@ -122,7 +122,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[1]) {
 		//Diplomacy
 		Negotiate* negotiateCard = new Negotiate();
-		(p.getOrders())->add(negotiateCard);
+		(p.getOrdersList())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]));
@@ -133,7 +133,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[2]) {
 		//Blockade
 		Blockade* blockCard = new Blockade();
-		(p.getOrders())->add(blockCard);
+		(p.getOrdersList())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]));
@@ -144,7 +144,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[3]) {
 		//Reinforcement
 		Deploy* reinforcementCard = new Deploy();
-		(p.getOrders())->add(reinforcementCard);
+		(p.getOrdersList())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]));
@@ -155,7 +155,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[4]) {
 		//Airlift
 		Airlift* airliftCard = new Airlift();
-		(p.getOrders())->add(airliftCard);
+		(p.getOrdersList())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]));
