@@ -154,3 +154,11 @@ string MapLoader::FirstComponent(string s)
 	size_t pos = s.find('.');
 	return s.substr(0, pos);
 }
+
+istream& operator>>(istream& in, string dominationMap)
+{	
+	cout << "Enter map name: ";
+	in >> dominationMap;
+	cout << "Map details";
+	return in;
+}
