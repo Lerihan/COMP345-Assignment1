@@ -1,4 +1,5 @@
 #include<iostream>
+#include <vector>
 #include"Order.h"
 
 using namespace std;
@@ -71,8 +72,9 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 
 bool Deploy::validate()
 {
-	if (territory->getOwner() == getPlayer())
+	if (territory->getOwner() == getPlayer() && this->numOfArmies > 0)
 		return true;
+	return false;
 }
 
 bool Deploy::execute()
@@ -122,8 +124,9 @@ Advance& Advance::operator=(const Advance& advance)
 
 bool Advance::validate()
 {
-	cout << "If player owns current territory and target territory is neutral(?), AND has numOfArmies > 0" << endl;
-	return true;
+	if (current->isAdjacent(next->index))
+		return true;
+	return false;
 }
 
 bool Advance::execute()
@@ -170,8 +173,9 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 
 bool Bomb::validate()
 {
-	cout << "If enemy target territory is adjacent to ANY of player's current territories" << endl;
-	return true;
+	if (source->isAdjacent(target->index))
+		return true;
+	return false;
 }
 
 bool Bomb::execute()
@@ -216,6 +220,7 @@ bool Blockade::validate()
 {
 	if (target->getOwner() == getPlayer())
 		return true;
+	return false;
 }
 
 bool Blockade::execute()
@@ -265,6 +270,7 @@ bool Airlift::validate()
 {
 	if (current->getOwner() == getPlayer() && this->numOfArmies > 0)
 		return true;
+	return false;
 }
 
 bool Airlift::execute()
@@ -305,10 +311,12 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 	return *this;
 }
 
+
 bool Negotiate::validate()
 {
 	if (getPlayer() != enemy)
 		return true;
+	return false;
 }
 
 bool Negotiate::execute()
@@ -325,13 +333,6 @@ bool Negotiate::execute()
 ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 {
 	return o << "A negotiate order has been issued.";
-}
-
-OrdersList::OrdersList()	
-{	
-	// create empty vector of Order	
-	vector<Order*> o;	
-	this->ordersList = o;	
 }
 
 OrdersList::OrdersList(const OrdersList& oL) 
@@ -375,4 +376,11 @@ void OrdersList::move(int oldPosition, int newPosition)
 	remove(ordersList[oldPosition]);
 
 	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
+}
+
+OrdersList::OrdersList()	
+{	
+	// create empty vector of Order	
+	vector<Order*> o;	
+	this->ordersList = o;	
 }

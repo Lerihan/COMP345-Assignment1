@@ -67,6 +67,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Deploy& deploy);
 };
 
 class Advance : public Order
@@ -90,6 +92,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Advance& advance);
 };
 
 class Bomb : public Order
@@ -112,6 +116,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Bomb& bomb);
 };
 
 class Blockade : public Order
@@ -133,6 +139,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Blockade& blockade);
 };
 
 class Airlift : public Order
@@ -156,6 +164,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Airlift& airlift);
 };
 
 class Negotiate : public Order
@@ -177,6 +187,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Negotiate& negotiate);
 };
 
 class OrdersList 
