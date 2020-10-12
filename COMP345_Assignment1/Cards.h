@@ -18,7 +18,7 @@ protected:
 	static string cardsAvailable[5];
 public:
 	Cards();
-	Cards(Cards& c);
+	Cards(const Cards& c);
 	Cards(string newCards[5]);
 	//we are using 5 different types of cards
 	Cards& operator = (const Cards &c);
