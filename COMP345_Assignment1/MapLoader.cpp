@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -19,12 +20,12 @@ MapLoader::MapLoader(MapLoader &map){
 }
 
 //Assignment operator
-MapLoader& MapLoader:: operator = (const MapLoader &map){
+MapLoader& MapLoader:: operator = (const MapLoader &map) {
 	return *this;
 }
 
 //Destructor
-MapLoader::~MapLoader(){
+MapLoader::~MapLoader() {
 	delete this;
 }
 
@@ -44,6 +45,8 @@ void MapLoader::ReadMap(string dominationFileName) {
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
+
+		map.name = FirstComponent(dominationFileName);
 
 		ifstream readFile;
 		readFile.open(dominationFileName);
@@ -143,4 +146,19 @@ vector<string> MapLoader::SplitWords(string s)
 		v.push_back(s);
 	}
 	return v;
+}
+
+string MapLoader::FirstComponent(string s)
+{
+	s[0] = toupper(s[0]);
+	size_t pos = s.find('.');
+	return s.substr(0, pos);
+}
+
+istream& operator>>(istream& in, string dominationMap)
+{	
+	cout << "Enter map name: ";
+	in >> dominationMap;
+	cout << "Map details";
+	return in;
 }

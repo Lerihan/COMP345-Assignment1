@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include"Order.h"
 
@@ -35,6 +34,11 @@ const Player* Order::getPlayer()
 	return player; 
 }
 
+void Order::setPlayer(Player* player)
+{
+	this->player = player;
+}
+
 std::ostream& operator<<(std::ostream& o, const Order& order) 
 {
 	return o << "An order has been created";
@@ -67,7 +71,8 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 
 bool Deploy::validate()
 {
-	return true;
+	if (territory->getOwner() == getPlayer())
+		return true;
 }
 
 bool Deploy::execute()
@@ -154,7 +159,6 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 	this->target = bomb.target;
 }
 
-
 Bomb& Bomb::operator=(const Bomb& bomb) 
 {
 	Order::operator=(bomb);
@@ -209,8 +213,8 @@ Blockade& Blockade::operator=(const Blockade& blockade)
 
 bool Blockade::validate()
 {
-	cout << "If player owns target territory" << endl;
-	return true;
+	if (target->getOwner() == getPlayer())
+		return true;
 }
 
 bool Blockade::execute()
@@ -258,8 +262,8 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 
 bool Airlift::validate()
 {
-	cout << "If player owns current territory, AND current territory has more armies than numOfArmies to be airlifted " << endl;
-	return true;
+	if (current->getOwner() == getPlayer() && this->numOfArmies > 0)
+		return true;
 }
 
 bool Airlift::execute()
@@ -299,11 +303,10 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 	return *this;
 }
 
-
 bool Negotiate::validate()
 {
-	cout << "If ??" << endl;
-	return true;
+	if (getPlayer() != enemy)
+		return true;
 }
 
 bool Negotiate::execute()
@@ -320,6 +323,13 @@ bool Negotiate::execute()
 ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 {
 	return o << "A negotiate order has been issued.";
+}
+
+OrdersList::OrdersList()	
+{	
+	// create empty vector of Order	
+	vector<Order*> o;	
+	this->ordersList = o;	
 }
 
 OrdersList::OrdersList(const OrdersList& oL) 

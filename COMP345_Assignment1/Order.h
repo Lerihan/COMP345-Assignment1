@@ -32,6 +32,8 @@ public:
 
 	const Player* getPlayer();
 
+	void setPlayer(Player* player);
+
 protected:
 
 	bool executed = false;

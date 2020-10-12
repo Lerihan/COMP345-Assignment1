@@ -36,6 +36,12 @@
     <ClCompile Include="MapLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CardsDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -56,6 +62,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="europe.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="mexico.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="ohio.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dortmund.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="eire.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="france.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Hawaii.map">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

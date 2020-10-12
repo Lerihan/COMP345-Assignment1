@@ -152,8 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cards.cpp" />
-    <ClCompile Include="COMP345_Assignment1.cpp" />
+    <ClCompile Include="CardsDriver.cpp" />
+    <ClCompile Include="COMP345_Assignment1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="MapLoaderDriver.cpp" />
     <ClCompile Include="Order.cpp" />
@@ -167,7 +171,13 @@
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dortmund.map" />
+    <None Include="eire.map" />
     <None Include="europe.map" />
+    <None Include="france.map" />
+    <None Include="Hawaii.map" />
+    <None Include="mexico.map" />
+    <None Include="ohio.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

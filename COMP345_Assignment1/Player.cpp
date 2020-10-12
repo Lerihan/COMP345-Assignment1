@@ -21,10 +21,10 @@ Player::Player()
 {
 	this->name = "NoName";
 	this->hand = new Hand();
-	//this->playerNumber = ++playerCount; // increment total number of players and assign a number to this Player
-	//this->hand = std::vector<Cards*>;
-	//this->orders = std::vector<Order*>;
-	//this->territories = std::vector<Territory*>;
+	this->orders = new OrdersList();
+
+	vector<Territory*> terr;
+	this->territories = terr; // create empty vector of Territories
 }
 
 // Constructor assigns input string to be Player name
@@ -32,6 +32,10 @@ Player::Player(string name)
 {
 	this->name = name;
 	this->hand = new Hand();
+	this->orders = new OrdersList();
+
+	vector<Territory*> terr;
+	this->territories = terr; // create empty vector of Territories
 }
 
 // Copy constructor, creates deep copy of each attribute.
@@ -39,13 +43,18 @@ Player::Player(string name)
 Player::Player(Player& p)
 {
 	// copy orders
-	this->orders = p.orders; // assumes OrderList = operator is correctly implemented
+	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
 
+	// copy territories
+	this->territories = p.territories; // assumes Territory = operator is correctly implemented
+
+	/*
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
 	{
 		this->territories.push_back(p.territories.at(i));
 	}
+	*/
 
 	this->name = p.name;
 	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
@@ -84,7 +93,6 @@ OrdersList* Player::getOrders()
 void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
-
 	(*t).setOwner(this); // set the owner of the input Territory to be this Player
 }
 
@@ -120,9 +128,13 @@ vector<Territory*> Player::toDefend()
 // for now just adds a default Deploy order
 void Player::issueOrder()
 {
-	Deploy* d = new Deploy();
-	this->getOrders()->add(d);
-	
+	//Deploy* d = new Deploy();
+	Negotiate* d = new Negotiate(); // this is the only one that does not throw a segmentation fault
+	//Bomb* d = new Bomb();
+	//Advance* d = new Advance();
+	//Blockade* d = new Blockade();
+	//Airlift* d = new Airlift();
+	this->orders->add(d);
 	//d.setPlayer(this);
 }
 
@@ -166,18 +178,13 @@ Player& Player::operator =(const Player& player)
 ostream& operator <<(ostream& strm, Player& player)
 {
 	string s = "";
-	// create list of Territory names to output to console
 	for (int i = 0; i < player.territories.size(); i++)
 	{
-		Territory t = *player.territories.at(i); // only works if I make this line separate from the one below for some reason
-		string name = t.name;
-		s += name;
-		s += ", ";
+		s += player.territories.at(i)->name;
+		s+= ", ";
 	}
 	s += "\b\b.";
-
-	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	//return (strm << "Player " << player.name << "\nCards: " << player.orders.size() << "\nTerritories: " << s << endl);
+	return strm << "Player: " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
 }
 
 bool operator ==(const Player& p1, const Player& p2)

@@ -1,14 +1,21 @@
-#include "MapLoader.h"
-#include <iostream>
-#include <string>
-
+//#include "MapLoader.h"
+//#include <iostream>
+//#include <string>
+//
 // int main() {
+//     string dominationMap;
 // 	MapLoader* mapLoader = new MapLoader();
-// 	Map* map = mapLoader->GetMap("europe.map");
+//    cout << "Select the map to play with: " << endl;
+//    cin >> dominationMap;
+//    cout << "Map details: " << endl;
+// 	Map* map = mapLoader->GetMap(dominationMap);
+//    
+//    if (map->validate()) {
+//        cout << "Map is a connected graph.";
+//    }
+//    else {
+//        cout << "Map is not a connected graph.";
+//    }
+//    
 // 	std::cout << endl;
-
-// 	/*MapLoader* mapLoaderFail = new MapLoader();
-// 	mapLoaderFail->ReadMap("europebad.map");
-// 	std::cout << endl;*/
-
 // }

@@ -16,6 +16,7 @@
 
 class Order;
 class Cards;
+class OrdersList;
 class Hand;
 
 class Player
@@ -39,8 +40,8 @@ public:
 	OrdersList* getOrders(); // returns next order to be executed (first order in attribute vector)
 	Hand* getHand(); // returns Hand of this Player
 	void issueOrder(); // for now just adds default Deploy order
-	vector<Territory*> toDefend();
-	vector<Territory*> toAttack();
+	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
+	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
 
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);
