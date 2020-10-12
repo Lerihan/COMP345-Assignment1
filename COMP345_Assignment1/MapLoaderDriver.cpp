@@ -4,7 +4,7 @@
 
 int main() {
    string dominationMap;
- 	 MapLoader* mapLoader = new MapLoader();
+ 	MapLoader* mapLoader = new MapLoader();
    cout << "Select the map to play with: " << endl;
    cin >> dominationMap;
    cout << "Map details: " << endl;
