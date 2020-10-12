@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 
 Deploy::Deploy(): Order()
 {
-	Territory(0, "current");
+	Territory("current");
 }
 
 Deploy::Deploy(Player* player, Territory* territory, unsigned int numOfArmies): Order(player)
@@ -88,8 +88,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 
 Advance::Advance(): Order()
 {
-	Territory(0, "current");
-	Territory(0, "Next");
+	Territory("current");
+	Territory("Next");
 }
 
 Advance::Advance(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -138,8 +138,8 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 
 Bomb::Bomb() : Order()
 {
-	Territory(0, "source");
-	Territory(0, "target");
+	Territory("source");
+	Territory("target");
 }
 
 Bomb::Bomb(Player* player, Territory* source, Territory* target): Order(player)
@@ -187,7 +187,7 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 
 Blockade::Blockade() : Order()
 {
-	Territory(0, "target");
+	Territory("target");
 }
 
 Blockade::Blockade(Player* player, Territory* target) : Order(player)
@@ -231,8 +231,8 @@ ostream& operator << (std::ostream& o, const Blockade& b)
 
 Airlift::Airlift() : Order()
 {
-	Territory(0, "current");
-	Territory(0, "next");
+	Territory("current");
+	Territory("next");
 }
 
 Airlift::Airlift(Player* player, Territory* current, Territory* next, unsigned int numOfArmies) : Order(player)
@@ -353,4 +353,5 @@ void OrdersList::move(int oldPosition, int newPosition)
 
 	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
 }
+
 
