@@ -86,9 +86,10 @@ bool Deploy::execute()
 	return false;
 }
 
-ostream& operator << (std::ostream& o, const Deploy& deploy)
-{
-	return o << "A deploy order has been issued";
+ostream& operator <<(std::ostream& o, const Deploy& deploy)
+{	
+	o << "A deploy order has been issued";
+	return o;
 }
 
 Advance::Advance(): Order()
@@ -282,8 +283,9 @@ ostream& operator << (std::ostream& o, const Airlift& airlift)
 	return o << "An airlift order has been issued.";
 }
 
-Negotiate::Negotiate() : Order()
+Negotiate::Negotiate() //: Order()
 {
+	
 }
 
 Negotiate::Negotiate(Player* current, Player* enemy) : Order(current)
@@ -337,6 +339,17 @@ OrdersList::OrdersList(const OrdersList& oL)
 	ordersList = oL.ordersList;
 }
 
+// Create a new vector of the Orders in this OrdersList and return it
+vector<Order*> OrdersList::getOrdersList()
+{
+	vector<Order*> o;
+	for (int i = 0; i < ordersList.size(); i++)
+	{
+		o.push_back(ordersList.at(i));
+	}
+	return o;
+}
+
 OrdersList& OrdersList::operator=(const OrdersList& oL) 
 {
 	ordersList = oL.ordersList;
@@ -363,4 +376,3 @@ void OrdersList::move(int oldPosition, int newPosition)
 
 	ordersList.insert(ordersList.begin() + newPosition, toBeMoved);
 }
-

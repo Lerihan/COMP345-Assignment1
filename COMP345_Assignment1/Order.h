@@ -26,6 +26,8 @@ public:
 
 	bool operator==(const Order& other);
 
+	friend ostream& operator <<(std::ostream& o, const Order& order);
+
 	virtual bool validate() = 0;
 
 	virtual bool execute() = 0;
@@ -59,6 +61,8 @@ public:
 	Deploy(const Deploy& deploy);
 
 	Deploy& operator = (const Deploy& deploy);
+	friend ostream& operator <<(std::ostream& o, const Deploy& deploy);
+
 
 	virtual bool validate();
 
@@ -190,6 +194,8 @@ public:
 	void add(Order* order);
 
 	void remove(Order* order);
+
+	vector<Order*> getOrdersList();
 
 private:
 
