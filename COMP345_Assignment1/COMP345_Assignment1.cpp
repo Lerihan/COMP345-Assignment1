@@ -13,7 +13,6 @@
 
 int main()
 {
-	
 	Player* p1 = new Player(); // default constructor
 	Player* p2 = new Player("Michael"); // parameterized constructor
 	Deck* d = new Deck();
@@ -31,20 +30,23 @@ int main()
 	for (int i = 1; i <= 5; i++) {
 		(*d).draw(*p1);
 	}
-
 	// draw five cards and add them to Player p2's Hand
 	for (int i = 1; i <= 5; i++) {
 		(*d).draw(*p2);
 	}
-	cout << "test 1" << endl;
+
+	//cout << "test 1" << endl;
 	p1->issueOrder();
 	p2->issueOrder();
-	cout << "test 2" << endl;
+
 	cout << endl;
-	cout << *p1 << endl; // problem with OrdersList default constructor, throws seg fault
+	cout << *p1 << endl;
 	cout << endl;
 	cout << *p2 << endl;
+	cout << endl;
 
+	Player* p3 = new Player(*p2); // copy constructor
+	cout << *p3 << endl;
 
 	/*
 

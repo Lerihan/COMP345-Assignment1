@@ -93,7 +93,6 @@ OrdersList* Player::getOrders()
 void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
-
 	(*t).setOwner(this); // set the owner of the input Territory to be this Player
 }
 
@@ -129,9 +128,13 @@ vector<Territory*> Player::toDefend()
 // for now just adds a default Deploy order
 void Player::issueOrder()
 {
-	Deploy* d = new Deploy();
-	this->getOrders()->add(d);
-	cout << "issue order test" << endl;
+	//Deploy* d = new Deploy();
+	Negotiate* d = new Negotiate(); // this is the only one that does not throw a segmentation fault
+	//Bomb* d = new Bomb();
+	//Advance* d = new Advance();
+	//Blockade* d = new Blockade();
+	//Airlift* d = new Airlift();
+	this->orders->add(d);
 	//d.setPlayer(this);
 }
 
@@ -175,18 +178,13 @@ Player& Player::operator =(const Player& player)
 ostream& operator <<(ostream& strm, Player& player)
 {
 	string s = "";
-	// create list of Territory names to output to console
 	for (int i = 0; i < player.territories.size(); i++)
 	{
-		Territory t = *player.territories.at(i); // only works if I make this line separate from the one below for some reason
-		string name = t.name;
-		s += name;
-		s += ", ";
+		s += player.territories.at(i)->name;
+		s+= ", ";
 	}
 	s += "\b\b.";
-
-	//return strm << "Player " << player.name << "\nNext order: " << player.orders.at(0) << "\nTerritories: " << s << endl;
-	return (strm << "Player " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s << endl);
+	return strm << "Player: " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
 }
 
 bool operator ==(const Player& p1, const Player& p2)
