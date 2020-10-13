@@ -20,6 +20,7 @@ public:
 	Cards();
 	Cards(const Cards& c);
 	Cards(string newCards[5]);
+	~Cards();
 	//we are using 5 different types of cards
 	Cards& operator = (const Cards &c);
 	friend ostream& operator << (ostream& out, const Cards& c);
@@ -35,6 +36,7 @@ public:
 	Hand();
 	Hand(Hand& player);
 	Hand(Player* playerName, std::vector<string> playersCards);
+	~Hand();
 	Hand& operator = (const Hand &h);
 	std::vector<string> getCardsInHand();
 	friend ostream& operator << (ostream& out, const Hand& h);
@@ -50,6 +52,7 @@ public:
 	Deck();
 	Deck(Deck& d);
 	Deck(std::vector<string> cardsInDeck);
+	~Deck();
 	Deck& operator = (const Deck &d);
 	friend ostream& operator << (ostream& out, const Deck& d);
 	friend istream& operator << (istream& in, const Deck& d);

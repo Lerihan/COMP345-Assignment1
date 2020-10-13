@@ -29,6 +29,10 @@ Cards::Cards(string newCards[5]) {
 	}
 }
 
+Cards::~Cards() {
+	delete this;
+}
+
 //assignment constructor
 Cards& Cards::operator = (const Cards& c) {
 	return *this;
@@ -63,6 +67,10 @@ Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 	for (int i = 0; i < (playersCards).size() - 1; i++) {
 		cardsInHand[i] = playersCards[i];
 	}
+}
+
+Hand::~Hand() {
+	delete this;
 }
 
 //assignment constructor
@@ -202,6 +210,10 @@ Deck::Deck(std::vector<string> newCardsInDeck) {
 	for (int i = 0; i < newCardsInDeck.size() - 1; i++) {
 		cardsInDeck[i] = newCardsInDeck[i];
 	}
+}
+
+Deck::~Deck() {
+	delete this;
 }
 
 //assignment constructor
