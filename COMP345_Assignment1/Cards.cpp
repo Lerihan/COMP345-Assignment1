@@ -63,16 +63,13 @@ Hand::Hand(Hand& player) {
 Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
-<<<<<<< Updated upstream
 	this->player->setHand(this);
 	//this->cardsInHand = playersCards;
 
 	/*for (int i = 0; i < (playersCards).size() - 1; i++) {
 		cardsInHand[i] = playersCards[i];
 	}*/
-=======
 	this->cardsInHand = playersCards;
->>>>>>> Stashed changes
 }
 
 Hand::~Hand() {
