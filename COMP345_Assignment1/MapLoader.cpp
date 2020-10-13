@@ -26,7 +26,7 @@ MapLoader& MapLoader:: operator = (const MapLoader &map) {
 
 //Destructor
 MapLoader::~MapLoader() {
-	delete this;
+	delete dominationFileName;
 }
 
 MapLoader::MapLoader(string dominationFileName) {
@@ -161,4 +161,15 @@ istream& operator>>(istream& in, string dominationMap)
 	in >> dominationMap;
 	cout << "Map details";
 	return in;
+}
+
+//Validate map is a connected graph
+void MapLoader::ValidateConnectedGraph(Map* map)
+{
+	if (map->validate()) {
+		cout << "Map is a connected graph.";
+	}
+	else {
+		cout << "Map is not a connected graph.";
+	}
 }
