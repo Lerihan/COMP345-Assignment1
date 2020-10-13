@@ -14,6 +14,7 @@ class Player;
 class Order
 {
 
+//Order base class
 public:
 
 	Order();
@@ -43,6 +44,7 @@ private:
 	Player* player;
 };
 
+// Deploy armies to one of player's territories
 class Deploy : public Order
 {
 private:
@@ -63,8 +65,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Deploy& deploy);
 };
 
+//Advance armies from one territory to the target territory
 class Advance : public Order
 {
 private:
@@ -86,8 +91,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Advance& advance);
 };
 
+//Bomb order, shrinking target territory forces by 1/2
 class Bomb : public Order
 {
 private:
@@ -108,8 +116,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Bomb& bomb);
 };
 
+//Blockade order, increasing target territory armies by 3 fold
 class Blockade : public Order
 {
 private:
@@ -129,8 +140,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Blockade& blockade);
 };
 
+//Airlift armies to any target territories
 class Airlift : public Order
 {
 private:
@@ -152,8 +166,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Airlift& airlift);
 };
 
+//Negotiate order that does nothing during current turn
 class Negotiate : public Order
 {
 private:
@@ -173,8 +190,11 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	friend ostream& operator<<(std::ostream& o, const Negotiate& negotiate);
 };
 
+//OrderList class, implementing a vector
 class OrdersList 
 {
 public:
@@ -189,10 +209,13 @@ public:
 
 	void add(Order* order);
 
-	void remove(Order* order);
+	void remove(int index);
+
+	friend ostream& operator <<(std::ostream& o, const OrdersList& oL);
+
+	vector<Order*> getOrdersList();
 
 private:
 
 	vector<Order*> ordersList;
 };
-

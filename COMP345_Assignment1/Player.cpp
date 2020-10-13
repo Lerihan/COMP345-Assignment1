@@ -19,7 +19,7 @@
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
-	this->name = "NoName";
+	this->name = "DefaultPlayer";
 	this->hand = new Hand();
 	this->orders = new OrdersList();
 
@@ -84,9 +84,16 @@ Hand* Player::getHand()
 }
 
 // Returns the OrdersList of this Player
-OrdersList* Player::getOrders()
+OrdersList* Player::getOrdersList()
 {
 	return this->orders;
+}
+
+// Returns the vector of Orders* contained in the OrdersList member of this Player
+// Used for testing only
+vector<Order*> Player::getOrders()
+{
+	return orders->getOrdersList();
 }
 
 // Adds the input Territory pointer this Player's Territories vector.
@@ -187,6 +194,16 @@ ostream& operator <<(ostream& strm, Player& player)
 	return strm << "Player: " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
 }
 
+// In stream operator, allows user to choose the Player's name.
+istream & operator >> (istream& strm,  Player& player)
+{
+    cout << "Enter Player name: ";
+    strm >> player.name;
+    return strm;
+}
+
+// Equality operator for two Player objects.
+// For now, considers two Players equal if they share the same name. Note this is not enforce
 bool operator ==(const Player& p1, const Player& p2)
 {
 	return (p1.name == p2.name);

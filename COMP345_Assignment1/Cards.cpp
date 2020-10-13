@@ -14,16 +14,17 @@ Cards::Cards() {
 }
 
 //copy constructor
-Cards::Cards(Cards& c) {
-	//copies cards from a different card set
-	/*for (int i = 0; i < (sizeof(c.cardsAvailable) / sizeof(c.cardsAvailable[0])) - 1; i++) {
-		cardsAvailable[i] = c.cardsAvailable[i];
-	}*/
+Cards::Cards(const Cards& c) {
+	int sizeOfNewArray = sizeof(c.cardsAvailable) / sizeof(*c.cardsAvailable);
+	string *newCardsAvailable = new string[sizeOfNewArray];
+	for (int i = 0; i < sizeOfNewArray; i++) {
+		newCardsAvailable[i] = c.cardsAvailable[i];
+	}
 }
 
 Cards::Cards(string newCards[5]) {
 	//creates a new assortment of cards from a specific list
-	for (int i = 0; i < (sizeof(newCards) / sizeof(newCards[0])) - 1; i++) {
+	for (int i = 0; i < (*(&cardsAvailable + 1) - cardsAvailable); i++) {
 		cardsAvailable[i] = newCards[i];
 	}
 }
@@ -44,7 +45,8 @@ istream& operator << (istream& in, const Cards& c) {
 
 //HAND
 //default constructor
-Hand::Hand() = default; 
+Hand::Hand() {
+}
 
 //copy constructor
 Hand::Hand(Hand& player) {
@@ -55,7 +57,7 @@ Hand::Hand(Hand& player) {
 	}
 }
 
-Hand::Hand(Player* playerName, std::vector<string> playersCards){
+Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	for (int i = 0; i < (playersCards).size() - 1; i++) {
@@ -109,7 +111,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		//create new order in orderlist
 		//create new bomb order
 		Bomb* bombCard = new Bomb();
-		(p.getOrders())->add(bombCard);
+		(p.getOrdersList())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]));
@@ -120,7 +122,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[1]) {
 		//Diplomacy
 		Negotiate* negotiateCard = new Negotiate();
-		(p.getOrders())->add(negotiateCard);
+		(p.getOrdersList())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]));
@@ -131,7 +133,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[2]) {
 		//Blockade
 		Blockade* blockCard = new Blockade();
-		(p.getOrders())->add(blockCard);
+		(p.getOrdersList())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]));
@@ -142,7 +144,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[3]) {
 		//Reinforcement
 		Deploy* reinforcementCard = new Deploy();
-		(p.getOrders())->add(reinforcementCard);
+		(p.getOrdersList())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]));
@@ -153,7 +155,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[4]) {
 		//Airlift
 		Airlift* airliftCard = new Airlift();
-		(p.getOrders())->add(airliftCard);
+		(p.getOrdersList())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]));
@@ -190,7 +192,7 @@ Deck::Deck(){
 //copy constructor
 Deck::Deck(Deck& deck) {
 	//copies the cards of another deck
-	for (int i = 0; i < deck.cardsInDeck.size() -1; i++) {
+	for (int i = 0; i < deck.cardsInDeck.size() - 1; i++) {
 		cardsInDeck[i] = deck.cardsInDeck[i];
 	}
 }
