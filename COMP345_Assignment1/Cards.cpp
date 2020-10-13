@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <time.h>
 #include "Cards.h"
 #include "Order.h"
 using namespace std;
@@ -56,20 +57,22 @@ Hand::Hand() {
 Hand::Hand(Hand& player) {
 	//copies hand of a  player
 	this->player = player.player;
-	for (int i = 0; i < (player.cardsInHand).size() - 1; i++) {
-		cardsInHand[i] = player.cardsInHand[i];
-	}
+	this->cardsInHand = player.cardsInHand;
 }
 
 Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
+<<<<<<< Updated upstream
 	this->player->setHand(this);
 	//this->cardsInHand = playersCards;
 
 	/*for (int i = 0; i < (playersCards).size() - 1; i++) {
 		cardsInHand[i] = playersCards[i];
 	}*/
+=======
+	this->cardsInHand = playersCards;
+>>>>>>> Stashed changes
 }
 
 Hand::~Hand() {
@@ -79,16 +82,14 @@ Hand::~Hand() {
 //assignment constructor
 Hand& Hand::operator = (const Hand& h) {
 	player = h.player;
-	for (int i = 0; i < (h.cardsInHand).size() - 1; i++) {
-		cardsInHand[i] = h.cardsInHand[i];
-	}
+	cardsInHand = h.cardsInHand;
 	return *this;
 }
 
 //returns the cards in the player's hands.
 vector<string> Hand::getCardsInHand() {
 	vector<string> h;
-	for (int i = 0; i < this->cardsInHand.size() - 1; i++) {
+	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
 	return h;
@@ -125,7 +126,8 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		(p.getOrdersList())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]));
+		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]);
+		h->cardsInHand.erase(cardToMove);
 		//adding the card at the end of the deck
 		d.cardsInDeck.push_back(cardsAvailable[0]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
@@ -136,7 +138,8 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		(p.getOrdersList())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]));
+		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]);
+		h->cardsInHand.erase(cardToMove);	
 		//adding the card at the end of the deck
 		d.cardsInDeck.push_back(cardsAvailable[1]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
@@ -147,7 +150,8 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		(p.getOrdersList())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]));
+		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]);
+		h->cardsInHand.erase(cardToMove);		
 		//adding the card at the end of the deck
 		d.cardsInDeck.push_back(cardsAvailable[2]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
@@ -158,7 +162,8 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		(p.getOrdersList())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]));
+		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]);
+		h->cardsInHand.erase(cardToMove);		
 		//adding the card at the end of the deck
 		d.cardsInDeck.push_back(cardsAvailable[3]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
@@ -169,7 +174,8 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		(p.getOrdersList())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		h->cardsInHand.erase(std::remove(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]));
+		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]);
+		h->cardsInHand.erase(cardToMove);
 		//adding the card at the end of the deck
 		d.cardsInDeck.push_back(cardsAvailable[4]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
@@ -203,16 +209,12 @@ Deck::Deck(){
 //copy constructor
 Deck::Deck(Deck& deck) {
 	//copies the cards of another deck
-	for (int i = 0; i < deck.cardsInDeck.size() - 1; i++) {
-		cardsInDeck[i] = deck.cardsInDeck[i];
-	}
+	this->cardsInDeck = deck.cardsInDeck;
 }
 
 Deck::Deck(std::vector<string> newCardsInDeck) {
 	//creates a deck of 55 cards, by taking another card set
-	for (int i = 0; i < newCardsInDeck.size() - 1; i++) {
-		cardsInDeck[i] = newCardsInDeck[i];
-	}
+	this->cardsInDeck = newCardsInDeck;
 }
 
 Deck::~Deck() {
@@ -221,7 +223,7 @@ Deck::~Deck() {
 
 //assignment constructor
 Deck& Deck::operator = (const Deck& d) {
-	cout << "Assignment operator called" << endl;
+	cardsInDeck = d.cardsInDeck;
 	return *this;
 }
 
@@ -238,11 +240,11 @@ void Deck::draw(Player& p) {
 	Hand* h = p.getHand();
 
 	//random number from 0 to size of current deck;
-	int randomCardIndex = rand() % this->cardsInDeck.size() + 0;
+	srand(time(NULL));
+	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0;
 	//simply add the card to the end of the player's hand
 	h->cardsInHand.push_back(this->cardsInDeck.at(randomCardIndex));
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
-	
 	cout << "Player has added a card into their hand" << endl;
 }
