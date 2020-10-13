@@ -117,6 +117,12 @@ vector<Territory*> Player::toAttack()
 	return attackList;
 }
 
+// sets input Hand to be that of this Player
+void Player::setHand(Hand* h)
+{
+	this->hand = h;
+}
+
 // Returns vector of Territories to defend.
 // For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toDefend()

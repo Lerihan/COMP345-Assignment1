@@ -6,7 +6,7 @@
 #include "Order.h"
 using namespace std;
 
-string Cards::cardsAvailable[5] = { "Bomb", "Diplomacy", "Blockade", "Reinforment","Airlift" };
+string Cards::cardsAvailable[5] = { "Bomb", "Diplomacy", "Blockade", "Reinforcement","Airlift" };
 
 //CARDS
 //default constructor
@@ -64,9 +64,12 @@ Hand::Hand(Hand& player) {
 Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
-	for (int i = 0; i < (playersCards).size() - 1; i++) {
+	this->player->setHand(this);
+	//this->cardsInHand = playersCards;
+
+	/*for (int i = 0; i < (playersCards).size() - 1; i++) {
 		cardsInHand[i] = playersCards[i];
-	}
+	}*/
 }
 
 Hand::~Hand() {
@@ -194,7 +197,7 @@ Deck::Deck(){
 		else if (i < 55) 
 			cardsInDeck.push_back(cardsAvailable[4]);
 	}
-	random_shuffle(&cardsInDeck[0], &cardsInDeck[deckSize]);
+	random_shuffle(&cardsInDeck.at(0), &cardsInDeck.at(deckSize - 1));
 }
 
 //copy constructor
@@ -230,9 +233,10 @@ istream& operator << (istream& in, const Deck& d) {
 	return in;
 }
 
-void  Deck::draw(Player& p) {	
+void Deck::draw(Player& p) {	
 	//getting player's hand
 	Hand* h = p.getHand();
+
 	//random number from 0 to size of current deck;
 	int randomCardIndex = rand() % this->cardsInDeck.size() + 0;
 	//simply add the card to the end of the player's hand

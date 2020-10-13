@@ -6,7 +6,7 @@
 
 int main() {
 	//create default cards
-	Cards* cards = new Cards();
+	Cards* cards;
 	//create default deck
 	Deck* deck = new Deck();
 	//create random player
@@ -16,8 +16,14 @@ int main() {
 	//create player's hand
 	Hand* hand = new Hand(player, cardsInHand);
 	//draws a card and plays it immediately
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 5; i++) {
 		deck->draw(*player);
-		Hand::play(cardsInHand.at(i),*deck, *player);
+	}
+
+	cout << cardsInHand.size() << endl;
+
+	for (int i = 0; i < cardsInHand.size(); i++){
+		//deck->draw(*player);
+		hand->play(cardsInHand.at(i),*deck, *player);
 	}
 }

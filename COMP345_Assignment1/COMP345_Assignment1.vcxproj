@@ -152,16 +152,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cards.cpp" />
-    <ClCompile Include="CardsDriver.cpp" />
+    <ClCompile Include="CardsDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="COMP345_Assignment1.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapDriver.cpp" />
+    <ClCompile Include="MapDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MapLoader.cpp" />
-    <ClCompile Include="MapLoaderDriver.cpp" />
+    <ClCompile Include="MapLoaderDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Order.cpp" />
+    <ClCompile Include="OrdersDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerDriver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h" />

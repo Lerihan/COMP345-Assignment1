@@ -44,6 +44,7 @@ public:
 	void issueOrder(); // for now just adds default Deploy order
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
 	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
+	void setHand(Hand* h); // sets input Hand to be that of this Player
 
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);
