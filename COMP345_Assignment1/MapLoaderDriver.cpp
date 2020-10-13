@@ -14,5 +14,4 @@
 //    mapLoader->ValidateConnectedGraph(map);
 // 	std::cout << endl;
 //
-//    mapLoader->~MapLoader();
 // }
