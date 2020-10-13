@@ -19,6 +19,7 @@ public:
 	void ReadMap(string dominationFileName);
 	Map* GetMap(std::string filePath);
 	friend istream& operator >> (istream& in, string dominationMap);
+	void ValidateConnectedGraph(Map* map);
 
 	vector<string> SplitWords(string s);
 	string FirstComponent(string s);
