@@ -23,7 +23,7 @@ class Player
 {
 private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member
-	int playerNumber; // assign each player a number to keep track of which player is playing
+	static int playerNumber; // assign each player a number to keep track of which player is playing
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
@@ -45,6 +45,9 @@ public:
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
 	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
 	void setHand(Hand* h); // sets input Hand to be that of this Player
+
+	int getPlayerNumber();
+	string getName();
 
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);

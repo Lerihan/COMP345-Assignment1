@@ -9,6 +9,8 @@
 #include "Cards.h"
 #include "Order.h"
 
+#include "GameEngine.h"
+
 //#include "PlayerDriver.cpp" // I know I'm not supposed to import a cpp file
 
 /*
@@ -17,5 +19,8 @@
 
 int main()
 {
+	GameEngine g;
+	g.startGame();
+
 	return 0;
 }
