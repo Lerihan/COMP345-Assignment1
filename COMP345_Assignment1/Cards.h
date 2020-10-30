@@ -30,9 +30,9 @@ public:
 class Hand : public Cards{
 friend class Deck;
 protected:
-	Player* player;
-	std::vector<string> cardsInHand;
+	Player* player;	
 public:
+	std::vector<string> cardsInHand;
 	Hand();
 	Hand(Hand& player);
 	Hand(Player* playerName, std::vector<string> playersCards);
@@ -47,8 +47,8 @@ public:
 class Deck : public Cards{
 friend class Hand;
 protected:
-	std::vector<string> cardsInDeck;
 public:
+	std::vector<string> cardsInDeck;
 	Deck();
 	Deck(Deck& d);
 	Deck(std::vector<string> cardsInDeck);
