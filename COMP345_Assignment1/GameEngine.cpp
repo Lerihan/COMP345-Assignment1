@@ -6,8 +6,22 @@
 void GameEngine::startGame()
 {
 	cout << "Welcome!" << endl; //TODO: change to better message later
+	cout << endl;
+
 	selectMap();
+	cout << endl;
+
 	selectPlayers();
+	cout << endl;
+
+	setObservers();
+	cout << endl;
+
+	/*You must deliver a driver that demonstrates that
+	(1) different valid maps can be loaded and
+		their validity is verified(i.e.it is a connected graph, etc.), and invalid maps are gracefully rejected; 
+	(2) the right number of players is created, a deck with the right number of cards is created; 
+	(3) the observers can be turned on / off during the game start phase*/
 }
 
 void GameEngine::selectMap()
@@ -54,6 +68,22 @@ void GameEngine::selectPlayers()
 
 void GameEngine::setObservers()
 {
+	char answer;
+	cout << "Would you like to turn on the observers ? (y/n): ";
+	cin >> answer;
+
+	if (answer == 'y')
+	{
+		observerOn = true;
+		cout << "Observers will be on." << endl;
+	}
+	else if (answer == 'n')
+	{
+		observerOn = false;
+		cout << "Observers will be off." << endl;
+	}
+
+
 }
 
 

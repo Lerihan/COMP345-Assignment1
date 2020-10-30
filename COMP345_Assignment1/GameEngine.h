@@ -11,6 +11,8 @@ public:
 private:
 	Map* map;
 	vector<Player*> players;
+	bool observerOn;
+
 	void selectMap();
 	void selectPlayers();
 	void setObservers();
