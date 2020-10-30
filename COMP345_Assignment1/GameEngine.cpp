@@ -31,8 +31,16 @@ void GameEngine::selectPlayers()
 	// cards to each player.
 	int playernum = 0;
 
-	cout << "Select the number of players (2-5): ";
-	cin >> playernum; //TODO: add check for playernum
+	do
+	{
+		cout << "Select the number of players (2-5): ";
+		cin >> playernum;
+
+		if (playernum < 2 || playernum > 5)
+		{
+			cout << "Please enter a valid number of players." << endl;
+		}
+	} while (playernum < 2 || playernum > 5);
 
 	string playername;
 	for (int i = 0; i < playernum; i++)
@@ -43,5 +51,11 @@ void GameEngine::selectPlayers()
 		players.push_back(p);
 	}
 }
+
+void GameEngine::setObservers()
+{
+}
+
+
 
 
