@@ -20,5 +20,5 @@ class Subject {
 		Subject();
 		~Subject();
 	private:
-		list<Observer*>* observers;
+		vector<Observer*> observers;
 };
