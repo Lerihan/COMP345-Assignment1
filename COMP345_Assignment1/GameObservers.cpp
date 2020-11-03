@@ -4,18 +4,6 @@
 
 using namespace std;
 
-class Subject {
-	public:
-		Subject() {};
-		virtual ~Subject() {};
-		virtual void attach(Observer*);
-		virtual void detach(Observer*);
-		virtual void notify();
-	private:
-		vector<Observer*> observers;
-};
-
-
 void Subject::attach(Observer* observer) {
 	observers.push_back(observer);
 }
@@ -36,4 +24,12 @@ void Subject::notify() {
 	for (Observer* observer : observers) {
 		observer->update();
 	}
+}
+
+void PhaseObserver::update() {
+
+}
+
+void GameStatisticsObserver::update() {
+
 }

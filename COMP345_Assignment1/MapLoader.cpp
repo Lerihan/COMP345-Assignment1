@@ -38,9 +38,9 @@ Map* MapLoader::GetMap(string filePath) {
 	return finalMap;
 }
 
-Map map;
 void MapLoader::ReadMap(string dominationFileName) {
 	try {
+		Map map;
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
@@ -177,6 +177,7 @@ void MapLoader::ValidateConnectedGraph(Map* map)
 		}
 		else {
 			map->validate();
+			//cout << *map << endl;
 			cout << "Map is  a connected graph.";
 		}
 	}

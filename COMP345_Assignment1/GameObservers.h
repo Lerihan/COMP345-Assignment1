@@ -6,8 +6,6 @@ using namespace std;
 
 class Observer {
 	public:
-		Observer(Subject* model);
-		~Observer();
 		virtual void update() = 0;
 };
 
@@ -16,9 +14,17 @@ class Subject {
 		void detach(Observer* observer);
 		void attach(Observer* observer);
 		void notify();
-
-		Subject();
-		~Subject();
 	private:
 		vector<Observer*> observers;
+};
+
+class PhaseObserver : public Observer {
+	public:
+		void update() override;
+};
+
+class GameStatisticsObserver : public Observer {
+	public:
+		void update() override;
+
 };
