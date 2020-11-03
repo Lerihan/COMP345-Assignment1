@@ -80,42 +80,47 @@ void MapLoader::ReadMap(string dominationFileName) {
 
 				if (line.find("[countries]") == 0) {
 					getline(readFile, line);
-					while (line.find("[borders]") != 0) {
-						if (line == "")
-							break;
 
-						//Split line to access different attributes of territories
-						vector<string> attributes = SplitWords(line); //index name continent x y
-						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
-						map.listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
-						map.addTerritory(newCountry); //add territory in full list of territories (in map)
-						//countries->push_back(newCountry);
-						//this->addFinalContinent->addTerritory(newCountry); //does this do anything ?
-						//getline(readFile, line);
-						cout << "New Country: " << line << endl;
-						getline(readFile, line);
+					if (hasContinent) {
+						while (line.find("[borders]") != 0) {
+							if (line == "")
+								break;
+
+							//Split line to access different attributes of territories
+							vector<string> attributes = SplitWords(line); //index name continent x y
+							Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
+							map.listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
+							map.addTerritory(newCountry); //add territory in full list of territories (in map)
+							//countries->push_back(newCountry);
+							//this->addFinalContinent->addTerritory(newCountry); //does this do anything ?
+							//getline(readFile, line);
+							cout << "New Country: " << line << endl;
+							getline(readFile, line);
+						}
 					}
-
 					hasCountries = true;
 				}
 
 				if (line.find("[borders]") == 0) {
 					getline(readFile, line);
-					while (!line.empty()) {
-						if (line == "")
-							break;
 
-						vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
-						Territory* t0 = map.getTerritory(stoi(adjCountries[0]));
-						for (int i = 1; i < adjCountries.size(); i++)
-						{
-							Territory* t = map.getTerritory(stoi(adjCountries[i]));
-							map.addAdjTerritory(t0, t);
+					if (hasCountries && hasContinent) {
+						while (!line.empty()) {
+							if (line == "")
+								break;
+
+							vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
+							Territory* t0 = map.getTerritory(stoi(adjCountries[0]));
+							for (int i = 1; i < adjCountries.size(); i++)
+							{
+								Territory* t = map.getTerritory(stoi(adjCountries[i]));
+								map.addAdjTerritory(t0, t);
+							}
+
+							cout << "New Border: " << line << endl;
+							getline(readFile, line);
 						}
-
-						cout << "New Border: " << line << endl;
-						getline(readFile, line);
-					}
+					}				
 					hasBorders = true;
 				}
 			}
@@ -166,10 +171,18 @@ istream& operator>>(istream& in, string dominationMap)
 //Validate map is a connected graph
 void MapLoader::ValidateConnectedGraph(Map* map)
 {
-	if (map->validate()) {
-		cout << "Map is a connected graph.";
+	try {
+		if (map == NULL) {
+			cout << "Map is not a connected graph.";
+		}
+		else {
+			map->validate();
+			cout << "Map is  a connected graph.";
+		}
 	}
-	else {
-		cout << "Map is not a connected graph.";
+	catch (const std::exception& e) {
+		cout << e.what() << endl;
 	}
+
+	
 }
