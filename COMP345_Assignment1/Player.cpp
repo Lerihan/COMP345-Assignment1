@@ -16,9 +16,12 @@
 
 //class Territory;
 
+int Player::playerNumber = 0;
+
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
+	this->playerNumber = playerNumber++;
 	this->name = "DefaultPlayer";
 	this->hand = new Hand();
 	this->orders = new OrdersList();
@@ -30,6 +33,7 @@ Player::Player()
 // Constructor assigns input string to be Player name
 Player::Player(string name)
 {
+	this->playerNumber = playerNumber++;
 	this->name = name;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
@@ -42,6 +46,9 @@ Player::Player(string name)
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player::Player(Player& p)
 {
+	this->playerNumber = p.playerNumber;
+	this->name = p.name;
+	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 	// copy orders
 	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
 
@@ -56,8 +63,6 @@ Player::Player(Player& p)
 	}
 	*/
 
-	this->name = p.name;
-	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 
 }
 
@@ -121,6 +126,16 @@ vector<Territory*> Player::toAttack()
 void Player::setHand(Hand* h)
 {
 	this->hand = h;
+}
+
+int Player::getPlayerNumber()
+{
+	return playerNumber;
+}
+
+string Player::getName()
+{
+	return name;
 }
 
 // Returns vector of Territories to defend.

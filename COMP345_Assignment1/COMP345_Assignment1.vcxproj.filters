@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Maps">
+      <UniqueIdentifier>{6432c056-3ab1-474b-a181-06b79b525364}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="COMP345_Assignment1.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="OrdersDriver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -65,28 +71,31 @@
     <ClInclude Include="Cards.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="europe.map">
-      <Filter>Source Files</Filter>
+    <None Include="ohio.map">
+      <Filter>Source Files\Maps</Filter>
     </None>
     <None Include="mexico.map">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ohio.map">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="dortmund.map">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="eire.map">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="france.map">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Maps</Filter>
     </None>
     <None Include="Hawaii.map">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="france.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="europe.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="eire.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="dortmund.map">
+      <Filter>Source Files\Maps</Filter>
     </None>
   </ItemGroup>
 </Project>
