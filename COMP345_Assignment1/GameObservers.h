@@ -21,10 +21,15 @@ class Subject {
 class PhaseObserver : public Observer {
 	public:
 		void update() override;
+	private:
+		GameEngine currentPhase;
+		Player* currentPlayer;
+		void PrintPhaseDetails();
 };
 
 class GameStatisticsObserver : public Observer {
 	public:
 		void update() override;
-
+	private:
+		string showGameStats;
 };

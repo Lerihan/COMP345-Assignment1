@@ -1,4 +1,5 @@
 #include "GameObservers.h"
+#include "GameEngine.h"
 #include <iostream>
 #include <list>
 
@@ -27,7 +28,14 @@ void Subject::notify() {
 }
 
 void PhaseObserver::update() {
+	//currentPhase = GameEngine:: getCurrentPhase();
+	//currentPlayer = GameEngine:: getCurrentPlayer();
+}
 
+void PhaseObserver::PrintPhaseDetails() {
+	
+	cout << "Current Phase: " << endl;
+	cout << "Current Player: " << endl;
 }
 
 void GameStatisticsObserver::update() {
