@@ -16,7 +16,7 @@ public:
 	~MapLoader(); //destructor
 
 	MapLoader(string dominationFileName);
-	void ReadMap(string dominationFileName);
+	Map* ReadMap(string dominationFileName);
 	Map* GetMap(std::string filePath);
 	friend istream& operator >> (istream& in, string dominationMap);
 	void ValidateConnectedGraph(Map* map);
