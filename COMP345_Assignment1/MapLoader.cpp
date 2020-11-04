@@ -38,15 +38,15 @@ Map* MapLoader::GetMap(string filePath) {
 	return finalMap;
 }
 
-void MapLoader::ReadMap(string dominationFileName) {
+Map* MapLoader::ReadMap(string dominationFileName) {
 	try {
-		Map map;
+		Map* map = new Map();
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
 
-		map.name = FirstComponent(dominationFileName);
+		map->name = FirstComponent(dominationFileName);
 
 		ifstream readFile;
 		readFile.open(dominationFileName);
@@ -70,7 +70,7 @@ void MapLoader::ReadMap(string dominationFileName) {
 						vector<string> attributes = SplitWords(line);
 						Continent* newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
 						//continents->push_back(newContinent);
-						map.addContinent(newContinent);
+						map->addContinent(newContinent);
 						cout << "New Continent: " << line << endl;
 						index++;
 						getline(readFile, line);
@@ -89,8 +89,8 @@ void MapLoader::ReadMap(string dominationFileName) {
 							//Split line to access different attributes of territories
 							vector<string> attributes = SplitWords(line); //index name continent x y
 							Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
-							map.listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
-							map.addTerritory(newCountry); //add territory in full list of territories (in map)
+							map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
+							map->addTerritory(newCountry); //add territory in full list of territories (in map)
 							//countries->push_back(newCountry);
 							//this->addFinalContinent->addTerritory(newCountry); //does this do anything ?
 							//getline(readFile, line);
@@ -110,11 +110,11 @@ void MapLoader::ReadMap(string dominationFileName) {
 								break;
 
 							vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
-							Territory* t0 = map.getTerritory(stoi(adjCountries[0]));
+							Territory* t0 = map->getTerritory(stoi(adjCountries[0]));
 							for (int i = 1; i < adjCountries.size(); i++)
 							{
-								Territory* t = map.getTerritory(stoi(adjCountries[i]));
-								map.addAdjTerritory(t0, t);
+								Territory* t = map->getTerritory(stoi(adjCountries[i]));
+								map->addAdjTerritory(t0, t);
 							}
 
 							cout << "New Border: " << line << endl;
@@ -127,8 +127,10 @@ void MapLoader::ReadMap(string dominationFileName) {
 
 			if (hasContinent && hasCountries && hasBorders) {
 				cout << "Map File is valid" << endl;
-				this->finalMap = &map;
+				this->finalMap = map;
 				readFile.close();
+				return map; 
+				delete map; //deallocate memory
 			}
 			else {
 				cout << "Map File is invalid" << endl;
@@ -177,7 +179,7 @@ void MapLoader::ValidateConnectedGraph(Map* map)
 		}
 		else {
 			map->validate();
-			//cout << *map << endl;
+			cout << *map << endl;
 			cout << "Map is  a connected graph.";
 		}
 	}
