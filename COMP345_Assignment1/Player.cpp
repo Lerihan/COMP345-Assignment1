@@ -71,9 +71,21 @@ Player::Player(Player& p)
 // idk if it should also delete all their cards and territories
 Player::~Player()
 {
-	//delete this;
-	//delete orders;
-	//delete hand;
+	delete this->hand; // delete Player's Hand pointer
+
+	for (int i = 0; i < this->territories.size(); i++)
+	{
+		delete this->territories[i]; // delete pointer for each Territory
+		this->territories[i] = NULL; // avoid dangling pointers
+	}
+	this->territories.clear(); // remove placeholder memory locations
+
+	// remove this... should only delete OrdersList pointer
+	for (int i = 0; i < this->orders->getOrdersList().size(); i++)
+	{
+		delete this->orders->getOrdersList()[i]; // delete pointer for each Order
+		this->orders->getOrdersList()[i] = NULL; // avoid dangling pointers
+	}
 }
 
 // Returns vector of Territories.
