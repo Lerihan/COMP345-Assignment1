@@ -73,6 +73,7 @@ Hand::Hand(Player* playerName, std::vector<string> playersCards) {
 }
 
 Hand::~Hand() {
+	delete this->player;
 	delete this;
 }
 
@@ -110,9 +111,10 @@ istream& operator << (istream& in, const Hand& h) {
 	return in;
 }
 
-void Hand::play(string cardToPlay, Deck& d, Player& p) {
+void Hand::play(string cardToPlay, Deck& d) {
 	//getting player's hand
-	Hand* h = p.getHand();
+	Player* p = this->player;
+	Hand* h = p->getHand();
 	//implement function for the cards played
 	//checks desired card to be played, creates a new order in the player's orderlist & "plays" the card
 	if (cardToPlay == cardsAvailable[0]){
@@ -120,7 +122,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 		//create new order in orderlist
 		//create new bomb order
 		Bomb* bombCard = new Bomb();
-		(p.getOrdersList())->add(bombCard);
+		(p->getOrdersList())->add(bombCard);
 		cout << "Player used bomb card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]);
@@ -132,7 +134,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[1]) {
 		//Diplomacy
 		Negotiate* negotiateCard = new Negotiate();
-		(p.getOrdersList())->add(negotiateCard);
+		(p->getOrdersList())->add(negotiateCard);
 		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]);
@@ -144,7 +146,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[2]) {
 		//Blockade
 		Blockade* blockCard = new Blockade();
-		(p.getOrdersList())->add(blockCard);
+		(p->getOrdersList())->add(blockCard);
 		cout << "Player used Blockade card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]);
@@ -156,7 +158,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[3]) {
 		//Reinforcement
 		Deploy* reinforcementCard = new Deploy();
-		(p.getOrdersList())->add(reinforcementCard);
+		(p->getOrdersList())->add(reinforcementCard);
 		cout << "Player used Reinforcement card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]);
@@ -168,7 +170,7 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else if (cardToPlay == cardsAvailable[4]) {
 		//Airlift
 		Airlift* airliftCard = new Airlift();
-		(p.getOrdersList())->add(airliftCard);
+		(p->getOrdersList())->add(airliftCard);
 		cout << "Player used Airlift card; created a new order list." << endl;
 		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]);
@@ -180,7 +182,6 @@ void Hand::play(string cardToPlay, Deck& d, Player& p) {
 	else 
 	cout << "Player chose a card that they do not possess." << endl;
 }
-	
 
 
 //DECK
@@ -232,13 +233,13 @@ istream& operator << (istream& in, const Deck& d) {
 	return in;
 }
 
-void Deck::draw(Player& p) {	
+void Deck::draw(Player* p) {	
 	//getting player's hand
-	Hand* h = p.getHand();
+	Hand* h = p->getHand();
 
 	//random number from 0 to size of current deck;
 	srand(time(NULL));
-	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0;
+	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0; 
 	//simply add the card to the end of the player's hand
 	h->cardsInHand.push_back(this->cardsInDeck.at(randomCardIndex));
 	//Removes the randomCard from the deck & reduces the deck's size

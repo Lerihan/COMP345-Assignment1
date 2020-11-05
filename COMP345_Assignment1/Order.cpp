@@ -27,6 +27,12 @@ Order::Order(const Order& order) {
 	executed = order.executed;
 }
 
+Order::~Order()
+{
+	delete this->player;
+	delete this;
+}
+
 /*Assignment operator for the Order base class
 */
 Order& Order::operator=(const Order& order) {
@@ -83,6 +89,12 @@ Deploy::Deploy(const Deploy& deploy): Order(deploy)
 {
 	this->territory = deploy.territory;
 	this->numOfArmies = deploy.numOfArmies;
+}
+
+Deploy::~Deploy()
+{
+	delete this->territory;
+	delete this;
 }
 
 /*Assignment operator for the Deploy class
@@ -149,6 +161,13 @@ Advance::Advance(const Advance& advance) : Order(advance)
 	this->next = advance.next;
 }
 
+Advance::~Advance()
+{
+	delete this->current;
+	delete this->next;
+	delete this;
+}
+
 /*Assignment operator for the Advance class
 */
 Advance& Advance::operator=(const Advance& advance)
@@ -213,6 +232,13 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 	this->target = bomb.target;
 }
 
+Bomb::~Bomb()
+{
+	delete this->source;
+	delete this->target;
+	delete this;
+}
+
 /*Assignment operator for the Bomb class
 */
 Bomb& Bomb::operator=(const Bomb& bomb) 
@@ -271,6 +297,12 @@ Blockade::Blockade(Player* player, Territory* target) : Order(player)
 Blockade::Blockade(const Blockade& blockade) : Order(blockade) 
 {
 	this->target = blockade.target;
+}
+
+Blockade::~Blockade()
+{
+	delete this->target;
+	delete this;
 }
 
 /*Assignment operator for the Blockade class
@@ -336,6 +368,13 @@ Airlift::Airlift(const Airlift& airlift) : Order(airlift)
 	this->next = airlift.next;
 }
 
+Airlift::~Airlift()
+{
+	delete this->current;
+	delete this->next;
+	delete this;
+}
+
 /*Assignment operator for the Airlift class
 */
 Airlift& Airlift::operator=(const Airlift& airlift) 
@@ -393,6 +432,12 @@ Negotiate::Negotiate(Player* current, Player* enemy) : Order(current)
 Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate) 
 {
 	this->enemy = negotiate.enemy;
+}
+
+Negotiate::~Negotiate()
+{
+	delete this->enemy;
+	delete this;
 }
 
 /*Assignment operator for the Negotiate class
@@ -499,6 +544,18 @@ OrdersList::OrdersList()
 	// create empty vector of Order	
 	vector<Order*> o;	
 	this->ordersList = o;	
+}
+
+// Destructor. Deletes pointer of each Order contained in the OrdersList vector, and the OrdersList pointer itself.
+OrdersList::~OrdersList()
+{
+	for (int i = 0; i < this->ordersList.size(); i++)
+	{
+		delete this->ordersList[i];
+		this->ordersList[i] = NULL;
+	}
+	this->ordersList.clear(); // remove placeholder memory locations
+	delete this;
 }
 
 /*Stream insertion operator for OrdersList class

@@ -41,7 +41,7 @@ public:
 	std::vector<string> getCardsInHand();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
-	static void play(string cardToPlay, Deck& d, Player& p);
+	void play(string cardToPlay, Deck& d);
 };
 
 class Deck : public Cards{
@@ -56,5 +56,5 @@ public:
 	Deck& operator = (const Deck &d);
 	friend ostream& operator << (ostream& out, const Deck& d);
 	friend istream& operator << (istream& in, const Deck& d);
-	void draw(Player& p);
+	void draw(Player* p);
 };

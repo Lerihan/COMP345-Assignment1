@@ -22,4 +22,6 @@ private:
 	void setInitialArmies();
 	void chooseFirstPlayer();
 	int randomNumber(int min,  int max);
+	void mainGameLoop(); // void for now
+	void reinforcementPhase(Player* p); // void for now
 };
