@@ -48,15 +48,21 @@ void GameEngine::startupPhase()
 
 void GameEngine::selectMap()
 {
-	//mapLoader->ValidateConnectedGraph(map); //call this somewhere else
-	// (1) Select a map from a list of map files as stored in a directory
 	string dominationMap;
 	MapLoader* mapLoader = new MapLoader();
 
+	do
+	{
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
-	//TODO: check if map is valid
+
+		if (map == NULL)
+		{
+			cout << "Map is invalid." << endl;
+		}
+	} while (map == NULL);
+
 	//cout << *map;
 }
 
@@ -138,7 +144,7 @@ void GameEngine::chooseFirstPlayer()
 {
 	int first = randomNumber(0, numOfPlayers - 1);
 	firstPlayer = players.at(first);
-	cout << *firstPlayer;
+	//cout << *firstPlayer;
 }
 
 // Code from https://stackoverflow.com/questions/12657962/how-do-i-generate-a-random-number-between-two-variables-that-i-have-stored

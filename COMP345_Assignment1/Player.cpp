@@ -71,7 +71,9 @@ Player::Player(Player& p)
 // idk if it should also delete all their cards and territories
 Player::~Player()
 {
-	delete this;
+	//delete this;
+	//delete orders;
+	//delete hand;
 }
 
 // Returns vector of Territories.

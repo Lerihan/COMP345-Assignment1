@@ -265,7 +265,6 @@ Continent& Continent::operator = (const Continent &c)
 */
 Continent::~Continent()
 {
-	//delete this;
 }
 
 //Stream override
@@ -396,7 +395,7 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	delete owner;
+	//delete owner;
 }
 
 /*
