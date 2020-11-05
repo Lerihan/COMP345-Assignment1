@@ -71,6 +71,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						Continent* newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
 						map->addContinent(newContinent);
 						index++;
+						delete newContinent; // deallocate memory
 						//cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
@@ -88,6 +89,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
+						delete newCountry; // deallocate memory
 						//cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}

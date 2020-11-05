@@ -55,6 +55,7 @@ Player::Player(Player& p)
 	// copy territories
 	this->territories = p.territories; // assumes Territory = operator is correctly implemented
 
+	this->numOfArmies = p.numOfArmies;
 	/*
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
@@ -136,6 +137,16 @@ int Player::getPlayerNumber()
 string Player::getName()
 {
 	return name;
+}
+
+void Player::setArmyNumber(int n)
+{
+	numOfArmies = n;
+}
+
+int Player::getArmyNumber()
+{
+	return numOfArmies;
 }
 
 // Returns vector of Territories to defend.
