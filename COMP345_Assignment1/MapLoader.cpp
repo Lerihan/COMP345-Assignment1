@@ -53,6 +53,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 		if (!readFile) {
 			cout << "Can't read file" << endl;
+			return NULL;
 		}
 		else {
 			while (getline(readFile, line))
@@ -71,13 +72,14 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						Continent* newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
 						map->addContinent(newContinent);
 						index++;
+						delete newContinent; // deallocate memory
 						//cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
 					hasContinent = true;
 				}
 
-				if (line.find("[countries]") == 0) {
+				if (line.find("[countries]") == 0 && hasContinent) {
 					getline(readFile, line);
 					while (line.find("[borders]") != 0) {
 						if (line == "")
@@ -88,6 +90,8 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
+						//delete newCountry; // deallocate memory //TODO: gives error rn
+
 						//cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
@@ -95,7 +99,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 					hasCountries = true;
 				}
 
-				if (line.find("[borders]") == 0) {
+				if (line.find("[borders]") == 0 && hasContinent && hasCountries) {
 					getline(readFile, line);
 					while (!line.empty()) {
 						if (line == "")
@@ -125,6 +129,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 			else {
 				cout << "Map File is invalid" << endl;
 				readFile.close();
+				return NULL;
 			}
 		}
 	}

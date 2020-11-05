@@ -24,6 +24,7 @@ class Player
 private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member
 	static int playerNumber; // assign each player a number to keep track of which player is playing
+	int numOfArmies;
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
@@ -48,6 +49,8 @@ public:
 
 	int getPlayerNumber();
 	string getName();
+	void setArmyNumber(int n);
+	int getArmyNumber();
 
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);

@@ -55,6 +55,7 @@ Player::Player(Player& p)
 	// copy territories
 	this->territories = p.territories; // assumes Territory = operator is correctly implemented
 
+	this->numOfArmies = p.numOfArmies;
 	/*
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
@@ -70,7 +71,9 @@ Player::Player(Player& p)
 // idk if it should also delete all their cards and territories
 Player::~Player()
 {
-	delete this;
+	//delete this;
+	//delete orders;
+	//delete hand;
 }
 
 // Returns vector of Territories.
@@ -136,6 +139,16 @@ int Player::getPlayerNumber()
 string Player::getName()
 {
 	return name;
+}
+
+void Player::setArmyNumber(int n)
+{
+	numOfArmies = n;
+}
+
+int Player::getArmyNumber()
+{
+	return numOfArmies;
 }
 
 // Returns vector of Territories to defend.
