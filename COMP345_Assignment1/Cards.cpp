@@ -168,7 +168,7 @@ void Hand::play(Card* cardToPlay, Deck* d) {
 
 //DECK
 //default constructor
-Deck::Deck(){	
+Deck::Deck() {	
 	int deckSize = 55;
 	// determine how many cards to max out
 	for (int i = 0; i < deckSize; i++) {

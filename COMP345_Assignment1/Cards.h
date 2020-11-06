@@ -30,7 +30,7 @@ public:
 };
 
 class BombCard : public Card {
-	private:
+private:
 		Territory* target; // target that gets bombed
 public:
 	BombCard();
