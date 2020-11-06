@@ -7,43 +7,25 @@
 #include "Order.h"
 using namespace std;
 
-string Cards::cardsAvailable[5] = { "Bomb", "Diplomacy", "Blockade", "Reinforcement","Airlift" };
-
 //CARDS
 //default constructor
-Cards::Cards() {
+Card::Card() {
 }
 
-//copy constructor
-Cards::Cards(const Cards& c) {
-	int sizeOfNewArray = sizeof(c.cardsAvailable) / sizeof(*c.cardsAvailable);
-	string *newCardsAvailable = new string[sizeOfNewArray];
-	for (int i = 0; i < sizeOfNewArray; i++) {
-		newCardsAvailable[i] = c.cardsAvailable[i];
-	}
-}
-
-Cards::Cards(string newCards[5]) {
-	//creates a new assortment of cards from a specific list
-	for (int i = 0; i < (*(&cardsAvailable + 1) - cardsAvailable); i++) {
-		cardsAvailable[i] = newCards[i];
-	}
-}
-
-Cards::~Cards() {
+Card::~Card() {
 	delete this;
 }
 
 //assignment constructor
-Cards& Cards::operator = (const Cards& c) {
+Card& Card::operator = (const Card& c) {
 	return *this;
 }
 
 //stream insertion operators
-ostream& operator << (ostream& out, const Cards& c) {
+ostream& operator << (ostream& out, const Card& c) {
 	return out;
 }
-istream& operator << (istream& in, const Cards& c) {
+istream& operator << (istream& in, const Card& c) {
 	return in;
 }
 
@@ -60,7 +42,7 @@ Hand::Hand(Hand& player) {
 	this->cardsInHand = player.cardsInHand;
 }
 
-Hand::Hand(Player* playerName, std::vector<string> playersCards) {
+Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	this->player->setHand(this);
@@ -85,8 +67,8 @@ Hand& Hand::operator = (const Hand& h) {
 }
 
 //returns the cards in the player's hands.
-vector<string> Hand::getCardsInHand() {
-	vector<string> h;
+vector<Card*> Hand::getCardsInHand() {
+	vector<Card*> h;
 	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
@@ -96,22 +78,22 @@ vector<string> Hand::getCardsInHand() {
 //stream insertion operators
 // Returns a string of all the cards in the input Hand.
 ostream& operator << (ostream& out, const Hand& h) {
-	string s = "";
 	for (int i = 0; i < h.cardsInHand.size(); i++)
 	{
-		string c = h.cardsInHand.at(i); // only works if I make this line separate from the one below for some reason
-		s += c;
-		s += ", ";
+		Card* c = h.cardsInHand.at(i); // only works if I make this line separate from the one below for some reason
+		out << *c << ", ";
 	}
-	s += "\b\b.";
+	out << "\b\b.";
 
-	return out << s;
+	return out << endl;
 }
 istream& operator << (istream& in, const Hand& h) {
 	return in;
 }
 
-void Hand::play(string cardToPlay, Deck& d) {
+// make it call play() of the Card subclass
+/*
+void Hand::play(Card* cardToPlay, Deck* d) {
 	//getting player's hand
 	Player* p = this->player;
 	Hand* h = p->getHand();
@@ -128,7 +110,7 @@ void Hand::play(string cardToPlay, Deck& d) {
 		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]);
 		h->cardsInHand.erase(cardToMove);
 		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[0]);
+		d->cardsInDeck.push_back(cardsAvailable[0]);
 		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
 	}
 	else if (cardToPlay == cardsAvailable[1]) {
@@ -182,7 +164,7 @@ void Hand::play(string cardToPlay, Deck& d) {
 	else 
 	cout << "Player chose a card that they do not possess." << endl;
 }
-
+*/
 
 //DECK
 //default constructor
@@ -190,16 +172,16 @@ Deck::Deck(){
 	int deckSize = 55;
 	// determine how many cards to max out
 	for (int i = 0; i < deckSize; i++) {
-		if (i < 11) 
-			cardsInDeck.push_back(cardsAvailable[0]);
+		if (i < 11)
+			cardsInDeck.push_back(new BombCard());
 		else if (i < 22) 
-			cardsInDeck.push_back(cardsAvailable[1]);
+			cardsInDeck.push_back(new ReinforcementCard());
 		else if (i < 33) 
-			cardsInDeck.push_back(cardsAvailable[2]);
+			cardsInDeck.push_back(new BlockadeCard());
 		else if (i < 44) 
-			cardsInDeck.push_back(cardsAvailable[3]);
+			cardsInDeck.push_back(new AirliftCard());
 		else if (i < 55) 
-			cardsInDeck.push_back(cardsAvailable[4]);
+			cardsInDeck.push_back(new DiplomacyCard());
 	}
 	random_shuffle(&cardsInDeck.at(0), &cardsInDeck.at(deckSize - 1));
 }
@@ -210,7 +192,7 @@ Deck::Deck(Deck& deck) {
 	this->cardsInDeck = deck.cardsInDeck;
 }
 
-Deck::Deck(std::vector<string> newCardsInDeck) {
+Deck::Deck(std::vector<Card*> newCardsInDeck) {
 	//creates a deck of 55 cards, by taking another card set
 	this->cardsInDeck = newCardsInDeck;
 }
@@ -245,4 +227,28 @@ void Deck::draw(Player* p) {
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
 	cout << "Player has added a card into their hand" << endl;
+}
+
+ostream& operator << (ostream& out, const Card& c) {
+	return out << "Card";
+}
+
+ostream& operator << (ostream& out, const BombCard& c) {
+	cout << "BombCard";
+}
+
+ostream& operator << (ostream& out, const ReinforcementCard& c) {
+	cout << "ReinforcementCard";
+}
+
+ostream& operator << (ostream& out, const BlockadeCard& c) {
+	cout << "BlockadeCard";
+}
+
+ostream& operator << (ostream& out, const AirliftCard& c) {
+	cout << "AirliftCard";
+}
+
+ostream& operator << (ostream& out, const DiplomacyCard& c) {
+	cout << "DiplomacyCard";
 }
