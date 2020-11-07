@@ -16,7 +16,7 @@
 
 //class Territory;
 
-int Player::totalPlayers = 1;
+int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of the Player in the GameEngine
 
 // Default constructor sets attributes to be empty vectors.
 Player::Player()

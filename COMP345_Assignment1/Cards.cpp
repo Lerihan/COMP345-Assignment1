@@ -233,20 +233,176 @@ ostream& operator << (ostream& out, const Card& c) {
 	return out << "Card";
 }
 
+
+// ######################################
+// BombCard
+// ######################################
+BombCard::BombCard() {
+	this->target = NULL;
+}
+
+BombCard::BombCard(Territory* target) {
+	this->target = target;
+}
+
+BombCard::~BombCard() {
+	delete this->target;
+	delete this;
+}
+
+void BombCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* BombCard::getTarget() {
+	return this->target;
+}
+
+Bomb* BombCard::play() {
+
+}
+
 ostream& operator << (ostream& out, const BombCard& c) {
 	cout << "BombCard";
+}
+
+
+// ######################################
+// ReinforcementCard
+// ######################################
+ReinforcementCard::ReinforcementCard() {
+	this->numArmies = 0;
+}
+
+ReinforcementCard::ReinforcementCard(int numArmies) {
+	this->numArmies = numArmies;
+}
+
+ReinforcementCard::~ReinforcementCard() {
+	delete this;
+}
+
+void ReinforcementCard::setNumArmies(int numArmies) {
+	this->numArmies = numArmies;
+}
+
+int ReinforcementCard::getNumArmies() {
+	return this->numArmies;
+}
+
+void ReinforcementCard::play() {
+
 }
 
 ostream& operator << (ostream& out, const ReinforcementCard& c) {
 	cout << "ReinforcementCard";
 }
 
+// ######################################
+// BlockadeCard
+// ######################################
+BlockadeCard::BlockadeCard() {
+	this->target = NULL;
+}
+
+BlockadeCard::BlockadeCard(Territory* target) {
+	this->target = target;
+}
+
+BlockadeCard::~BlockadeCard() {
+	delete this->target;
+	delete this;
+}
+
+void BlockadeCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* BlockadeCard::getTarget() {
+	return this->target;
+}
+
+Blockade* BlockadeCard::play() {
+
+}
+
 ostream& operator << (ostream& out, const BlockadeCard& c) {
 	cout << "BlockadeCard";
 }
 
+// ######################################
+// AirliftCard
+// ######################################
+AirliftCard::AirliftCard() {
+	this->current = NULL;
+	this->target = NULL;
+	this->numArmies = 0;
+}
+
+AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
+	this->current = current;
+	this->target = target;
+	this->numArmies = numArmies;
+}
+
+void AirliftCard::setCurrent(Territory* current) {
+	this->current = current;
+}
+
+Territory* AirliftCard::getCurrent() {
+	return this->current;
+}
+
+void AirliftCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* AirliftCard::getTarget() {
+	return this->target;
+}
+
+void AirliftCard::setNumArmies() {
+	this->numArmies = numArmies;
+}
+
+int AirliftCard::getNumArmies(int numArmies) {
+	return this->numArmies;
+}
+
+Airlift* AirliftCard::play() {
+
+}
+
 ostream& operator << (ostream& out, const AirliftCard& c) {
 	cout << "AirliftCard";
+}
+
+// ######################################
+// DiplomacyCard
+// ######################################
+DiplomacyCard::DiplomacyCard() {
+	this->enemy = NULL;
+}
+
+DiplomacyCard::DiplomacyCard(Player* enemy) {
+	this->enemy = enemy;
+}
+
+DiplomacyCard::~DiplomacyCard() {
+	delete this->enemy;
+	delete this;
+}
+
+void DiplomacyCard::setEnemy(Player* enemy) {
+	this->enemy = enemy;
+}
+
+Player* DiplomacyCard::getEnemy() {
+	return this->enemy;
+}
+
+Negotiate* DiplomacyCard::play() {
+
 }
 
 ostream& operator << (ostream& out, const DiplomacyCard& c) {

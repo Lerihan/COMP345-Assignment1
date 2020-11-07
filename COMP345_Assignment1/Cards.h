@@ -13,6 +13,12 @@
 class Player;
 class Deck;
 
+// needed Order subclasses
+class Airlift;
+class Bomb;
+class Blockade;
+class Negotiate;
+
 // TODO:
 // Add play() method for each subclass
 
@@ -23,7 +29,7 @@ public:
 	virtual ~Card();
 	Card& operator = (const Card &c);
 
-	virtual Order* play() = 0; // will have a play() method for each type of card
+	//virtual Order* play() = 0; // will have a play() method for each type of card
 
 	friend ostream& operator << (ostream& out, const Card& c);
 	friend istream& operator << (istream& in, const Card& c);
@@ -36,6 +42,8 @@ public:
 	BombCard();
 	BombCard(Territory* target);
 	~BombCard();
+
+	Bomb* play();
 
 	void setTarget(Territory* target);
 	Territory* getTarget();
@@ -52,6 +60,8 @@ class ReinforcementCard : public Card {
 		ReinforcementCard(int numArmies);
 		~ReinforcementCard();
 
+		void play();
+
 		void setNumArmies(int numArmies);
 		int getNumArmies();
 		friend ostream& operator << (ostream& out, const ReinforcementCard& c);
@@ -65,6 +75,9 @@ public:
 	BlockadeCard();
 	BlockadeCard(Territory* targe);
 	~BlockadeCard();
+
+	Blockade* play();
+
 	void setTarget(Territory* target);
 	Territory* getTarget();
 	friend ostream& operator << (ostream& out, const BlockadeCard& c);
@@ -81,12 +94,14 @@ public:
 	AirliftCard(Territory* current, Territory* target, int numArmies);
 	~AirliftCard();
 
+	Airlift* play();
+
 	void setCurrent(Territory* current);
 	Territory* getCurrent();
 	void setTarget(Territory* target);
 	Territory* getTarget();
 	void setNumArmies();
-	int setNumArmies(int numArmies);
+	int getNumArmies(int numArmies);
 	friend ostream& operator << (ostream& out, const AirliftCard& c);
 };
 
@@ -98,6 +113,8 @@ public:
 	DiplomacyCard();
 	DiplomacyCard(Player* enemy);
 	~DiplomacyCard();
+
+	Negotiate* play();
 
 	void setEnemy(Player* enemy);
 	Player* getEnemy();
@@ -118,7 +135,6 @@ public:
 	std::vector<Card*> getCardsInHand();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
-	void play(Card* cardToPlay, Deck* d);
 };
 
 class Deck : public Card {

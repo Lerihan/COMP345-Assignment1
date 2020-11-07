@@ -171,6 +171,9 @@ void GameEngine::mainGameLoop()
 	// Issuing Orders phase
 
 	// Orders execution phase
+
+	// check if a Player owns no Territories; if yes, kick them from the game
+	
 }
 
 // Determines how many armies to add to the input Player's reinforcement pool at the start of each reinforcement phase
@@ -184,5 +187,10 @@ void GameEngine::reinforcementPhase(Player* p)
 	if ((p->getTerritories().size() / 3) < newArmies)
 		newArmies = p->getTerritories().size() / 3;
 
-	p->addArmies(newArmies); // add armies
+	p->addArmies(newArmies); // add armiesPicking 
+}
+
+// Prompts user for Order to be issued and calls issueOrder()
+int GameEngine::issueOrdersPhase(Player* currPlayer) {
+	
 }
