@@ -459,19 +459,17 @@ ostream& operator << (ostream &out, const Territory &t)
 {
 	out << endl;
 	out << "--------------------------------------" << endl;
-	cout << endl;
 	out << "The Territory name is '" << t.name << "'" << endl;
 	out << endl;
 
-	cout << "Adjacent Territories of '" << t.name << "'" << endl;
+	cout << "Adjacent Territories of '" << t.name << "':";
 	for (int i = 0; i < t.listOfAdjTerritories.size(); i++)
 	{
 		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
 	}
 
-	cout << endl << endl;
+	cout << endl;
 	out << "--------------------------------------" << endl;
-	out << endl;
 
 	return out;
 }

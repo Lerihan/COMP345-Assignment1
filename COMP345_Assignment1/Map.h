@@ -68,9 +68,6 @@ public:
 };
 
 
-
-
-
 // Only 1 map per game, I'm guessing :)
 class Map
 {

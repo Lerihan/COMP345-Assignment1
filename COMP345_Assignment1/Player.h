@@ -46,6 +46,7 @@ public:
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
 	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
 	void addArmies(int toAdd); // adds the input number of armies to the Player's reinforcement pool
+	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
 
 	// accessors and mutators
 	void setHand(Hand* h); // sets input Hand to be that of this Player
