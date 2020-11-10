@@ -23,6 +23,8 @@ public:
 
 	Order(const Order& other);
 
+	virtual ~Order(); // declare as virtual so appropriate subclass destructor is called.
+
 	Order& operator = (const Order& other);
 
 	bool operator==(const Order& other);
@@ -60,6 +62,8 @@ public:
 
 	Deploy(const Deploy& deploy);
 
+	~Deploy();
+
 	Deploy& operator = (const Deploy& deploy);
 
 	virtual bool validate();
@@ -86,6 +90,8 @@ public:
 
 	Advance(const Advance& advance);
 
+	~Advance();
+
 	Advance& operator = (const Advance& advance);
 
 	virtual bool validate();
@@ -111,6 +117,8 @@ public:
 
 	Bomb(const Bomb& bomb);
 
+	~Bomb();
+
 	Bomb& operator = (const Bomb& bomb);
 
 	virtual bool validate();
@@ -134,6 +142,8 @@ public:
 	Blockade(Player* player, Territory* target);
 
 	Blockade(const Blockade& blockade);
+
+	~Blockade();
 
 	Blockade& operator = (const Blockade& blockade);
 
@@ -161,6 +171,8 @@ public:
 
 	Airlift(const Airlift& airlift);
 
+	~Airlift();
+
 	Airlift& operator = (const Airlift& airlift);
 
 	virtual bool validate();
@@ -185,6 +197,8 @@ public:
 
 	Negotiate(const Negotiate& negotiate);
 
+	~Negotiate();
+
 	Negotiate& operator = (const Negotiate& negotiate);
 
 	virtual bool validate();
@@ -202,6 +216,8 @@ public:
 	OrdersList();
 
 	OrdersList(const OrdersList& ordersList);
+
+	~OrdersList();
 
 	OrdersList& operator=(const OrdersList& ordersList);
 

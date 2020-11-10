@@ -1,8 +1,8 @@
 //  Player.cpp
 //  
 //  COMP 345
-//  Assignment 1, Part 3
-//  Due Date: October 12, 2020
+//  Assignment
+//  Due Date: November 16, 2020
 //  Created by Michael Totarella on 2020-09-23.
 //
 
@@ -16,12 +16,12 @@
 
 //class Territory;
 
-int Player::playerNumber = 0;
+int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of the Player in the GameEngine
 
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
-	this->playerNumber = playerNumber++;
+	this->playerNumber = totalPlayers++;
 	this->name = "DefaultPlayer";
 	this->hand = new Hand();
 	this->orders = new OrdersList();
@@ -33,7 +33,7 @@ Player::Player()
 // Constructor assigns input string to be Player name
 Player::Player(string name)
 {
-	this->playerNumber = playerNumber++;
+	this->playerNumber = totalPlayers++;
 	this->name = name;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
@@ -71,9 +71,17 @@ Player::Player(Player& p)
 // idk if it should also delete all their cards and territories
 Player::~Player()
 {
-	//delete this;
-	//delete orders;
-	//delete hand;
+	delete this->hand; // delete Player's Hand pointer
+
+	for (int i = 0; i < this->territories.size(); i++)
+	{
+		delete this->territories[i]; // delete pointer for each Territory
+		this->territories[i] = NULL; // avoid dangling pointers
+	}
+	this->territories.clear(); // remove placeholder memory locations
+
+	delete this->orders; // delete pointer to OrdersList
+	delete this; // finally delete this pointer
 }
 
 // Returns vector of Territories.
@@ -104,6 +112,32 @@ vector<Order*> Player::getOrders()
 	return orders->getOrdersList();
 }
 
+// sets input Hand to be that of this Player
+void Player::setHand(Hand* h)
+{
+	this->hand = h;
+}
+
+int Player::getPlayerNumber()
+{
+	return playerNumber;
+}
+
+string Player::getName()
+{
+	return name;
+}
+
+void Player::setNumOfArmies(int n)
+{
+	numOfArmies = n;
+}
+
+int Player::getNumOfArmies()
+{
+	return numOfArmies;
+}
+
 // Adds the input Territory pointer this Player's Territories vector.
 void Player::addTerritory(Territory* t)
 {
@@ -125,31 +159,6 @@ vector<Territory*> Player::toAttack()
 	return attackList;
 }
 
-// sets input Hand to be that of this Player
-void Player::setHand(Hand* h)
-{
-	this->hand = h;
-}
-
-int Player::getPlayerNumber()
-{
-	return playerNumber;
-}
-
-string Player::getName()
-{
-	return name;
-}
-
-void Player::setArmyNumber(int n)
-{
-	numOfArmies = n;
-}
-
-int Player::getArmyNumber()
-{
-	return numOfArmies;
-}
 
 // Returns vector of Territories to defend.
 // For now, returns a vector of pointers to two default, newly generated Territories.
@@ -166,17 +175,15 @@ vector<Territory*> Player::toDefend()
 }
 
 // Adds argument Order to the Player's Order vector attribute.
-// for now just adds a default Deploy order
-void Player::issueOrder()
+void Player::issueOrder(Order* o)
 {
-	//Deploy* d = new Deploy();
-	Negotiate* d = new Negotiate(); // this is the only one that does not throw a segmentation fault
-	//Bomb* d = new Bomb();
-	//Advance* d = new Advance();
-	//Blockade* d = new Blockade();
-	//Airlift* d = new Airlift();
-	this->orders->add(d);
-	//d.setPlayer(this);
+	this->orders->add(o);
+}
+
+// Adds the input number to this Player's reinforcement pool
+void Player::addArmies(int toAdd)
+{
+	this->numOfArmies += toAdd;
 }
 
 // = operator, performs deep copy.
