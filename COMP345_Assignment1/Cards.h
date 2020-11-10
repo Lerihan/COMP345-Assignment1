@@ -22,9 +22,12 @@ class Negotiate;
 // TODO:
 // Add play() method for each subclass
 
+class Deck;
+
 class Card {	
 public:
-	friend class Hand;
+	Player* cardHolder;
+	Deck* d;
 	Card();
 	virtual ~Card();
 	Card& operator = (const Card &c);

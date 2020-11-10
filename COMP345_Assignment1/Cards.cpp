@@ -58,14 +58,13 @@ Bomb* BombCard::play() {
 	//creates new bomb order
 	Bomb* bombOrder = new Bomb();
 	//adds new bomb order to the player's orderlist
-	Player* p = new Player(); //need to use the same player as in Hand::play(), not a newly created player
+	Player* p = this->cardHolder;
 	(p->getOrdersList())->add(bombOrder);
 	cout << "Player has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
-	Deck* d = new Deck();	//need to use deck created, not a newly created deck
+	Deck* d = this->d;
 	d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
-
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
@@ -97,7 +96,16 @@ int ReinforcementCard::getNumArmies() {
 }
 
 void ReinforcementCard::play() {
-
+	//creates new reinforcement order
+	Deploy* reinforcementCard = new Deploy();
+	//adds new reinforcement order to the player's orderlist
+	Player* p = this->cardHolder;
+	(p->getOrdersList())->add(reinforcementCard);
+	cout << "Player has played a Reinforcement Card from their hand.\n" << endl;
+	//adds the reinforcement card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Reinforcement Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const ReinforcementCard& c) {
@@ -129,7 +137,16 @@ Territory* BlockadeCard::getTarget() {
 }
 
 Blockade* BlockadeCard::play() {
-
+	//creates new block order
+	Blockade* blockCard = new Blockade();
+	//adds new block order to the player's orderlist
+	Player* p = this->cardHolder;
+	(p->getOrdersList())->add(blockCard);
+	cout << "Player has played a Block Card from their hand.\n" << endl;
+	//adds the block card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Block Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
@@ -176,7 +193,16 @@ int AirliftCard::getNumArmies(int numArmies) {
 }
 
 Airlift* AirliftCard::play() {
-
+	//creates new airlift order
+	Airlift* airliftCard = new Airlift();
+	//adds new airlift order to the player's orderlist
+	Player* p = this->cardHolder;
+	(p->getOrdersList())->add(airliftCard);
+	cout << "Player has played a Airlift Card from their hand.\n" << endl;
+	//adds the airlift card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Airlift Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
@@ -208,7 +234,16 @@ Player* DiplomacyCard::getEnemy() {
 }
 
 Negotiate* DiplomacyCard::play() {
-
+	//creates new diplomacy order
+	Negotiate* diplomacyCard = new Negotiate();
+	//adds new diplomacy order to the player's orderlist
+	Player* p = this->cardHolder;
+	(p->getOrdersList())->add(diplomacyCard);
+	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
+	//adds the diplomacy card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Diplomacy Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const DiplomacyCard& c) {
