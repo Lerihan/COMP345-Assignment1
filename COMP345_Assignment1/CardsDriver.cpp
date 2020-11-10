@@ -5,8 +5,6 @@
 
 
 int main() {
-	//create default cards
-	Cards* cards;
 	//create default deck
 	Deck* deck = new Deck();
 	cout << "Creation of the default Deck: " << endl << endl;
@@ -38,7 +36,7 @@ int main() {
 
 	//draws a card and plays it immediately
 	for (int i = 0; i < 5; i++) {
-		deck->draw(*player);
+		deck->draw(player);
 	}
 
 	cout << endl << "Player's Hand:" << endl;
@@ -48,8 +46,8 @@ int main() {
 	cout << endl << h->getCardsInHand().size() << endl << endl;
 
 	while (h->getCardsInHand().size() > 0)
-	{
-		h->play(h->getCardsInHand().at(0), *deck, *player);
+	{		
+		h->cardsInHand.at(i)->play(deck);
 		//show size of deck differences & player's hand
 		cout << "Current size of deck " << deck->cardsInDeck.size() << endl;
 		cout << "Current cards in hand: " << endl;
