@@ -59,7 +59,7 @@ Bomb* BombCard::play() {
 	Bomb* bombOrder = new Bomb();
 	//adds new bomb order to the player's orderlist
 	Player* p = this->cardHolder;
-	(p->getOrdersList())->add(bombOrder);
+	p->issueOrder(bombOrder);
 	cout << "Player has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
 	Deck* d = this->d;
@@ -100,7 +100,7 @@ void ReinforcementCard::play() {
 	Deploy* reinforcementCard = new Deploy();
 	//adds new reinforcement order to the player's orderlist
 	Player* p = this->cardHolder;
-	(p->getOrdersList())->add(reinforcementCard);
+	p->issueOrder(reinforcementCard);
 	cout << "Player has played a Reinforcement Card from their hand.\n" << endl;
 	//adds the reinforcement card to the end of the deck
 	Deck* d = this->d;
@@ -141,7 +141,7 @@ Blockade* BlockadeCard::play() {
 	Blockade* blockCard = new Blockade();
 	//adds new block order to the player's orderlist
 	Player* p = this->cardHolder;
-	(p->getOrdersList())->add(blockCard);
+	p->issueOrder(blockCard);
 	cout << "Player has played a Block Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
 	Deck* d = this->d;
@@ -197,7 +197,7 @@ Airlift* AirliftCard::play() {
 	Airlift* airliftCard = new Airlift();
 	//adds new airlift order to the player's orderlist
 	Player* p = this->cardHolder;
-	(p->getOrdersList())->add(airliftCard);
+	p->issueOrder(airliftCard);
 	cout << "Player has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
 	Deck* d = this->d;
@@ -238,7 +238,7 @@ Negotiate* DiplomacyCard::play() {
 	Negotiate* diplomacyCard = new Negotiate();
 	//adds new diplomacy order to the player's orderlist
 	Player* p = this->cardHolder;
-	(p->getOrdersList())->add(diplomacyCard);
+	p->issueOrder(diplomacyCard);
 	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
 	Deck* d = this->d;

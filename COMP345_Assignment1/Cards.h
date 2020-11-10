@@ -19,11 +19,6 @@ class Bomb;
 class Blockade;
 class Negotiate;
 
-// TODO:
-// Add play() method for each subclass
-
-class Deck;
-
 class Card {	
 public:
 	Player* cardHolder;
