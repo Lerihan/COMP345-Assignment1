@@ -142,7 +142,7 @@ int Player::getNumOfArmies()
 void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
-	(*t).setOwner(this); // set the owner of the input Territory to be this Player
+	t->setOwner(this); // set the owner of the input Territory to be this Player
 }
 
 // Returns vector of Territories to attack.
@@ -154,11 +154,12 @@ vector<Territory*> Player::toAttack()
 	{
 		for (int j = 0; j < this->territories[i]->listOfAdjTerritories.size(); j++) // loop through each of the Territory's adjacent Territories
 		{
-			if (this->territories[i]->listOfAdjTerritories[j]->getOwner() != this) // if that Territory does not belong to this Player, add it to list
+			if (this->territories[i]->listOfAdjTerritories[j]->getOwner() != this // if that Territory does not belong to this Player, add it to list
+				&& !Territory::containsTerritory(attackList, this->territories[i])) // and Territory is not already in toAttack vector
 				attackList.push_back(this->territories[i]);
 		}
 	}
-	return attackList;
+	return this->sortTerritoriesToAttack(attackList);
 }
 
 
@@ -187,16 +188,40 @@ void Player::sortTerritoriesToDefend()
 {
 	Territory* temp = NULL;
 	int i, j;
-	for (i = 0; i < this->territories.size(); i++)
+	for (i = 0; i < this->territories.size(); i++) {
 		// Last i elements are already in place  
-		for (j = 0; j < this->territories.size() - i - 1; j++)
+		for (j = 0; j < this->territories.size() - i - 1; j++) {
 			if (this->territories[j]->numberOfArmies > this->territories[j + 1]->numberOfArmies)
 			{
 				temp = this->territories[j + 1];
 				this->territories[j + 1] = this->territories[j];
 				this->territories[j] = temp;
 			}
+		}
+	}
+
 	temp = NULL;
+}
+
+// Sort the input vector of Territories in increasing order of number of armies
+// Uses bubble sort
+vector<Territory*> Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
+{
+	Territory* temp = NULL;
+	int i, j;
+	for (i = 0; i < toAttack.size(); i++) {
+		// Last i elements are already in place  
+		for (j = 0; j < toAttack.size() - i - 1; j++) {
+			if (toAttack[j]->numberOfArmies > toAttack[j + 1]->numberOfArmies) {
+				temp = toAttack[j + 1];
+				toAttack[j + 1] = this->territories[j];
+				toAttack[j] = temp;
+			}
+		}
+	}
+
+	temp = NULL;
+	return toAttack;
 }
 
 // = operator, performs deep copy.

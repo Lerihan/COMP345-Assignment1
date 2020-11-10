@@ -184,6 +184,8 @@ void GameEngine::mainGameLoop()
 				totalArmiesDeployed += armiesToDeploy;
 			}
 		}
+
+		// issue Advance orders
 	}
 
 	// Orders execution phase

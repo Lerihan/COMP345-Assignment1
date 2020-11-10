@@ -17,8 +17,8 @@
 
 int main()
 {
-	//GameEngine g;
-	//g.startGame();
+	GameEngine g;
+	g.startGame();
 
 	/*
 	Territory* t1 = new Territory(0, "Canada");
