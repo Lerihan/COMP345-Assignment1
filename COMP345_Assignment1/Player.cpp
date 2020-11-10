@@ -142,21 +142,24 @@ int Player::getNumOfArmies()
 void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
-	(*t).setOwner(this); // set the owner of the input Territory to be this Player
+	t->setOwner(this); // set the owner of the input Territory to be this Player
 }
 
 // Returns vector of Territories to attack.
 // For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toAttack()
 {
-	Territory* attackTerritory1 = new Territory(0, "Attack Territory 1");
-	Territory* attackTerritory2 = new Territory(0, "Attack Territory 2");
-
 	vector<Territory*> attackList;
-	attackList.push_back(attackTerritory1);
-	attackList.push_back(attackTerritory2);
-
-	return attackList;
+	for (int i = 0; i < this->territories.size(); i++) // loop through each of this Player's Territories
+	{
+		for (int j = 0; j < this->territories[i]->listOfAdjTerritories.size(); j++) // loop through each of the Territory's adjacent Territories
+		{
+			if (this->territories[i]->listOfAdjTerritories[j]->getOwner() != this // if that Territory does not belong to this Player, add it to list
+				&& !Territory::containsTerritory(attackList, this->territories[i])) // and Territory is not already in toAttack vector
+				attackList.push_back(this->territories[i]);
+		}
+	}
+	return this->sortTerritoriesToAttack(attackList);
 }
 
 
@@ -164,14 +167,8 @@ vector<Territory*> Player::toAttack()
 // For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toDefend()
 {
-	Territory* defendTerritory1 = new Territory(0, "Attack Territory 1");
-	Territory* defendTerritory2 = new Territory(0, "Attack Territory 2");
-
-	vector<Territory*> defendList;
-	defendList.push_back(defendTerritory1);
-	defendList.push_back(defendTerritory2);
-
-	return defendList;
+	this->sortTerritoriesToDefend(); // sort Territories by priority
+	return this->territories; // return the sorted vector
 }
 
 // Adds argument Order to the Player's Order vector attribute.
@@ -184,6 +181,47 @@ void Player::issueOrder(Order* o)
 void Player::addArmies(int toAdd)
 {
 	this->numOfArmies += toAdd;
+}
+
+// Uses bubble sort to sort the Player's Territories in increasing order of number of armies
+void Player::sortTerritoriesToDefend()
+{
+	Territory* temp = NULL;
+	int i, j;
+	for (i = 0; i < this->territories.size(); i++) {
+		// Last i elements are already in place  
+		for (j = 0; j < this->territories.size() - i - 1; j++) {
+			if (this->territories[j]->numberOfArmies > this->territories[j + 1]->numberOfArmies)
+			{
+				temp = this->territories[j + 1];
+				this->territories[j + 1] = this->territories[j];
+				this->territories[j] = temp;
+			}
+		}
+	}
+
+	temp = NULL;
+}
+
+// Sort the input vector of Territories in increasing order of number of armies
+// Uses bubble sort
+vector<Territory*> Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
+{
+	Territory* temp = NULL;
+	int i, j;
+	for (i = 0; i < toAttack.size(); i++) {
+		// Last i elements are already in place  
+		for (j = 0; j < toAttack.size() - i - 1; j++) {
+			if (toAttack[j]->numberOfArmies > toAttack[j + 1]->numberOfArmies) {
+				temp = toAttack[j + 1];
+				toAttack[j + 1] = this->territories[j];
+				toAttack[j] = temp;
+			}
+		}
+	}
+
+	temp = NULL;
+	return toAttack;
 }
 
 // = operator, performs deep copy.
@@ -247,7 +285,7 @@ istream & operator >> (istream& strm,  Player& player)
 // For now, considers two Players equal if they share the same name. Note this is not enforce
 bool operator ==(const Player& p1, const Player& p2)
 {
-	return (p1.name == p2.name);
+	return (p1.playerNumber == p2.playerNumber);
 }
 
 bool operator !=(const Player& p1, const Player& p2)

@@ -17,7 +17,7 @@ private:
 	bool observerOn;
 
 	void selectMap();
-	void selectPlayers();
+	void selectPlayers(); 
 	void setObservers();
 	void setInitialArmies();
 	void chooseFirstPlayer();
