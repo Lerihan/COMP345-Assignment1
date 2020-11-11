@@ -453,6 +453,17 @@ bool Territory::isAdjacent(int id)
 	return false;
 }
 
+
+bool Territory::addTroops(int n)
+{
+	if (n > 0)
+	{
+		numberOfArmies += n;
+    return true;
+  }
+	  return false;
+}
+
 // Checks if the input Territory is contained in the input vector
 // used for sortTerritoriesToAttack(0
 bool Territory::containsTerritory(vector<Territory*> territories, Territory* t)
@@ -461,9 +472,10 @@ bool Territory::containsTerritory(vector<Territory*> territories, Territory* t)
 	{
 		if (territories[i] == t)
 			return true;
-	}
-	return false;
+  }
+  return false;
 }
+	
 
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
