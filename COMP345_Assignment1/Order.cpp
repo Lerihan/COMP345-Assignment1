@@ -1,9 +1,11 @@
 #define NOMINMAX
+#include <iostream>
 #include <algorithm>
-#include<iostream>
 #include <sstream>
 #include <vector>
-#include"Order.h"
+#include <stdlib.h>
+#include <time.h>
+#include "Order.h"
 
 using namespace std;
 
@@ -124,6 +126,8 @@ bool Deploy::execute()
 	{ 
 		cout << "Deploying " << numOfArmies << " armies.\n";
 		executed = true;
+
+		territory->addTroops(numOfArmies);
 		return true;
 	}
 	return false;
@@ -183,7 +187,7 @@ Advance& Advance::operator=(const Advance& advance)
 */
 bool Advance::validate()
 {
-	if (current->isAdjacent(next->index))
+	if (current->getOwner() == getPlayer() && current->isAdjacent(next->index))
 		return true;
 	return false;
 }
@@ -194,8 +198,39 @@ bool Advance::execute()
 {
 	if (validate())
 	{
-		cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		executed = true;
+
+		if (next->getOwner() == getPlayer())
+		{
+			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+			if (armiesToMove != numOfArmies)
+				numOfArmies = armiesToMove;
+			current->removeTroops(numOfArmies);
+			next->addTroops(numOfArmies);
+
+			cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+		}
+		else
+		{
+			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			{
+				srand(time(NULL));
+
+				if (rand() % 10 < 6)
+					next->removeTroops(1);
+
+				else if (rand() % 10 < 7)
+					current->removeTroops(1);
+					numOfArmies--;
+			}
+
+			if (next->numberOfArmies == 0)
+			{
+				next->setOwner(player);
+				next->addTroops(numOfArmies);
+			}
+		}
+
 		return true;
 	}
 	return false;
