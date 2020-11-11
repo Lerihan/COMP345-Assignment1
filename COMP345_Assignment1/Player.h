@@ -13,13 +13,14 @@
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
+#include "GameObservers.h"
 
 class Order;
 class Cards;
 class OrdersList;
 class Hand;
 
-class Player
+class Player: public Subject
 {
 private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member

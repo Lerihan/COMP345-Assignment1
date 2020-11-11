@@ -1,5 +1,7 @@
 #include "GameObservers.h"
 #include "GameEngine.h"
+#include "Map.h"
+#include "Player.h"
 #include <iostream>
 #include <list>
 
@@ -28,16 +30,34 @@ void Subject::notify() {
 }
 
 void PhaseObserver::update() {
-	//currentPhase = GameEngine:: getCurrentPhase();
-	//currentPlayer = GameEngine:: getCurrentPlayer();
+	Player p;
+	currentPlayerNum = p.getPlayerNumber();
+
+	const char* currentPhaseInfo;
+	switch (currentPhase) {
+		case Phase::Reinforcement:
+			currentPhaseInfo = "Reinforcement Phase";
+			break;
+		case Phase::IssuingOrder:
+			currentPhaseInfo = "Issuing Orders Phase";
+			break;
+		case Phase::OrdersExecution:
+			currentPhaseInfo = "Executing Orders Phase";
+			break;
+	}
+	cout <<"Player "<< currentPlayerNum << ":" << currentPhase << endl;
 }
 
-void PhaseObserver::PrintPhaseDetails() {
-	
-	cout << "Current Phase: " << endl;
-	cout << "Current Player: " << endl;
+
+float gameStats(Player* players, Map* map)
+{
+	float numTerritories = (float)players->getTerritories().size();
+	float playerOwnedTerritories = (float)map->listOfTerritories.size();
+	float percentOwned = 100.0*playerOwnedTerritories/numTerritories;
+	return percentOwned;
 }
 
 void GameStatisticsObserver::update() {
+
 
 }

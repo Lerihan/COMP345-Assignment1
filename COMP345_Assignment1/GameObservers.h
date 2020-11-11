@@ -22,9 +22,9 @@ class PhaseObserver : public Observer {
 	public:
 		void update() override;
 	private:
-		GameEngine currentPhase;
-		Player* currentPlayer;
-		void PrintPhaseDetails();
+		int currentPlayerNum;
+		enum Phase {Reinforcement, IssuingOrder, OrdersExecution, NoPhase};
+		Phase currentPhase = Phase::NoPhase;
 };
 
 class GameStatisticsObserver : public Observer {
