@@ -136,7 +136,7 @@ void GameEngine::setInitialArmies()
 	//attach number to all players
 	for (int i = 0; i < players.size(); i++)
 	{
-		players.at(i)->setArmyNumber(numOfArmies);
+		players.at(i)->setNumOfArmies(numOfArmies);
 	}
 }
 
@@ -158,6 +158,57 @@ int GameEngine::randomNumber(int min, int max)
 	return rand;
 }
 
+// Function that controls the main game
+// Loops through 3 phases
+void GameEngine::mainGameLoop()
+{
+	// Reinforcement phase
+	for (int i = 0; i < numOfPlayers; i++)
+	{
+		reinforcementPhase(players[i]);
+	}
 
+	// Issuing Orders phase
+	for (int i = 0; i < numOfPlayers; i++) // loop through each Player
+	{
+		// issue Deploy orders
+		int totalArmiesDeployed = 0; // continue to prompt user until they have deployed all their armies
+		while (totalArmiesDeployed <= this->players[i]->getNumOfArmies()) { // if all Territories have already been looped through then keep
+																			// loop until all armies have been deployed
+			for (int j = 0; this->players[i]->getTerritories().size(); j++) // loop through each of the Player's Territories
+			{
+				int armiesToDeploy = 0;
+				cout << "How many armies would you like to deploy to " << this->players[i]->getTerritories()[j]->name << "? ";
+				cin >> armiesToDeploy;
+				this->players[i]->issueOrder(new Deploy(this->players[i], this->players[i]->getTerritories()[j], armiesToDeploy)); // issue the order
+				totalArmiesDeployed += armiesToDeploy;
+			}
+		}
 
+		// issue Advance orders
+	}
 
+	// Orders execution phase
+
+	// check if a Player owns no Territories; if yes, kick them from the game
+	
+}
+
+// Determines how many armies to add to the input Player's reinforcement pool at the start of each reinforcement phase
+void GameEngine::reinforcementPhase(Player* p)
+{
+	int newArmies = 3; // minimum number of new armies to assign to Player
+	// check if Player owns whole Continent
+	// ...
+
+	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
+	if ((p->getTerritories().size() / 3) < newArmies)
+		newArmies = p->getTerritories().size() / 3;
+
+	p->addArmies(newArmies); // add armiesPicking 
+}
+
+// Prompts user for Order to be issued and calls issueOrder()
+int GameEngine::issueOrdersPhase(Player* currPlayer) {
+	return 0;
+}

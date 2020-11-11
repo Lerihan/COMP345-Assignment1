@@ -453,14 +453,29 @@ bool Territory::isAdjacent(int id)
 	return false;
 }
 
+
 bool Territory::addTroops(int n)
 {
 	if (n > 0)
 	{
 		numberOfArmies += n;
-	}
-	return false;
+    return true;
+  }
+	  return false;
 }
+
+// Checks if the input Territory is contained in the input vector
+// used for sortTerritoriesToAttack(0
+bool Territory::containsTerritory(vector<Territory*> territories, Territory* t)
+{
+	for (int i = 0; i < territories.size(); i++)
+	{
+		if (territories[i] == t)
+			return true;
+  }
+  return false;
+}
+	
 
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
@@ -468,22 +483,31 @@ ostream& operator << (ostream &out, const Territory &t)
 {
 	out << endl;
 	out << "--------------------------------------" << endl;
-	cout << endl;
 	out << "The Territory name is '" << t.name << "'" << endl;
 	out << endl;
 
-	cout << "Adjacent Territories of '" << t.name << "'" << endl;
+	cout << "Adjacent Territories of '" << t.name << "':";
 	for (int i = 0; i < t.listOfAdjTerritories.size(); i++)
 	{
 		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
 	}
 
-	cout << endl << endl;
+	cout << endl;
 	out << "--------------------------------------" << endl;
-	out << endl;
 
 	return out;
 }
+
+bool operator ==(const Territory& t1, const Territory& t2)
+{
+	return (t1.index == t2.index && t1.continentIndex == t2.continentIndex && t1.name == t2.name);
+}
+
+bool operator !=(const Territory& t1, const Territory& t2)
+{
+	return !(t1 == t2);
+}
+
 
 
 

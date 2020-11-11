@@ -30,15 +30,17 @@ public:
 	void setOwner(Player* p); // set the owner of this Territory
 	bool isAdjacent(int id);
 	bool addTroops(int n);
+	static bool containsTerritory(vector<Territory*> territories, Territory* t); // checks if the input Territory is contained in the input vector
 
+	friend bool operator ==(const Territory& t1, const Territory& t2);
 	friend ostream & operator << (ostream &out, const Territory &c);
 
 	int index;
+	int continentIndex;
+	int numberOfArmies;
 	string name;
 	Player* owner; // player that owns this Territory
 	vector<Territory*> listOfAdjTerritories;
-	int continentIndex;
-	int numberOfArmies;
 };
 
 
@@ -67,9 +69,6 @@ public:
 	vector<Territory*> listOfTerritories; // per continent
 	vector<Continent*> listOfAdjContinents; //Not used ATM
 };
-
-
-
 
 
 // Only 1 map per game, I'm guessing :)
