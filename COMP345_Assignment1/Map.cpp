@@ -453,6 +453,15 @@ bool Territory::isAdjacent(int id)
 	return false;
 }
 
+bool Territory::addTroops(int n)
+{
+	if (n > 0)
+	{
+		numberOfArmies += n;
+	}
+	return false;
+}
+
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
 ostream& operator << (ostream &out, const Territory &t)
