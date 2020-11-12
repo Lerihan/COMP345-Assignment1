@@ -395,7 +395,7 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	//delete owner;
+	delete owner;
 }
 
 /*
