@@ -13,14 +13,14 @@ void GameEngine::startGame()
 	selectMap();
 	cout << endl;
 
-	//selectPlayers();
+	selectPlayers();
 	cout << endl;
 
-	//setObservers();
+	setObservers();
 	cout << endl;
 
 	//start up phase
-	//startupPhase();
+	startupPhase();
 
 	/* 
 	TODO/FIX:
@@ -56,17 +56,17 @@ void GameEngine::selectMap()
 	string dominationMap;
 	MapLoader* mapLoader = new MapLoader();
 
-	//do
-	//{
+	do
+	{
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
 
-		/*if (map == NULL)
+		if (map == NULL)
 		{
 			cout << "Map is invalid." << endl;
-		}*/
-	//} while (map == NULL);
+		}
+	} while (map == NULL);
 
 	//cout << *map;
 }
