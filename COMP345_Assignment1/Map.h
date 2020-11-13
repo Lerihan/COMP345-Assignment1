@@ -20,7 +20,7 @@ class Territory
 {
 public:
 	Territory(); // Default Constructor
-	Territory(int id, string n); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
+	Territory(int id, string n, int continentid); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
 	Territory(const Territory &t); // Copy Constructor
 	Territory& operator = (const Territory &t); // Assignment operator
 	~Territory(); // Destructor
@@ -104,9 +104,8 @@ public:
 	vector<Territory*> listOfTerritories; //all territories
 
 
-	bool validate(); // goes through a few points to validate the map
-	void traverse();
-	void mapTraversal(Territory* current, vector<bool> visited);
+	bool validate(); // goes through a few checks to validate the map
+	void mapTraversal(Territory* current, bool visitedTerritories[], bool visitedContinents[]);
 };
 
 

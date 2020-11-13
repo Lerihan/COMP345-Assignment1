@@ -97,7 +97,7 @@
     <None Include="dortmund.map">
       <Filter>Source Files\Maps</Filter>
     </None>
-    <None Include="..\..\..\Users\Lerihan\Downloads\simpsons\Simpsons.map">
+    <None Include="Simpsons.map">
       <Filter>Source Files\Maps</Filter>
     </None>
   </ItemGroup>

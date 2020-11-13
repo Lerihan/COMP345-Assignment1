@@ -185,7 +185,6 @@
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Users\Lerihan\Downloads\simpsons\Simpsons.map" />
     <None Include="dortmund.map" />
     <None Include="eire.map" />
     <None Include="europe.map" />
@@ -193,6 +192,7 @@
     <None Include="Hawaii.map" />
     <None Include="mexico.map" />
     <None Include="ohio.map" />
+    <None Include="Simpsons.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

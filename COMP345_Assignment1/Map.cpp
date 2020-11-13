@@ -148,59 +148,59 @@ void Map::printAdjTerritory(Territory* t)
 */
 bool Map::validate()
 {
-	bool b = true;
-	//check if map is a connected graph (every territory has adjacent territories)
-	//check if continents are connected subgraphs
-	//check if each territory has one continent
-	/*for (int i = 0; i < listOfTerritories.size(); i++)
+	//Checks (1. map is a connected graph 2. continents are connected subgraphs 3. each territory has at least one continent)
+	bool tIsConnected = true;
+	bool cIsConnected = true;
+
+	bool* visitedTerritories = new bool[listOfTerritories.size()] { false };
+	bool* visitedContinents = new bool[listOfContinents.size()]{ false };
+
+	mapTraversal(listOfTerritories.at(0), visitedTerritories, visitedContinents);
+	// Check if map is connected
+	for (int i = 0; i < listOfTerritories.size(); i++)
 	{
-		if (listOfTerritories[i]->listOfAdjTerritories.empty() || listOfTerritories[i]->continentIndex != NULL)
-		{
-			b = false;
-		}
-	}*/
-
-
-
-	return b;
-}
-
-void Map::traverse()
-{
-	vector<bool> visited(listOfTerritories.size());
-	mapTraversal(listOfTerritories.at(0), visited);
-}
-
-void Map::mapTraversal(Territory* current, vector<bool> visited)
-{
-	/*if (!visited[current->index - 1])
-	{
-		visited[current->index - 1] = true;
-		cout << "Visited a new territory! " << current->index << endl;
+		if (!visitedTerritories[i])
+			tIsConnected = false;
 	}
 
-	vector<Territory*> neighbours = listOfTerritories.at(current->index - 1)->listOfAdjTerritories;
-
-	for (Territory* neighbour: neighbours)
+	// Check if continents are connected
+	for (int i = 0; i < listOfContinents.size(); i++)
 	{
-		if (!visited[neighbour->index - 1])
-			mapTraversal(neighbour, visited);
-	}*/
-	if (!visited.at(current->index - 1))
-	{
-		cout << current->index << endl;
-		visited.at(current->index - 1) = true;
+		if (!visitedContinents[i])
+			cIsConnected = false;
+	}
 
-		//print visited
-		for (bool b : visited)
+	// deallocate memory
+	delete[] visitedTerritories; 
+	delete[] visitedContinents;
+
+	// Return final answer
+	if (tIsConnected && cIsConnected)
+		return true;
+	else
+		return false;
+}
+
+/*
+* Traverse through each map's continents and territories and validate every checks
+*/
+void Map::mapTraversal(Territory* current, bool visitedTerritories[], bool visitedContinents[])
+{
+	//Handle territory connectivity
+	if (!visitedTerritories[current->index - 1])
+	{
+		visitedTerritories[current->index - 1] = true;
+
+		//Handle continent connectivity
+		if (current->continentIndex != NULL && !visitedContinents[current->continentIndex - 1])
 		{
-			cout << b;
+			visitedContinents[current->continentIndex - 1] = true;
 		}
-		cout << endl;
 
+		//Check every neighbor of all territories
 		for (Territory* neighbor : listOfTerritories.at(current->index - 1)->listOfAdjTerritories)
 		{
-			mapTraversal(neighbor, visited);
+			mapTraversal(neighbor, visitedTerritories, visitedContinents);
 		}
 	}
 }
@@ -402,11 +402,11 @@ Territory::Territory()
 
 // Constructor for Territory
 // id is index, n is name
-Territory::Territory(int id, string n)
+Territory::Territory(int id, string n, int continentid)
 {
 	index = id;
 	name = n;
-	continentIndex = 0;
+	continentIndex = continentid;
 	numberOfArmies = 0;
 
 	this->owner = NULL;

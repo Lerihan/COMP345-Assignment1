@@ -88,7 +88,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 						//Split line to access different attributes of territories
 						vector<string> attributes = SplitWords(line); //index name continent x y
-						newCountry = new Territory(stoi(attributes[0]), attributes[1]);
+						newCountry = new Territory(stoi(attributes[0]), attributes[1], stoi(attributes[2])); //id name continentid
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
 

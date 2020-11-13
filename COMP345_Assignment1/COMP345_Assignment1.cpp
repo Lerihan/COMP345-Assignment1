@@ -27,7 +27,7 @@ int main()
 		//cout << t->index << endl;
 	}
 
-	m->traverse();
+	cout << m->traverse();
 
 	/*
 	Territory* t1 = new Territory(0, "Canada");
