@@ -9,6 +9,8 @@ public:
 	void startGame();
 	void startupPhase();
 
+	Map* getMap();
+
 private:
 	Map* map;
 	vector<Player*> players;

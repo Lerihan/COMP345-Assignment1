@@ -19,6 +19,15 @@ int main()
 {
 	GameEngine g;
 	g.startGame();
+	
+	Map* m = g.getMap();
+	for (Territory* t : m->listOfTerritories)
+	{
+		//m->printAdjTerritory(t);
+		//cout << t->index << endl;
+	}
+
+	m->traverse();
 
 	/*
 	Territory* t1 = new Territory(0, "Canada");

@@ -13,14 +13,14 @@ void GameEngine::startGame()
 	selectMap();
 	cout << endl;
 
-	selectPlayers();
+	//selectPlayers();
 	cout << endl;
 
-	setObservers();
+	//setObservers();
 	cout << endl;
 
 	//start up phase
-	startupPhase();
+	//startupPhase();
 
 	/* 
 	TODO/FIX:
@@ -44,6 +44,11 @@ void GameEngine::startupPhase()
 	TODO/FIX:
 		2. All territories in the map are randomly assigned to players one by one in a round-robin fashion
 	*/
+}
+
+Map * GameEngine::getMap()
+{
+	return map;
 }
 
 void GameEngine::selectMap()

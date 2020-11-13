@@ -30,6 +30,7 @@ public:
 	void setOwner(Player* p); // set the owner of this Territory
 	bool isAdjacent(int id);
 	bool addTroops(int n);
+	bool removeTroops(int n);
 	static bool containsTerritory(vector<Territory*> territories, Territory* t); // checks if the input Territory is contained in the input vector
 
 	friend bool operator ==(const Territory& t1, const Territory& t2);
@@ -104,6 +105,8 @@ public:
 
 
 	bool validate(); // goes through a few points to validate the map
+	void traverse();
+	void mapTraversal(Territory* current, vector<bool> visited);
 };
 
 
