@@ -9,6 +9,8 @@ public:
 	void startGame();
 	void startupPhase();
 
+	Map* getMap();
+
 private:
 	Map* map;
 	vector<Player*> players;
@@ -17,7 +19,7 @@ private:
 	bool observerOn;
 
 	void selectMap();
-	void selectPlayers();
+	void selectPlayers(); 
 	void setObservers();
 	void setInitialArmies();
 	void chooseFirstPlayer();

@@ -229,11 +229,6 @@ void Deck::draw(Player* p) {
 	cout << "Player has added a card into their hand" << endl;
 }
 
-ostream& operator << (ostream& out, const Card& c) {
-	return out << "Card";
-}
-
-
 // ######################################
 // BombCard
 // ######################################
@@ -259,11 +254,12 @@ Territory* BombCard::getTarget() {
 }
 
 Bomb* BombCard::play() {
-
+	return new Bomb;
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
-	cout << "BombCard";
+	out << "BombCard";
+	return out;
 }
 
 
@@ -295,7 +291,8 @@ void ReinforcementCard::play() {
 }
 
 ostream& operator << (ostream& out, const ReinforcementCard& c) {
-	cout << "ReinforcementCard";
+	out << "ReinforcementCard";
+	return out;
 }
 
 // ######################################
@@ -323,11 +320,12 @@ Territory* BlockadeCard::getTarget() {
 }
 
 Blockade* BlockadeCard::play() {
-
+	return new Blockade;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
-	cout << "BlockadeCard";
+	out << "BlockadeCard";
+	return out;
 }
 
 // ######################################
@@ -343,6 +341,13 @@ AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
 	this->current = current;
 	this->target = target;
 	this->numArmies = numArmies;
+}
+
+AirliftCard::~AirliftCard()
+{
+	delete this->current;
+	delete this->target;
+	delete this;
 }
 
 void AirliftCard::setCurrent(Territory* current) {
@@ -370,11 +375,12 @@ int AirliftCard::getNumArmies(int numArmies) {
 }
 
 Airlift* AirliftCard::play() {
-
+	return new Airlift;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
-	cout << "AirliftCard";
+	out << "AirliftCard";
+	return out;
 }
 
 // ######################################
@@ -402,9 +408,10 @@ Player* DiplomacyCard::getEnemy() {
 }
 
 Negotiate* DiplomacyCard::play() {
-
+	return new Negotiate;
 }
 
 ostream& operator << (ostream& out, const DiplomacyCard& c) {
-	cout << "DiplomacyCard";
+	out << "DiplomacyCard";
+	return out;
 }

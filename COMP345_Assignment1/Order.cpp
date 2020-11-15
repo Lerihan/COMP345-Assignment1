@@ -72,7 +72,7 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 */
 Deploy::Deploy(): Order()
 {
-	Territory(0, "current");
+	Territory(0, "current", 0);
 }
 
 /*Parametrized constructor for the Deploy class
@@ -140,8 +140,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 */
 Advance::Advance(): Order()
 {
-	Territory(0, "current");
-	Territory(0, "Next");
+	Territory(0, "current", 0);
+	Territory(0, "Next", 0);
 }
 
 /*Parametrized constructor for the Advance class
@@ -212,8 +212,8 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 */
 Bomb::Bomb() : Order()
 {
-	Territory(0, "source");
-	Territory(0, "target");
+	Territory(0, "source", 0);
+	Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Bomb class
@@ -282,7 +282,7 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 */
 Blockade::Blockade() : Order()
 {
-	Territory(0, "target");
+	Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Blockade class
@@ -347,8 +347,8 @@ ostream& operator << (std::ostream& o, const Blockade& b)
 */
 Airlift::Airlift() : Order()
 {
-	Territory(0, "current");
-	Territory(0, "next");
+	Territory(0, "current", 0);
+	Territory(0, "next", 0);
 }
 
 /*Parametrized constructor for the Airlift class
