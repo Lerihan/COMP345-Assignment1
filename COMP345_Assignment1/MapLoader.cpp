@@ -41,6 +41,8 @@ Map* MapLoader::GetMap(string filePath) {
 Map* MapLoader::ReadMap(string dominationFileName) {
 	try {
 		Map* map = new Map();
+		Continent* newContinent;
+		Territory* newCountry;
 		string line = "";
 		bool hasContinent = false;
 		bool hasCountries = false;
@@ -69,10 +71,9 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 						//Split line to access different attributes of continents
 						vector<string> attributes = SplitWords(line);
-						Continent* newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
+						newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
 						map->addContinent(newContinent);
 						index++;
-						delete newContinent; // deallocate memory
 						//cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
@@ -87,10 +88,9 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 						//Split line to access different attributes of territories
 						vector<string> attributes = SplitWords(line); //index name continent x y
-						Territory* newCountry = new Territory(stoi(attributes[0]), attributes[1]);
+						newCountry = new Territory(stoi(attributes[0]), attributes[1], stoi(attributes[2])); //id name continentid
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
-						//delete newCountry; // deallocate memory //TODO: gives error rn
 
 						//cout << "New Country: " << line << endl;
 						getline(readFile, line);
@@ -124,7 +124,9 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 				this->finalMap = map;
 				readFile.close();
 				return map;
-				delete map; //deallocate memory 
+				delete newCountry; //deallocate memory (not sure if it does it correctly)
+				delete newContinent;
+				delete map; 
 			}
 			else {
 				cout << "Map File is invalid" << endl;

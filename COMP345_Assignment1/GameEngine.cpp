@@ -46,6 +46,11 @@ void GameEngine::startupPhase()
 	*/
 }
 
+Map * GameEngine::getMap()
+{
+	return map;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;

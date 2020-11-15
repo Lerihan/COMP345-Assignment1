@@ -20,7 +20,7 @@ class Territory
 {
 public:
 	Territory(); // Default Constructor
-	Territory(int id, string n); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
+	Territory(int id, string n, int continentid); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
 	Territory(const Territory &t); // Copy Constructor
 	Territory& operator = (const Territory &t); // Assignment operator
 	~Territory(); // Destructor
@@ -30,6 +30,7 @@ public:
 	void setOwner(Player* p); // set the owner of this Territory
 	bool isAdjacent(int id);
 	bool addTroops(int n);
+	bool removeTroops(int n);
 	static bool containsTerritory(vector<Territory*> territories, Territory* t); // checks if the input Territory is contained in the input vector
 
 	friend bool operator ==(const Territory& t1, const Territory& t2);
@@ -103,7 +104,8 @@ public:
 	vector<Territory*> listOfTerritories; //all territories
 
 
-	bool validate(); // goes through a few points to validate the map
+	bool validate(); // goes through a few checks to validate the map
+	void mapTraversal(Territory* current, bool visitedTerritories[], bool visitedContinents[]);
 };
 
 
