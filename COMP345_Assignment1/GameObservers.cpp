@@ -1,7 +1,4 @@
-#include "GameObservers.h"
 #include "GameEngine.h"
-#include "Map.h"
-#include "Player.h"
 #include <iostream>
 #include <list>
 
@@ -29,6 +26,12 @@ void Subject::notify() {
 	}
 }
 
+PhaseObserver::PhaseObserver(GameEngine* gameEngine)
+{
+	gameEngine->attach(this);
+	this->subject = gameEngine;
+}
+
 void PhaseObserver::update() {
 	Player p;
 	currentPlayerNum = p.getPlayerNumber();
@@ -48,6 +51,12 @@ void PhaseObserver::update() {
 	cout <<"Player "<< currentPlayerNum << ":" << currentPhase << endl;
 }
 
+GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
+{
+	gameEngine->attach(this);
+	this->subject = gameEngine;
+}
+
 
 float gameStats(Player* players, Map* map)
 {
@@ -59,5 +68,9 @@ float gameStats(Player* players, Map* map)
 
 void GameStatisticsObserver::update() {
 
+	int totalTerritories = subject->getMap()->listOfTerritories.size();
 
+	for (int i = 0; i < subject->getTotalPlayers().size(); i++) {
+
+	}
 }

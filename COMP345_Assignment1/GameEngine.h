@@ -1,14 +1,15 @@
 #pragma once
 #include "Map.h"
+#include "GameObservers.h"
 
 using namespace std;
 
-class GameEngine
+class GameEngine : public Subject
 {
 public:
 	void startGame();
 	void startupPhase();
-
+	vector<Player*> getTotalPlayers();
 	Map* getMap();
 
 private:
@@ -17,6 +18,9 @@ private:
 	Player* firstPlayer;
 	int numOfPlayers;
 	bool observerOn;
+
+	string phase;
+	string getPhase();
 
 	void selectMap();
 	void selectPlayers(); 

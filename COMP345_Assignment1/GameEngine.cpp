@@ -46,9 +46,19 @@ void GameEngine::startupPhase()
 	*/
 }
 
+vector<Player*> GameEngine::getTotalPlayers()
+{
+	return players;
+}
+
 Map * GameEngine::getMap()
 {
 	return map;
+}
+
+string GameEngine::getPhase()
+{
+	return phase;
 }
 
 void GameEngine::selectMap()
