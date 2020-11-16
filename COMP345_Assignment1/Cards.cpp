@@ -47,11 +47,6 @@ Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	this->player->setHand(this);
-	//this->cardsInHand = playersCards;
-
-	/*for (int i = 0; i < (playersCards).size() - 1; i++) {
-		cardsInHand[i] = playersCards[i];
-	}*/
 	this->cardsInHand = playersCards;
 }
 
@@ -93,13 +88,11 @@ istream& operator << (istream& in, const Hand& h) {
 }
 
 void Hand::play() {
-	Player* p = this->player;
-	Hand* h = p->getHand();
 	//plays the first card of the player's hand automatically
-	h->cardsInHand.at(0)->play();	
+	this->cardsInHand.at(0)->play();	
 	//deletes the card from the player's hand by placing it at the end and then erasing it.
-	auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), h->cardsInHand.at(0));
-	h->cardsInHand.erase(cardToMove);
+	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
+	this->cardsInHand.erase(cardToMove);
 }
 
 //DECK
