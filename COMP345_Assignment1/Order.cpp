@@ -31,8 +31,7 @@ Order::Order(const Order& order) {
 
 Order::~Order()
 {
-	delete this->player;
-	delete this;
+	this->player = NULL;
 }
 
 /*Assignment operator for the Order base class
@@ -95,8 +94,7 @@ Deploy::Deploy(const Deploy& deploy): Order(deploy)
 
 Deploy::~Deploy()
 {
-	delete this->territory;
-	delete this;
+	this->territory = NULL;
 }
 
 /*Assignment operator for the Deploy class
@@ -133,6 +131,8 @@ bool Deploy::execute()
 	return false;
 }
 
+string Deploy::getType() { return "deploy"; }
+
 /*Stream insertion operator for Deploy class order
 */
 ostream& operator << (std::ostream& o, const Deploy& deploy)
@@ -167,9 +167,8 @@ Advance::Advance(const Advance& advance) : Order(advance)
 
 Advance::~Advance()
 {
-	delete this->current;
-	delete this->next;
-	delete this;
+	this->current = NULL;
+	this->next = NULL;
 }
 
 /*Assignment operator for the Advance class
@@ -236,6 +235,8 @@ bool Advance::execute()
 	return false;
 }
 
+string Advance::getType() { return "advance"; }
+
 /*Stream insertion operator for Advance class order
 */
 ostream& operator << (std::ostream& o, const Advance& advance)
@@ -269,9 +270,8 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 
 Bomb::~Bomb()
 {
-	delete this->source;
-	delete this->target;
-	delete this;
+	this->source = NULL;
+	this->target = NULL;
 }
 
 /*Assignment operator for the Bomb class
@@ -310,6 +310,8 @@ bool Bomb::execute()
 	}
 	return false;
 }
+
+string Bomb::getType() { return "bomb"; }
 
 /*Stream insertion operator for Bomb class order
 */
@@ -382,6 +384,8 @@ bool Blockade::execute()
 	return false;
 }
 
+string Blockade::getType() { return "blockade"; }
+
 /*Stream insertion operator for Blockade class order
 */
 ostream& operator << (std::ostream& o, const Blockade& b)
@@ -416,9 +420,8 @@ Airlift::Airlift(const Airlift& airlift) : Order(airlift)
 
 Airlift::~Airlift()
 {
-	delete this->current;
-	delete this->next;
-	delete this;
+	this->current = NULL;
+	this->next = NULL;
 }
 
 /*Assignment operator for the Airlift class
@@ -483,6 +486,8 @@ bool Airlift::execute()
 	return false;
 }
 
+string Airlift::getType() { return "airlift"; }
+
 /*Stream insertion operator for Airlift class order
 */
 ostream& operator << (std::ostream& o, const Airlift& airlift)
@@ -512,8 +517,7 @@ Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate)
 
 Negotiate::~Negotiate()
 {
-	delete this->enemy;
-	delete this;
+	this->enemy = NULL;
 }
 
 /*Assignment operator for the Negotiate class
@@ -547,6 +551,8 @@ bool Negotiate::execute()
 	}
 	return false;
 }
+
+string Negotiate::getType() { return "negotiate"; }
 
 /*Stream insertion operator for Negotiate class order
 */
