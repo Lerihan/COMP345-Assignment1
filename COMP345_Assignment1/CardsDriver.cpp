@@ -38,7 +38,7 @@ int main() {
 
 	//draws a card and plays it immediately
 	for (int i = 0; i < 5; i++) {
-		deck->draw(*player);
+		deck->draw(player);
 	}
 
 	cout << endl << "Player's Hand:" << endl;
@@ -49,7 +49,7 @@ int main() {
 
 	while (h->getCardsInHand().size() > 0)
 	{
-		h->play(h->getCardsInHand().at(0), *deck, *player);
+		h->play();
 		//show size of deck differences & player's hand
 		cout << "Current size of deck " << deck->cardsInDeck.size() << endl;
 		cout << "Current cards in hand: " << endl;

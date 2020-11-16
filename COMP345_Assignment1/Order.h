@@ -37,13 +37,11 @@ public:
 
 	void setPlayer(Player* player);
 
+	Player* player;
+
 protected:
 
 	bool executed = false;
-
-private:
-
-	Player* player;
 };
 
 // Deploy armies to one of player's territories

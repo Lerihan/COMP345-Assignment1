@@ -2,7 +2,7 @@
 //  
 //  COMP 345
 //  Assignment
-//  Due Date: November 16, 2020
+//  Due Date: November 18, 2020
 //  Created by Michael Totarella on 2020-09-23.
 //
 
@@ -22,9 +22,12 @@ int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of
 Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->name = "DefaultPlayer";
+	this->name = "Player " + playerNumber;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
+
+	this->numOfArmies = 0;
+	this->reinforcementPool = 0;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -37,6 +40,9 @@ Player::Player(string name)
 	this->name = name;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
+
+	this->numOfArmies = 0;
+	this->reinforcementPool = 0;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -143,6 +149,13 @@ void Player::addTerritory(Territory* t)
 {
 	this->territories.push_back(t);
 	t->setOwner(this); // set the owner of the input Territory to be this Player
+}
+
+// Adds the input number of armies to the Player's reinforcement pool
+// used in game startup phase
+void Player::addReinforcements(int toAdd)
+{
+	this->reinforcementPool += toAdd;
 }
 
 // Returns vector of Territories to attack.

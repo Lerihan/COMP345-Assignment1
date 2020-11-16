@@ -11,43 +11,40 @@
 #include "Order.h"
 
 class Player;
-class Deck;
 
 // needed Order subclasses
-class Airlift;
-class Bomb;
-class Blockade;
-class Negotiate;
-
-// TODO:
-// Add play() method for each subclass
+//class Airlift;
+//class Bomb;
+//class Blockade;
+//class Negotiate;
 
 class Card {	
-public:
-	Card();
-	//virtual Cards(const Cards& card);
-	virtual ~Card();
-	Card& operator = (const Card &c);
+	public:
+		Player* cardHolder;
+		Deck* d;
+		Card();
+		virtual ~Card();
+		Card& operator = (const Card &c);
 
-	//virtual Order* play() = 0; // will have a play() method for each type of card
+		virtual void play() = 0;
 
-	friend ostream& operator << (ostream& out, const Card& c);
-	friend istream& operator << (istream& in, const Card& c);
+		friend ostream& operator << (ostream& out, const Card& c);
+		friend istream& operator << (istream& in, const Card& c);
 };
 
 class BombCard : public Card {
-private:
+	private:
 		Territory* target; // target that gets bombed
-public:
-	BombCard();
-	BombCard(Territory* target);
-	~BombCard();
+	public:
+		BombCard();
+		BombCard(Territory* target);
+		~BombCard();
 
-	Bomb* play();
+		void play();
 
-	void setTarget(Territory* target);
-	Territory* getTarget();
-	friend ostream& operator << (ostream& out, const BombCard& c);
+		void setTarget(Territory* target);
+		Territory* getTarget();
+		friend ostream& operator << (ostream& out, const BombCard& c);
 
 };
 
@@ -76,7 +73,7 @@ public:
 	BlockadeCard(Territory* targe);
 	~BlockadeCard();
 
-	Blockade* play();
+	void play();
 
 	void setTarget(Territory* target);
 	Territory* getTarget();
@@ -94,7 +91,7 @@ public:
 	AirliftCard(Territory* current, Territory* target, int numArmies);
 	~AirliftCard();
 
-	Airlift* play();
+	void play();
 
 	void setCurrent(Territory* current);
 	Territory* getCurrent();
@@ -114,7 +111,7 @@ public:
 	DiplomacyCard(Player* enemy);
 	~DiplomacyCard();
 
-	Negotiate* play();
+	void play();
 
 	void setEnemy(Player* enemy);
 	Player* getEnemy();
@@ -133,6 +130,7 @@ public:
 	~Hand();
 	Hand& operator = (const Hand &h);
 	std::vector<Card*> getCardsInHand();
+	void play();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
 };
@@ -149,4 +147,5 @@ public:
 	friend ostream& operator << (ostream& out, const Deck& d);
 	friend istream& operator << (istream& in, const Deck& d);
 	void draw(Player* p);
+	void insertBackToDeck(Card* c);
 };

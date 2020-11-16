@@ -2,7 +2,7 @@
 //  
 //  COMP 345
 //  Assignment 2
-//  Due Date: November 16, 2020
+//  Due Date: November 18, 2020
 //  Created by Michael Totarella on 2020-09-23.
 //
 
@@ -26,7 +26,8 @@ private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member
 	static int totalPlayers; // keep track of number of Players created, assign number to each Player
 	int playerNumber; // number unique to each Player
-	int numOfArmies;
+	int numOfArmies; // armies that are placed on territories
+	int reinforcementPool; // Player's reinforcement pool, where armies for Deploy orders are taken
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
@@ -47,6 +48,7 @@ public:
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
 	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
 	void addArmies(int toAdd); // adds the input number of armies to the Player's reinforcement pool
+	void addReinforcements(int toAdd); // adds input number of armies to reinforcement pool
 	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
 	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 
