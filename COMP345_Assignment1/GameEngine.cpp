@@ -252,5 +252,10 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
 {
-
+	// execute deploy orders
+	for (int i = 0; i < currPlayer->getOrders().size(); i++)
+	{
+		if (currPlayer->getOrders()[i]->getType() == "deploy")
+			currPlayer->getOrders()[i]->execute();
+	}
 }

@@ -447,7 +447,7 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	delete owner;
+	this->owner = NULL;
 }
 
 /*

@@ -33,6 +33,8 @@ public:
 
 	virtual bool execute() = 0;
 
+	virtual string getType() = 0; // returns string indicating type of Order
+
 	const Player* getPlayer();
 
 	void setPlayer(Player* player);
@@ -68,6 +70,8 @@ public:
 
 	virtual bool execute();
 
+	string getType(); // returns string indicating type of Order
+
 	friend ostream& operator<<(std::ostream& o, const Deploy& deploy);
 };
 
@@ -96,6 +100,8 @@ public:
 
 	virtual bool execute();
 
+	string getType(); // returns string indicating type of Order
+
 	friend ostream& operator<<(std::ostream& o, const Advance& advance);
 };
 
@@ -123,6 +129,8 @@ public:
 
 	virtual bool execute();
 
+	string getType(); // returns string indicating type of Order
+
 	friend ostream& operator<<(std::ostream& o, const Bomb& bomb);
 };
 
@@ -134,7 +142,7 @@ private:
 	Territory* target;
 
 public:
-
+	
 	Blockade();
 
 	Blockade(Player* player, Territory* target);
@@ -148,6 +156,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	string getType(); // returns string indicating type of Order
 
 	friend ostream& operator<<(std::ostream& o, const Blockade& blockade);
 };
@@ -177,6 +187,8 @@ public:
 
 	virtual bool execute();
 
+	string getType(); // returns string indicating type of Order
+
 	friend ostream& operator<<(std::ostream& o, const Airlift& airlift);
 };
 
@@ -202,6 +214,8 @@ public:
 	virtual bool validate();
 
 	virtual bool execute();
+
+	string getType(); // returns string indicating type of Order
 
 	friend ostream& operator<<(std::ostream& o, const Negotiate& negotiate);
 };
