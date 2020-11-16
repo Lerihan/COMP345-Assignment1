@@ -55,19 +55,22 @@ void GameEngine::selectMap()
 {
 	string dominationMap;
 	MapLoader* mapLoader = new MapLoader();
+	bool isValid = false;
 
 	do
 	{
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
+		isValid = map->validate();
 
-		if (map == NULL)
+		if (map == NULL || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == NULL);
+	} while (map == NULL || !isValid);
 
+	delete mapLoader;
 	//cout << *map;
 }
 
