@@ -19,25 +19,26 @@ class Bomb;
 class Blockade;
 class Negotiate;
 
-// TODO:
-// Add play() method for each subclass
-
 class Card {	
 public:
+	Player* cardHolder;
+	Deck* d;
 	Card();
-	//virtual Cards(const Cards& card);
 	virtual ~Card();
 	Card& operator = (const Card &c);
 
-	//virtual Order* play() = 0; // will have a play() method for each type of card
+	Order* play();
 
 	friend ostream& operator << (ostream& out, const Card& c);
 	friend istream& operator << (istream& in, const Card& c);
 };
 
+class Hand;
+
 class BombCard : public Card {
 private:
-		Territory* target; // target that gets bombed
+	Territory* target; // target that gets bombed
+	friend class Hand;
 public:
 	BombCard();
 	BombCard(Territory* target);
@@ -122,7 +123,6 @@ public:
 };
 
 class Hand : public Card {
-friend class Deck;
 protected:
 	Player* player;	
 public:
@@ -133,20 +133,21 @@ public:
 	~Hand();
 	Hand& operator = (const Hand &h);
 	std::vector<Card*> getCardsInHand();
+	void play();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator << (istream& in, const Hand& h);
 };
 
-class Deck : public Card {
-protected:
-public:
+class Deck : public Card {	
+public:		
 	std::vector<Card*> cardsInDeck;
 	Deck();
 	Deck(Deck& d);
 	Deck(std::vector<Card*> cardsInDeck);
 	~Deck();
 	Deck& operator = (const Deck &d);
-	friend ostream& operator << (ostream& out, const Deck& d);
-	friend istream& operator << (istream& in, const Deck& d);
 	void draw(Player* p);
+	void insertBackToDeck(Card* c);
+	friend ostream& operator << (ostream& out, const Deck& d);
+	friend istream& operator << (istream& in, const Deck& d);	
 };
