@@ -97,10 +97,10 @@ int ReinforcementCard::getNumArmies() {
 
 void ReinforcementCard::play() {
 	//creates new reinforcement order
-	Deploy* reinforcementCard = new Deploy();
+	Deploy* reinforcementOrder = new Deploy();
 	//adds new reinforcement order to the player's orderlist
 	Player* p = this->cardHolder;
-	p->issueOrder(reinforcementCard);
+	p->issueOrder(reinforcementOrder);
 	cout << "Player has played a Reinforcement Card from their hand.\n" << endl;
 	//adds the reinforcement card to the end of the deck
 	Deck* d = this->d;
@@ -138,10 +138,10 @@ Territory* BlockadeCard::getTarget() {
 
 Blockade* BlockadeCard::play() {
 	//creates new block order
-	Blockade* blockCard = new Blockade();
+	Blockade* blockOrder = new Blockade();
 	//adds new block order to the player's orderlist
 	Player* p = this->cardHolder;
-	p->issueOrder(blockCard);
+	p->issueOrder(blockOrder);
 	cout << "Player has played a Block Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
 	Deck* d = this->d;
@@ -194,10 +194,10 @@ int AirliftCard::getNumArmies(int numArmies) {
 
 Airlift* AirliftCard::play() {
 	//creates new airlift order
-	Airlift* airliftCard = new Airlift();
+	Airlift* airliftOrder = new Airlift();
 	//adds new airlift order to the player's orderlist
 	Player* p = this->cardHolder;
-	p->issueOrder(airliftCard);
+	p->issueOrder(airliftOrder);
 	cout << "Player has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
 	Deck* d = this->d;
@@ -235,10 +235,10 @@ Player* DiplomacyCard::getEnemy() {
 
 Negotiate* DiplomacyCard::play() {
 	//creates new diplomacy order
-	Negotiate* diplomacyCard = new Negotiate();
+	Negotiate* diplomacyOrder = new Negotiate();
 	//adds new diplomacy order to the player's orderlist
 	Player* p = this->cardHolder;
-	p->issueOrder(diplomacyCard);
+	p->issueOrder(diplomacyOrder);
 	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
 	Deck* d = this->d;
@@ -335,81 +335,6 @@ void Hand::play() {
 	auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), h->cardsInHand.at(input));
 	h->cardsInHand.erase(cardToMove);
 }
-
-// make it call play() of the Card subclass
-/*
-void Hand::play(Card* cardToPlay, Deck* d) {
-	//getting player's hand
-	Player* p = this->player;
-	Hand* h = p->getHand();
-	//implement function for the cards played
-	//checks desired card to be played, creates a new order in the player's orderlist & "plays" the card
-	if (cardToPlay == cardsAvailable[0]){
-		//Bomb
-		//create new order in orderlist
-		//create new bomb order
-		Bomb* bombCard = new Bomb();
-		(p->getOrdersList())->add(bombCard);
-		cout << "Player used bomb card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]);
-		h->cardsInHand.erase(cardToMove);
-		//adding the card at the end of the deck
-		d->cardsInDeck.push_back(cardsAvailable[0]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[1]) {
-		//Diplomacy
-		Negotiate* negotiateCard = new Negotiate();
-		(p->getOrdersList())->add(negotiateCard);
-		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]);
-		h->cardsInHand.erase(cardToMove);	
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[1]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[2]) {
-		//Blockade
-		Blockade* blockCard = new Blockade();
-		(p->getOrdersList())->add(blockCard);
-		cout << "Player used Blockade card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]);
-		h->cardsInHand.erase(cardToMove);		
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[2]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[3]) {
-		//Reinforcement
-		Deploy* reinforcementCard = new Deploy();
-		(p->getOrdersList())->add(reinforcementCard);
-		cout << "Player used Reinforcement card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]);
-		h->cardsInHand.erase(cardToMove);		
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[3]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[4]) {
-		//Airlift
-		Airlift* airliftCard = new Airlift();
-		(p->getOrdersList())->add(airliftCard);
-		cout << "Player used Airlift card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]);
-		h->cardsInHand.erase(cardToMove);
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[4]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else 
-	cout << "Player chose a card that they do not possess." << endl;
-}
-*/
 
 //DECK
 //default constructor

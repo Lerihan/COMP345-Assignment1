@@ -48,7 +48,7 @@ int main() {
 	while (h->getCardsInHand().size() > 0)
 	{	
 		//play a card in the hand, then the hand::play() will ask the player to select a specific card to play
-		h->play();
+		h->getCardsInHand().at(0)->play();
 		//show size of deck differences & player's hand
 		cout << "Current size of deck " << deck->cardsInDeck.size() << endl;
 		cout << "Current cards in hand: " << endl;
