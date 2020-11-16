@@ -141,7 +141,7 @@ void GameEngine::setInitialArmies()
 	//attach number to all players
 	for (int i = 0; i < players.size(); i++)
 	{
-		players.at(i)->setNumOfArmies(numOfArmies);
+		players.at(i)->addReinforcements(numOfArmies);
 	}
 }
 
@@ -174,24 +174,11 @@ void GameEngine::mainGameLoop()
 	}
 
 	// Issuing Orders phase
-	for (int i = 0; i < numOfPlayers; i++) // loop through each Player
+	for (int i = 0; i < numOfPlayers; i++)
 	{
-		// issue Deploy orders
-		int totalArmiesDeployed = 0; // continue to prompt user until they have deployed all their armies
-		while (totalArmiesDeployed <= this->players[i]->getNumOfArmies()) { // if all Territories have already been looped through then keep
-																			// loop until all armies have been deployed
-			for (int j = 0; this->players[i]->getTerritories().size(); j++) // loop through each of the Player's Territories
-			{
-				int armiesToDeploy = 0;
-				cout << "How many armies would you like to deploy to " << this->players[i]->getTerritories()[j]->name << "? ";
-				cin >> armiesToDeploy;
-				this->players[i]->issueOrder(new Deploy(this->players[i], this->players[i]->getTerritories()[j], armiesToDeploy)); // issue the order
-				totalArmiesDeployed += armiesToDeploy;
-			}
-		}
-
-		// issue Advance orders
+		issueOrdersPhase(players[i]);
 	}
+
 
 	// Orders execution phase
 
@@ -210,10 +197,34 @@ void GameEngine::reinforcementPhase(Player* p)
 	if ((p->getTerritories().size() / 3) < newArmies)
 		newArmies = p->getTerritories().size() / 3;
 
-	p->addArmies(newArmies); // add armiesPicking 
+	p->addReinforcements(newArmies); // add armies
 }
 
 // Prompts user for Order to be issued and calls issueOrder()
-int GameEngine::issueOrdersPhase(Player* currPlayer) {
-	return 0;
+void GameEngine::issueOrdersPhase(Player* currPlayer) {
+	
+	// issue Deploy orders
+	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory returned by toDefend()
+	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], currPlayer->getNumOfArmies()));
+
+	// issue Advance orders
+	// for simplicity, each Advance order will move half the armies from the current Territory to the next Territory
+	Territory* toAttack = currPlayer->toAttack()[0]; // first Territory returned by toAttack is the Territory to attack
+	Territory* current = NULL; // Territory to move armies from
+	for (int i = 0; i < toAttack->listOfAdjTerritories.size(); i++)
+	{
+		if (toAttack->listOfAdjTerritories[i]->owner == currPlayer)
+		{
+			current = toAttack->listOfAdjTerritories[i];
+			break;
+		}
+	}
+
+	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
+	currPlayer->issueOrder(new Advance(currPlayer, current, toAttack, current->numberOfArmies / 2));
+	toAttack = NULL;
+	current = NULL;
+
+	// play the first Card in the Player's Hand
+	currPlayer->getHand()->play();
 }
