@@ -174,9 +174,11 @@ void GameEngine::mainGameLoop()
 	}
 
 	// Issuing Orders phase
+	for (int i = 0; i < numOfPlayers; i++)
+	{
+		issueOrdersPhase(players[i]);
+	}
 
-		// issue Advance orders
-	
 
 	// Orders execution phase
 
@@ -225,5 +227,4 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	// play the first Card in the Player's Hand
 	currPlayer->getHand()->play();
-
 }
