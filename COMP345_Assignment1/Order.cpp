@@ -1,9 +1,11 @@
 #define NOMINMAX
+#include <iostream>
 #include <algorithm>
-#include<iostream>
 #include <sstream>
 #include <vector>
-#include"Order.h"
+#include <stdlib.h>
+#include <time.h>
+#include "Order.h"
 
 using namespace std;
 
@@ -124,6 +126,8 @@ bool Deploy::execute()
 	{ 
 		cout << "Deploying " << numOfArmies << " armies.\n";
 		executed = true;
+
+		territory->addTroops(numOfArmies);
 		return true;
 	}
 	return false;
@@ -183,7 +187,7 @@ Advance& Advance::operator=(const Advance& advance)
 */
 bool Advance::validate()
 {
-	if (current->isAdjacent(next->index))
+	if (current->getOwner() == getPlayer() && current->isAdjacent(next->index))
 		return true;
 	return false;
 }
@@ -194,8 +198,39 @@ bool Advance::execute()
 {
 	if (validate())
 	{
-		cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		executed = true;
+
+		if (next->getOwner() == getPlayer())
+		{
+			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+			if (armiesToMove != numOfArmies)
+				numOfArmies = armiesToMove;
+			current->removeTroops(numOfArmies);
+			next->addTroops(numOfArmies);
+
+			cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+		}
+		else
+		{
+			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			{
+				srand(time(NULL));
+
+				if (rand() % 10 < 6)
+					next->removeTroops(1);
+
+				else if (rand() % 10 < 7)
+					current->removeTroops(1);
+					numOfArmies--;
+			}
+
+			if (next->numberOfArmies == 0)
+			{
+				next->setOwner(player);
+				next->addTroops(numOfArmies);
+			}
+		}
+
 		return true;
 	}
 	return false;
@@ -253,7 +288,7 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 */
 bool Bomb::validate()
 {
-	if (source->isAdjacent(target->index))
+	if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
 		return true;
 	return false;
 }
@@ -264,8 +299,13 @@ bool Bomb::execute()
 {
 	if (validate())
 	{
-		cout << "Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
 		executed = true;
+
+		int numDestroyed = (int)(target->numberOfArmies / 2.0);
+
+		target->removeTroops(numDestroyed);
+
+		cout << "Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
 		return true;
 	}
 	return false;
@@ -329,8 +369,14 @@ bool Blockade::execute()
 {
 	if (validate())
 	{
-		cout << "Blockading " << target->name << " territory, tripling its forces.\n";
 		executed = true;
+
+		target->addTroops(target->numberOfArmies * 2);
+
+		target->setOwner(new Player("Neutral"));
+
+		cout << "Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
+		
 		return true;
 	}
 	return false;
@@ -389,7 +435,7 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 */
 bool Airlift::validate()
 {
-	if (current->getOwner() == getPlayer() && this->numOfArmies > 0)
+	if (current->getOwner() == getPlayer())
 		return true;
 	return false;
 }
@@ -400,8 +446,38 @@ bool Airlift::execute()
 {
 	if (validate())
 	{
-		cout << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << " territory.\n";
 		executed = true;
+
+		if (next->getOwner() == getPlayer())
+		{
+			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+			if (armiesToMove != numOfArmies)
+				numOfArmies = armiesToMove;
+			current->removeTroops(numOfArmies);
+			next->addTroops(numOfArmies);
+		}
+		else
+		{
+			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			{
+				srand(time(NULL));
+
+				if (rand() % 10 < 6)
+					next->removeTroops(1);
+
+				else if (rand() % 10 < 7)
+					current->removeTroops(1);
+				numOfArmies--;
+			}
+
+			if (next->numberOfArmies == 0)
+			{
+				next->setOwner(player);
+				next->addTroops(numOfArmies);
+			}
+		}
+
+		cout << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << " territory.\n";
 		return true;
 	}
 	return false;
@@ -464,8 +540,9 @@ bool Negotiate::execute()
 {
 	if (validate())
 	{
-		cout << "Negotiating.. No attack is being performed this turn.\n";
 		executed = true;
+
+		cout << "Negotiating.. No attack is being performed this turn. (do nothing)\n";
 		return true;
 	}
 	return false;
