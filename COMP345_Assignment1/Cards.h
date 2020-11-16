@@ -18,6 +18,8 @@ class Player;
 //class Blockade;
 //class Negotiate;
 
+class Deck;
+
 class Card {	
 	public:
 		Player* cardHolder;

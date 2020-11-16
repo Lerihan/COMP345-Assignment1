@@ -178,17 +178,23 @@ int GameEngine::randomNumber(int min, int max)
 void GameEngine::mainGameLoop()
 {
 	// Reinforcement phase
+	cout << "Reinforcement phase:" << endl;
+	cout << "====================" << endl;
 	for (int i = 0; i < numOfPlayers; i++)
 	{
+		//cout << "Player " << i << endl;
 		reinforcementPhase(players[i]);
 	}
+	cout << endl;
 
 	// Issuing Orders phase
+	cout << "Issuing orders phase:" << endl;
+	cout << "=====================" << endl;
 	for (int i = 0; i < numOfPlayers; i++)
 	{
 		issueOrdersPhase(players[i]);
 	}
-
+	cout << endl;
 
 	// Orders execution phase
 
@@ -197,19 +203,30 @@ void GameEngine::mainGameLoop()
 }
 
 // Determines how many armies to add to the input Player's reinforcement pool at the start of each reinforcement phase
-void GameEngine::reinforcementPhase(Player* p)
+void GameEngine::reinforcementPhase(Player* currPlayer)
 {
 	phase = "Reinforcement Phase";
 
 	int newArmies = 3; // minimum number of new armies to assign to Player
+
 	// check if Player owns whole Continent
-	// ...
+	int bonusArmies = 0; // if Player gets bonus reinforcements from owning whole Continent
+	Continent* currContinent = NULL; // for readability
+	for (int i = 0; i < map->listOfContinents.size(); i++ )
+	{
+		currContinent = map->listOfContinents[i];
+		if (currContinent->controlsContinent(currPlayer))
+			bonusArmies += currContinent->armyvalue;
+	}
+	currContinent = NULL;
 
 	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
-	if ((p->getTerritories().size() / 3) < newArmies)
-		newArmies = p->getTerritories().size() / 3;
+	if ((currPlayer->getTerritories().size() / 3) < newArmies)
+		newArmies = currPlayer->getTerritories().size() / 3;
 
-	p->addReinforcements(newArmies); // add armies
+	cout << "Player " << currPlayer->getPlayerNumber() << " will receive " << newArmies << " new reinforcements " 
+		<< "and " << bonusArmies << " bonus reinforcements." << endl;
+	currPlayer->addReinforcements(newArmies + bonusArmies); // add armies
 }
 
 // Prompts user for Order to be issued and calls issueOrder()
@@ -220,6 +237,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// issue Deploy orders
 	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory returned by toDefend()
 	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], currPlayer->getNumOfArmies()));
+	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
 
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the current Territory to the next Territory
@@ -227,18 +245,26 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	Territory* current = NULL; // Territory to move armies from
 	for (int i = 0; i < toAttack->listOfAdjTerritories.size(); i++)
 	{
+		// find the first adjacent Territory of toAttack that the Player owns to take armies from
 		if (toAttack->listOfAdjTerritories[i]->owner == currPlayer)
 		{
 			current = toAttack->listOfAdjTerritories[i];
 			break;
 		}
 	}
-
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	currPlayer->issueOrder(new Advance(currPlayer, current, toAttack, current->numberOfArmies / 2));
+	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+
 	toAttack = NULL;
 	current = NULL;
 
 	// play the first Card in the Player's Hand
+	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0] << "." << endl;
 	currPlayer->getHand()->play();
+}
+
+void GameEngine::executeOrdersPhase(Player* currPlayer)
+{
+
 }

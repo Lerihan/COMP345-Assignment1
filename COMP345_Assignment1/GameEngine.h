@@ -28,6 +28,7 @@ private:
 	void chooseFirstPlayer();
 	int randomNumber(int min,  int max);
 	void mainGameLoop(); // void for now
-	void reinforcementPhase(Player* p); // void for now
+	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);
+	void executeOrdersPhase(Player* currPlayer);
 };
