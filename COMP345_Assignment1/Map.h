@@ -62,11 +62,13 @@ public:
 	void printAdjContinents(); //not being used
 	Territory* getTerritory(int id);
 
+	bool controlsContinent(Player* player); // checks if the input Player owns the entire Continent
+
 	friend ostream & operator << (ostream &out, const Continent &c);
 
 	int index;
 	string name;
-	int armyvalue;
+	int armyvalue; // control bonus value of Continent
 	vector<Territory*> listOfTerritories; // per continent
 	vector<Continent*> listOfAdjContinents; //Not used ATM
 };

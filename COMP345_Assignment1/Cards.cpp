@@ -379,6 +379,6 @@ void DiplomacyCard::play() {
 }
 
 ostream& operator << (ostream& out, const DiplomacyCard& c) {
-	cout << "DiplomacyCard";
+	 return out << "DiplomacyCard";
 }
 
