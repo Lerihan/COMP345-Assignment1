@@ -29,7 +29,6 @@ istream& operator << (istream& in, const Card& c) {
 	return in;
 }
 
-
 //HAND
 //default constructor
 Hand::Hand() {
@@ -46,11 +45,6 @@ Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 	//creates a new hand with a player and a set of cards
 	this->player = playerName;
 	this->player->setHand(this);
-	//this->cardsInHand = playersCards;
-
-	/*for (int i = 0; i < (playersCards).size() - 1; i++) {
-		cardsInHand[i] = playersCards[i];
-	}*/
 	this->cardsInHand = playersCards;
 }
 
@@ -91,80 +85,13 @@ istream& operator << (istream& in, const Hand& h) {
 	return in;
 }
 
-// make it call play() of the Card subclass
-/*
-void Hand::play(Card* cardToPlay, Deck* d) {
-	//getting player's hand
-	Player* p = this->player;
-	Hand* h = p->getHand();
-	//implement function for the cards played
-	//checks desired card to be played, creates a new order in the player's orderlist & "plays" the card
-	if (cardToPlay == cardsAvailable[0]){
-		//Bomb
-		//create new order in orderlist
-		//create new bomb order
-		Bomb* bombCard = new Bomb();
-		(p->getOrdersList())->add(bombCard);
-		cout << "Player used bomb card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[0]);
-		h->cardsInHand.erase(cardToMove);
-		//adding the card at the end of the deck
-		d->cardsInDeck.push_back(cardsAvailable[0]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[1]) {
-		//Diplomacy
-		Negotiate* negotiateCard = new Negotiate();
-		(p->getOrdersList())->add(negotiateCard);
-		cout << "Player used Diplomacy/Negotiate card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[1]);
-		h->cardsInHand.erase(cardToMove);	
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[1]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[2]) {
-		//Blockade
-		Blockade* blockCard = new Blockade();
-		(p->getOrdersList())->add(blockCard);
-		cout << "Player used Blockade card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[2]);
-		h->cardsInHand.erase(cardToMove);		
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[2]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[3]) {
-		//Reinforcement
-		Deploy* reinforcementCard = new Deploy();
-		(p->getOrdersList())->add(reinforcementCard);
-		cout << "Player used Reinforcement card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[3]);
-		h->cardsInHand.erase(cardToMove);		
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[3]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else if (cardToPlay == cardsAvailable[4]) {
-		//Airlift
-		Airlift* airliftCard = new Airlift();
-		(p->getOrdersList())->add(airliftCard);
-		cout << "Player used Airlift card; created a new order list." << endl;
-		//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-		auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), cardsAvailable[4]);
-		h->cardsInHand.erase(cardToMove);
-		//adding the card at the end of the deck
-		d.cardsInDeck.push_back(cardsAvailable[4]);
-		cout << "Player has played " << cardToPlay << "from their hand.\n" << cardToPlay << " has been added to the deck." << endl;
-	}
-	else 
-	cout << "Player chose a card that they do not possess." << endl;
+void Hand::play() {
+	//plays the first card of the player's hand automatically
+	this->cardsInHand.at(0)->play();	
+	//deletes the card from the player's hand by placing it at the end and then erasing it.
+	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
+	this->cardsInHand.erase(cardToMove);
 }
-*/
 
 //DECK
 //default constructor
@@ -218,7 +145,6 @@ istream& operator << (istream& in, const Deck& d) {
 void Deck::draw(Player* p) {	
 	//getting player's hand
 	Hand* h = p->getHand();
-
 	//random number from 0 to size of current deck;
 	srand(time(NULL));
 	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0; 
@@ -227,6 +153,11 @@ void Deck::draw(Player* p) {
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
 	cout << "Player has added a card into their hand" << endl;
+}
+
+void Deck::insertBackToDeck(Card* c) {
+	//adding the card to the end of the deck
+	this->cardsInDeck.push_back(c);
 }
 
 // ######################################
@@ -253,8 +184,17 @@ Territory* BombCard::getTarget() {
 	return this->target;
 }
 
-Bomb* BombCard::play() {
-	return new Bomb;
+void BombCard::play() {
+	//creates new bomb order
+	Bomb* bombOrder = new Bomb();
+	//adds new bomb order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(bombOrder);
+	cout << "Player has played a Bomb Card from their hand.\n" << endl;
+	//adds the bomb card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Bomb Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
@@ -319,8 +259,17 @@ Territory* BlockadeCard::getTarget() {
 	return this->target;
 }
 
-Blockade* BlockadeCard::play() {
-	return new Blockade;
+void BlockadeCard::play() {
+	//creates new block order
+	Blockade* blockOrder = new Blockade();
+	//adds new block order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(blockOrder);
+	cout << "Player has played a Block Card from their hand.\n" << endl;
+	//adds the block card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Block Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
@@ -374,8 +323,17 @@ int AirliftCard::getNumArmies(int numArmies) {
 	return this->numArmies;
 }
 
-Airlift* AirliftCard::play() {
-	return new Airlift;
+void AirliftCard::play() {
+	//creates new airlift order
+	Airlift* airliftOrder = new Airlift();
+	//adds new airlift order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(airliftOrder);
+	cout << "Player has played a Airlift Card from their hand.\n" << endl;
+	//adds the airlift card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Airlift Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
@@ -407,11 +365,20 @@ Player* DiplomacyCard::getEnemy() {
 	return this->enemy;
 }
 
-Negotiate* DiplomacyCard::play() {
-	return new Negotiate;
+void DiplomacyCard::play() {
+	//creates new diplomacy order
+	Negotiate* diplomacyOrder = new Negotiate();
+	//adds new diplomacy order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(diplomacyOrder);
+	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
+	//adds the diplomacy card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Diplomacy Card has been added to the deck." << endl;
 }
 
 ostream& operator << (ostream& out, const DiplomacyCard& c) {
-	out << "DiplomacyCard";
-	return out;
+	cout << "DiplomacyCard";
 }
+
