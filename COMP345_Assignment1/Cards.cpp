@@ -21,6 +21,8 @@ Card& Card::operator = (const Card& c) {
 	return *this;
 }
 
+void Card::play(){};
+
 //stream insertion operators
 ostream& operator << (ostream& out, const Card& c) {
 	return out;
@@ -54,7 +56,7 @@ Territory* BombCard::getTarget() {
 	return this->target;
 }
 
-Bomb* BombCard::play() {
+void BombCard::play() {
 	//creates new bomb order
 	Bomb* bombOrder = new Bomb();
 	//adds new bomb order to the player's orderlist
@@ -136,7 +138,7 @@ Territory* BlockadeCard::getTarget() {
 	return this->target;
 }
 
-Blockade* BlockadeCard::play() {
+void BlockadeCard::play() {
 	//creates new block order
 	Blockade* blockOrder = new Blockade();
 	//adds new block order to the player's orderlist
@@ -192,7 +194,7 @@ int AirliftCard::getNumArmies(int numArmies) {
 	return this->numArmies;
 }
 
-Airlift* AirliftCard::play() {
+void AirliftCard::play() {
 	//creates new airlift order
 	Airlift* airliftOrder = new Airlift();
 	//adds new airlift order to the player's orderlist
@@ -233,7 +235,7 @@ Player* DiplomacyCard::getEnemy() {
 	return this->enemy;
 }
 
-Negotiate* DiplomacyCard::play() {
+void DiplomacyCard::play() {
 	//creates new diplomacy order
 	Negotiate* diplomacyOrder = new Negotiate();
 	//adds new diplomacy order to the player's orderlist
@@ -314,22 +316,7 @@ istream& operator << (istream& in, const Hand& h) {
 void Hand::play() {
 	Player* p = this->player;
 	Hand* h = p->getHand();
-	//display player's cards in hand
-	cout << "Current cards in player's hand: " << endl;
-	int i;
-	for (i = 0; i < h->cardsInHand.size(); i++) {
-		cout << h->cardsInHand.at(i) << " (" << i << ") " << endl;
-	}
-	//player selects which card they want to play
-	cout << "Select a card in your hand to play, by index." << endl;
-	int input;
-	cin >> input;
-	//verify that input is proper
-	while (input < 0 || input > h->cardsInHand.size()) {
-		cout << "Invalid input. Please try again." << endl;
-		cin >> input;
-	}
-	//selected card is played
+	int input = 0;
 	h->cardsInHand.at(input)->play();	
 	//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
 	auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), h->cardsInHand.at(input));

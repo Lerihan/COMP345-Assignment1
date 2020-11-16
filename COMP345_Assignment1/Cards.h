@@ -20,35 +20,32 @@ class Blockade;
 class Negotiate;
 
 class Card {	
-public:
-	Player* cardHolder;
-	Deck* d;
-	Card();
-	virtual ~Card();
-	Card& operator = (const Card &c);
+	public:
+		Player* cardHolder;
+		Deck* d;
+		Card();
+		virtual ~Card();
+		Card& operator = (const Card &c);
 
-	Order* play();
+		void play();
 
-	friend ostream& operator << (ostream& out, const Card& c);
-	friend istream& operator << (istream& in, const Card& c);
+		friend ostream& operator << (ostream& out, const Card& c);
+		friend istream& operator << (istream& in, const Card& c);
 };
 
-class Hand;
-
 class BombCard : public Card {
-private:
-	Territory* target; // target that gets bombed
-	friend class Hand;
-public:
-	BombCard();
-	BombCard(Territory* target);
-	~BombCard();
+	private:
+		Territory* target; // target that gets bombed
+	public:
+		BombCard();
+		BombCard(Territory* target);
+		~BombCard();
 
-	Bomb* play();
+		void play();
 
-	void setTarget(Territory* target);
-	Territory* getTarget();
-	friend ostream& operator << (ostream& out, const BombCard& c);
+		void setTarget(Territory* target);
+		Territory* getTarget();
+		friend ostream& operator << (ostream& out, const BombCard& c);
 
 };
 
@@ -77,7 +74,7 @@ public:
 	BlockadeCard(Territory* targe);
 	~BlockadeCard();
 
-	Blockade* play();
+	void play();
 
 	void setTarget(Territory* target);
 	Territory* getTarget();
@@ -95,7 +92,7 @@ public:
 	AirliftCard(Territory* current, Territory* target, int numArmies);
 	~AirliftCard();
 
-	Airlift* play();
+	void play();
 
 	void setCurrent(Territory* current);
 	Territory* getCurrent();
@@ -115,7 +112,7 @@ public:
 	DiplomacyCard(Player* enemy);
 	~DiplomacyCard();
 
-	Negotiate* play();
+	void play();
 
 	void setEnemy(Player* enemy);
 	Player* getEnemy();
