@@ -148,19 +148,61 @@ void Map::printAdjTerritory(Territory* t)
 */
 bool Map::validate()
 {
-	bool b = true;
-	//check if map is a connected graph (every territory has adjacent territories)
-	//check if continents are connected subgraphs (check if continents have adj cont ???) *** this is not implemented but i dont think theres a need for it
-	//check if each territory has one continent
+	//Checks (1. map is a connected graph 2. continents are connected subgraphs 3. each territory has at least one continent)
+	bool tIsConnected = true;
+	bool cIsConnected = true;
+
+	bool* visitedTerritories = new bool[listOfTerritories.size()] { false };
+	bool* visitedContinents = new bool[listOfContinents.size()]{ false };
+
+	mapTraversal(listOfTerritories.at(0), visitedTerritories, visitedContinents);
+	// Check if map is connected
 	for (int i = 0; i < listOfTerritories.size(); i++)
 	{
-		if (listOfTerritories[i]->listOfAdjTerritories.empty() || listOfTerritories[i]->continentIndex != NULL)
-		{
-			b = false;
-		}
+		if (!visitedTerritories[i])
+			tIsConnected = false;
 	}
 
-	return b;
+	// Check if continents are connected
+	for (int i = 0; i < listOfContinents.size(); i++)
+	{
+		if (!visitedContinents[i])
+			cIsConnected = false;
+	}
+
+	// deallocate memory
+	delete[] visitedTerritories; 
+	delete[] visitedContinents;
+
+	// Return final answer
+	if (tIsConnected && cIsConnected)
+		return true;
+	else
+		return false;
+}
+
+/*
+* Traverse through each map's continents and territories and validate every checks
+*/
+void Map::mapTraversal(Territory* current, bool visitedTerritories[], bool visitedContinents[])
+{
+	//Handle territory connectivity
+	if (!visitedTerritories[current->index - 1])
+	{
+		visitedTerritories[current->index - 1] = true;
+
+		//Handle continent connectivity
+		if (current->continentIndex != NULL && !visitedContinents[current->continentIndex - 1])
+		{
+			visitedContinents[current->continentIndex - 1] = true;
+		}
+
+		//Check every neighbor of all territories
+		for (Territory* neighbor : listOfTerritories.at(current->index - 1)->listOfAdjTerritories)
+		{
+			mapTraversal(neighbor, visitedTerritories, visitedContinents);
+		}
+	}
 }
 
 /*
@@ -360,11 +402,11 @@ Territory::Territory()
 
 // Constructor for Territory
 // id is index, n is name
-Territory::Territory(int id, string n)
+Territory::Territory(int id, string n, int continentid)
 {
 	index = id;
 	name = n;
-	continentIndex = 0;
+	continentIndex = continentid;
 	numberOfArmies = 0;
 
 	this->owner = NULL;
@@ -395,7 +437,7 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	//delete owner;
+	delete owner;
 }
 
 /*
@@ -453,28 +495,71 @@ bool Territory::isAdjacent(int id)
 	return false;
 }
 
+
+bool Territory::addTroops(int n)
+{
+	if (n > 0)
+	{
+		numberOfArmies += n;
+		return true;
+	}
+	  return false;
+}
+
+bool Territory::removeTroops(int n)
+{
+	if (n > 0)
+	{
+		numberOfArmies -= n;
+		return true;
+	}
+	return false;
+}
+
+// Checks if the input Territory is contained in the input vector
+// used for sortTerritoriesToAttack(0
+bool Territory::containsTerritory(vector<Territory*> territories, Territory* t)
+{
+	for (int i = 0; i < territories.size(); i++)
+	{
+		if (territories[i] == t)
+			return true;
+  }
+  return false;
+}
+	
+
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
 ostream& operator << (ostream &out, const Territory &t)
 {
 	out << endl;
 	out << "--------------------------------------" << endl;
-	cout << endl;
 	out << "The Territory name is '" << t.name << "'" << endl;
 	out << endl;
 
-	cout << "Adjacent Territories of '" << t.name << "'" << endl;
+	cout << "Adjacent Territories of '" << t.name << "':";
 	for (int i = 0; i < t.listOfAdjTerritories.size(); i++)
 	{
 		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
 	}
 
-	cout << endl << endl;
+	cout << endl;
 	out << "--------------------------------------" << endl;
-	out << endl;
 
 	return out;
 }
+
+bool operator ==(const Territory& t1, const Territory& t2)
+{
+	return (t1.index == t2.index && t1.continentIndex == t2.continentIndex && t1.name == t2.name);
+}
+
+bool operator !=(const Territory& t1, const Territory& t2)
+{
+	return !(t1 == t2);
+}
+
 
 
 

@@ -192,6 +192,7 @@
     <None Include="Hawaii.map" />
     <None Include="mexico.map" />
     <None Include="ohio.map" />
+    <None Include="Simpsons.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
