@@ -22,7 +22,6 @@ int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of
 Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->name = "Player " + playerNumber;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
 
@@ -34,11 +33,10 @@ Player::Player()
 }
 
 // Constructor assigns input string to be Player name
-Player::Player(string name)
+Player::Player(Hand* hand)
 {
 	this->playerNumber = totalPlayers++;
-	this->name = name;
-	this->hand = new Hand();
+	this->hand = hand;
 	this->orders = new OrdersList();
 
 	this->numOfArmies = 0;
@@ -53,7 +51,6 @@ Player::Player(string name)
 Player::Player(Player& p)
 {
 	this->playerNumber = p.playerNumber;
-	this->name = p.name;
 	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 	// copy orders
 	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
@@ -127,11 +124,6 @@ void Player::setHand(Hand* h)
 int Player::getPlayerNumber()
 {
 	return playerNumber;
-}
-
-string Player::getName()
-{
-	return name;
 }
 
 void Player::setNumOfArmies(int n)
@@ -283,14 +275,14 @@ ostream& operator <<(ostream& strm, Player& player)
 		s+= ", ";
 	}
 	s += "\b\b.";
-	return strm << "Player: " << player.name << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
+	return strm << "Player: " << player.playerNumber << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
 }
 
 // In stream operator, allows user to choose the Player's name.
 istream & operator >> (istream& strm,  Player& player)
 {
-    cout << "Enter Player name: ";
-    strm >> player.name;
+    cout << "Enter Player number: ";
+    strm >> player.playerNumber;
     return strm;
 }
 

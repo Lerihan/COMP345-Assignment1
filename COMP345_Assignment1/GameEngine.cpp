@@ -4,6 +4,7 @@
 #include <random>
 #include "GameEngine.h"
 #include "MapLoader.h"
+#include "Cards.h"
 
 void GameEngine::startGame()
 {
@@ -91,13 +92,13 @@ void GameEngine::selectPlayers()
 		}
 	} while (playernum < 2 || playernum > 5);
 
-	string playername;
 	for (int i = 0; i < playernum; i++)
 	{
-		cout << "What is the name of player " << (i + 1) << " ?: ";
-		cin >> playername;
-		Player* p = new Player(playername);
-		players.push_back(p);
+		
+
+
+		//Player* p = new Player(playername);
+		//players.push_back(p);
 	}
 
 	numOfPlayers = playernum; // set number of players
