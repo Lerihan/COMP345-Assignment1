@@ -21,8 +21,6 @@ Card& Card::operator = (const Card& c) {
 	return *this;
 }
 
-void Card::play(){};
-
 //stream insertion operators
 ostream& operator << (ostream& out, const Card& c) {
 	return out;
