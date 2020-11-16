@@ -11,13 +11,12 @@
 #include "Order.h"
 
 class Player;
-class Deck;
 
 // needed Order subclasses
-class Airlift;
-class Bomb;
-class Blockade;
-class Negotiate;
+//class Airlift;
+//class Bomb;
+//class Blockade;
+//class Negotiate;
 
 class Card {	
 	public:
@@ -120,6 +119,7 @@ public:
 };
 
 class Hand : public Card {
+friend class Deck;
 protected:
 	Player* player;	
 public:
@@ -135,16 +135,17 @@ public:
 	friend istream& operator << (istream& in, const Hand& h);
 };
 
-class Deck : public Card {	
-public:		
+class Deck : public Card {
+protected:
+public:
 	std::vector<Card*> cardsInDeck;
 	Deck();
 	Deck(Deck& d);
 	Deck(std::vector<Card*> cardsInDeck);
 	~Deck();
 	Deck& operator = (const Deck &d);
+	friend ostream& operator << (ostream& out, const Deck& d);
+	friend istream& operator << (istream& in, const Deck& d);
 	void draw(Player* p);
 	void insertBackToDeck(Card* c);
-	friend ostream& operator << (ostream& out, const Deck& d);
-	friend istream& operator << (istream& in, const Deck& d);	
 };

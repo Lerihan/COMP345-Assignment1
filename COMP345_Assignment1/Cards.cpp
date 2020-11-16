@@ -31,227 +31,6 @@ istream& operator << (istream& in, const Card& c) {
 	return in;
 }
 
-
-// ######################################
-// BombCard
-// ######################################
-BombCard::BombCard() {
-	this->target = NULL;
-}
-
-BombCard::BombCard(Territory* target) {
-	this->target = target;
-}
-
-BombCard::~BombCard() {
-	delete this->target;
-	delete this;
-}
-
-void BombCard::setTarget(Territory* target) {
-	this->target = target;
-}
-
-Territory* BombCard::getTarget() {
-	return this->target;
-}
-
-void BombCard::play() {
-	//creates new bomb order
-	Bomb* bombOrder = new Bomb();
-	//adds new bomb order to the player's orderlist
-	Player* p = this->cardHolder;
-	p->issueOrder(bombOrder);
-	cout << "Player has played a Bomb Card from their hand.\n" << endl;
-	//adds the bomb card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
-	cout << "Bomb Card has been added to the deck." << endl;
-}
-
-ostream& operator << (ostream& out, const BombCard& c) {
-	cout << "BombCard";
-}
-
-
-// ######################################
-// ReinforcementCard
-// ######################################
-ReinforcementCard::ReinforcementCard() {
-	this->numArmies = 0;
-}
-
-ReinforcementCard::ReinforcementCard(int numArmies) {
-	this->numArmies = numArmies;
-}
-
-ReinforcementCard::~ReinforcementCard() {
-	delete this;
-}
-
-void ReinforcementCard::setNumArmies(int numArmies) {
-	this->numArmies = numArmies;
-}
-
-int ReinforcementCard::getNumArmies() {
-	return this->numArmies;
-}
-
-void ReinforcementCard::play() {
-	//creates new reinforcement order
-	Deploy* reinforcementOrder = new Deploy();
-	//adds new reinforcement order to the player's orderlist
-	Player* p = this->cardHolder;
-	p->issueOrder(reinforcementOrder);
-	cout << "Player has played a Reinforcement Card from their hand.\n" << endl;
-	//adds the reinforcement card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
-	cout << "Reinforcement Card has been added to the deck." << endl;
-}
-
-ostream& operator << (ostream& out, const ReinforcementCard& c) {
-	cout << "ReinforcementCard";
-}
-
-// ######################################
-// BlockadeCard
-// ######################################
-BlockadeCard::BlockadeCard() {
-	this->target = NULL;
-}
-
-BlockadeCard::BlockadeCard(Territory* target) {
-	this->target = target;
-}
-
-BlockadeCard::~BlockadeCard() {
-	delete this->target;
-	delete this;
-}
-
-void BlockadeCard::setTarget(Territory* target) {
-	this->target = target;
-}
-
-Territory* BlockadeCard::getTarget() {
-	return this->target;
-}
-
-void BlockadeCard::play() {
-	//creates new block order
-	Blockade* blockOrder = new Blockade();
-	//adds new block order to the player's orderlist
-	Player* p = this->cardHolder;
-	p->issueOrder(blockOrder);
-	cout << "Player has played a Block Card from their hand.\n" << endl;
-	//adds the block card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
-	cout << "Block Card has been added to the deck." << endl;
-}
-
-ostream& operator << (ostream& out, const BlockadeCard& c) {
-	cout << "BlockadeCard";
-}
-
-// ######################################
-// AirliftCard
-// ######################################
-AirliftCard::AirliftCard() {
-	this->current = NULL;
-	this->target = NULL;
-	this->numArmies = 0;
-}
-
-AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
-	this->current = current;
-	this->target = target;
-	this->numArmies = numArmies;
-}
-
-void AirliftCard::setCurrent(Territory* current) {
-	this->current = current;
-}
-
-Territory* AirliftCard::getCurrent() {
-	return this->current;
-}
-
-void AirliftCard::setTarget(Territory* target) {
-	this->target = target;
-}
-
-Territory* AirliftCard::getTarget() {
-	return this->target;
-}
-
-void AirliftCard::setNumArmies() {
-	this->numArmies = numArmies;
-}
-
-int AirliftCard::getNumArmies(int numArmies) {
-	return this->numArmies;
-}
-
-void AirliftCard::play() {
-	//creates new airlift order
-	Airlift* airliftOrder = new Airlift();
-	//adds new airlift order to the player's orderlist
-	Player* p = this->cardHolder;
-	p->issueOrder(airliftOrder);
-	cout << "Player has played a Airlift Card from their hand.\n" << endl;
-	//adds the airlift card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
-	cout << "Airlift Card has been added to the deck." << endl;
-}
-
-ostream& operator << (ostream& out, const AirliftCard& c) {
-	cout << "AirliftCard";
-}
-
-// ######################################
-// DiplomacyCard
-// ######################################
-DiplomacyCard::DiplomacyCard() {
-	this->enemy = NULL;
-}
-
-DiplomacyCard::DiplomacyCard(Player* enemy) {
-	this->enemy = enemy;
-}
-
-DiplomacyCard::~DiplomacyCard() {
-	delete this->enemy;
-	delete this;
-}
-
-void DiplomacyCard::setEnemy(Player* enemy) {
-	this->enemy = enemy;
-}
-
-Player* DiplomacyCard::getEnemy() {
-	return this->enemy;
-}
-
-void DiplomacyCard::play() {
-	//creates new diplomacy order
-	Negotiate* diplomacyOrder = new Negotiate();
-	//adds new diplomacy order to the player's orderlist
-	Player* p = this->cardHolder;
-	p->issueOrder(diplomacyOrder);
-	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
-	//adds the diplomacy card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
-	cout << "Diplomacy Card has been added to the deck." << endl;
-}
-
-ostream& operator << (ostream& out, const DiplomacyCard& c) {
-	cout << "DiplomacyCard";
-}
-
 //HAND
 //default constructor
 Hand::Hand() {
@@ -316,10 +95,10 @@ istream& operator << (istream& in, const Hand& h) {
 void Hand::play() {
 	Player* p = this->player;
 	Hand* h = p->getHand();
-	int input = 0;
-	h->cardsInHand.at(input)->play();	
-	//deletes the card chosen from the player's hand by placing it at the end and then erasing it.
-	auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), h->cardsInHand.at(input));
+	//plays the first card of the player's hand automatically
+	h->cardsInHand.at(0)->play();	
+	//deletes the card from the player's hand by placing it at the end and then erasing it.
+	auto cardToMove = find(h->cardsInHand.begin(), h->cardsInHand.end(), h->cardsInHand.at(0));
 	h->cardsInHand.erase(cardToMove);
 }
 
@@ -385,13 +164,230 @@ void Deck::draw(Player* p) {
 	cout << "Player has added a card into their hand" << endl;
 }
 
-//receives a card & puts it at the end of the deck
-void Deck::insertBackToDeck(Card* c) {		
-	//adding the card at the end of the deck
+void Deck::insertBackToDeck(Card* c) {
+	//adding the card to the end of the deck
 	this->cardsInDeck.push_back(c);
 }
 
-ostream& operator << (ostream& out, const Card& c) {
-	return out << "Card";
+// ######################################
+// BombCard
+// ######################################
+BombCard::BombCard() {
+	this->target = NULL;
+}
+
+BombCard::BombCard(Territory* target) {
+	this->target = target;
+}
+
+BombCard::~BombCard() {
+	delete this->target;
+	delete this;
+}
+
+void BombCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* BombCard::getTarget() {
+	return this->target;
+}
+
+void BombCard::play() {
+	//creates new bomb order
+	Bomb* bombOrder = new Bomb();
+	//adds new bomb order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(bombOrder);
+	cout << "Player has played a Bomb Card from their hand.\n" << endl;
+	//adds the bomb card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Bomb Card has been added to the deck." << endl;
+}
+
+ostream& operator << (ostream& out, const BombCard& c) {
+	out << "BombCard";
+	return out;
+}
+
+
+// ######################################
+// ReinforcementCard
+// ######################################
+ReinforcementCard::ReinforcementCard() {
+	this->numArmies = 0;
+}
+
+ReinforcementCard::ReinforcementCard(int numArmies) {
+	this->numArmies = numArmies;
+}
+
+ReinforcementCard::~ReinforcementCard() {
+	delete this;
+}
+
+void ReinforcementCard::setNumArmies(int numArmies) {
+	this->numArmies = numArmies;
+}
+
+int ReinforcementCard::getNumArmies() {
+	return this->numArmies;
+}
+
+void ReinforcementCard::play() {
+
+}
+
+ostream& operator << (ostream& out, const ReinforcementCard& c) {
+	out << "ReinforcementCard";
+	return out;
+}
+
+// ######################################
+// BlockadeCard
+// ######################################
+BlockadeCard::BlockadeCard() {
+	this->target = NULL;
+}
+
+BlockadeCard::BlockadeCard(Territory* target) {
+	this->target = target;
+}
+
+BlockadeCard::~BlockadeCard() {
+	delete this->target;
+	delete this;
+}
+
+void BlockadeCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* BlockadeCard::getTarget() {
+	return this->target;
+}
+
+void BlockadeCard::play() {
+	//creates new block order
+	Blockade* blockOrder = new Blockade();
+	//adds new block order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(blockOrder);
+	cout << "Player has played a Block Card from their hand.\n" << endl;
+	//adds the block card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Block Card has been added to the deck." << endl;
+}
+
+ostream& operator << (ostream& out, const BlockadeCard& c) {
+	out << "BlockadeCard";
+	return out;
+}
+
+// ######################################
+// AirliftCard
+// ######################################
+AirliftCard::AirliftCard() {
+	this->current = NULL;
+	this->target = NULL;
+	this->numArmies = 0;
+}
+
+AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
+	this->current = current;
+	this->target = target;
+	this->numArmies = numArmies;
+}
+
+AirliftCard::~AirliftCard()
+{
+	delete this->current;
+	delete this->target;
+	delete this;
+}
+
+void AirliftCard::setCurrent(Territory* current) {
+	this->current = current;
+}
+
+Territory* AirliftCard::getCurrent() {
+	return this->current;
+}
+
+void AirliftCard::setTarget(Territory* target) {
+	this->target = target;
+}
+
+Territory* AirliftCard::getTarget() {
+	return this->target;
+}
+
+void AirliftCard::setNumArmies() {
+	this->numArmies = numArmies;
+}
+
+int AirliftCard::getNumArmies(int numArmies) {
+	return this->numArmies;
+}
+
+void AirliftCard::play() {
+	//creates new airlift order
+	Airlift* airliftOrder = new Airlift();
+	//adds new airlift order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(airliftOrder);
+	cout << "Player has played a Airlift Card from their hand.\n" << endl;
+	//adds the airlift card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Airlift Card has been added to the deck." << endl;
+}
+
+ostream& operator << (ostream& out, const AirliftCard& c) {
+	out << "AirliftCard";
+	return out;
+}
+
+// ######################################
+// DiplomacyCard
+// ######################################
+DiplomacyCard::DiplomacyCard() {
+	this->enemy = NULL;
+}
+
+DiplomacyCard::DiplomacyCard(Player* enemy) {
+	this->enemy = enemy;
+}
+
+DiplomacyCard::~DiplomacyCard() {
+	delete this->enemy;
+	delete this;
+}
+
+void DiplomacyCard::setEnemy(Player* enemy) {
+	this->enemy = enemy;
+}
+
+Player* DiplomacyCard::getEnemy() {
+	return this->enemy;
+}
+
+void DiplomacyCard::play() {
+	//creates new diplomacy order
+	Negotiate* diplomacyOrder = new Negotiate();
+	//adds new diplomacy order to the player's orderlist
+	Player* p = this->cardHolder;
+	p->issueOrder(diplomacyOrder);
+	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
+	//adds the diplomacy card to the end of the deck
+	Deck* d = this->d;
+	d->insertBackToDeck(this);
+	cout << "Diplomacy Card has been added to the deck." << endl;
+}
+
+ostream& operator << (ostream& out, const DiplomacyCard& c) {
+	cout << "DiplomacyCard";
 }
 

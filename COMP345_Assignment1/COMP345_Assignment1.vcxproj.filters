@@ -97,5 +97,8 @@
     <None Include="dortmund.map">
       <Filter>Source Files\Maps</Filter>
     </None>
+    <None Include="Simpsons.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
   </ItemGroup>
 </Project>
