@@ -26,35 +26,35 @@ void Subject::notify() {
 	}
 }
 
+PhaseObserver::PhaseObserver(){}
+
 PhaseObserver::PhaseObserver(GameEngine* gameEngine)
 {
 	gameEngine->attach(this);
-	this->subject = gameEngine;
+	this->gameEngine = gameEngine;
 }
 
 void PhaseObserver::update() {
-	Player p;
-	currentPlayerNum = p.getPlayerNumber();
+	string currentPhase = gameEngine->getPhase();
 
-	const char* currentPhaseInfo;
-	switch (currentPhase) {
-		case Phase::Reinforcement:
-			currentPhaseInfo = "Reinforcement Phase";
-			break;
-		case Phase::IssuingOrder:
-			currentPhaseInfo = "Issuing Orders Phase";
-			break;
-		case Phase::OrdersExecution:
-			currentPhaseInfo = "Executing Orders Phase";
-			break;
+	//why is there no switch 
+	if (currentPhase == "Reinforcement Phase") {
+		cout << "Current Phase:" << currentPhase << endl;
 	}
-	cout <<"Player "<< currentPlayerNum << ":" << currentPhase << endl;
+	if (currentPhase == "Issue Order Phase") {
+		cout << "Current Phase:" << currentPhase << endl;
+	}
+	if (currentPhase == "Execute Order Phase") {
+		cout << "Current Phase:" << currentPhase << endl;
+	}
 }
+
+GameStatisticsObserver::GameStatisticsObserver(){}
 
 GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
 {
 	gameEngine->attach(this);
-	this->subject = gameEngine;
+	this->gameEngine = gameEngine;
 }
 
 
@@ -68,9 +68,9 @@ float gameStats(Player* players, Map* map)
 
 void GameStatisticsObserver::update() {
 
-	int totalTerritories = subject->getMap()->listOfTerritories.size();
+	int totalTerritories = gameEngine->getMap()->listOfTerritories.size();
 
-	for (int i = 0; i < subject->getTotalPlayers().size(); i++) {
-
+	for (int i = 0; i < gameEngine->getTotalPlayers().size(); i++) {
+		
 	}
 }

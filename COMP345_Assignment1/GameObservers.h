@@ -18,27 +18,26 @@ class Subject {
 		vector<Observer*> observers;
 };
 
-enum Phase {Reinforcement, IssueOrder, ExecuteOrer};
-
 class GameEngine;
 
 class PhaseObserver : public Observer {
 	public:
+		PhaseObserver();
 		PhaseObserver(GameEngine* gameEngine);
 		void update() override;
 
 	private:
 		int currentPlayerNum;
 		enum Phase {Reinforcement, IssuingOrder, OrdersExecution, NoPhase};
-		Phase currentPhase = Phase::NoPhase;
-		GameEngine* subject;
+		GameEngine* gameEngine;
 };
 
 class GameStatisticsObserver : public Observer {
 	public:
+		GameStatisticsObserver();
 		GameStatisticsObserver(GameEngine* gameEngine);
 		void update() override;
 	private:
 		string showGameStats;
-		GameEngine* subject;
+		GameEngine* gameEngine;
 };

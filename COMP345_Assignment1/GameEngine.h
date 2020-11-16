@@ -11,6 +11,7 @@ public:
 	void startupPhase();
 	vector<Player*> getTotalPlayers();
 	Map* getMap();
+	string getPhase();
 
 private:
 	Map* map;
@@ -18,9 +19,7 @@ private:
 	Player* firstPlayer;
 	int numOfPlayers;
 	bool observerOn;
-
 	string phase;
-	string getPhase();
 
 	void selectMap();
 	void selectPlayers(); 
