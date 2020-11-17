@@ -45,7 +45,7 @@ void PhaseObserver::update() {
 		cout << "Current Phase:" << currentPhase << endl;
 	}
 	if (currentPhase == "Execute Order Phase") {
-		cout << "Current Phase:" << currentPhase << endl;
+		cout << "Current Phase: " << currentPhase << endl;
 	}
 }
 

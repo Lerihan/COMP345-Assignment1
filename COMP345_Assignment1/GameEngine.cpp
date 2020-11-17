@@ -193,6 +193,7 @@ void GameEngine::mainGameLoop()
 		{
 			//cout << "Player " << i << endl;
 			reinforcementPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
@@ -202,6 +203,7 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			issueOrdersPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
@@ -211,6 +213,7 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			executeOrdersPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
