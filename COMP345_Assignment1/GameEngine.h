@@ -1,5 +1,7 @@
 #pragma once
+#include "MapLoader.h"
 #include "Map.h"
+#include "Cards.h"
 
 using namespace std;
 
@@ -15,11 +17,12 @@ private:
 	Map* map;
 	vector<Player*> players;
 	Player* firstPlayer;
+	Deck* deck;
 	int numOfPlayers;
 	bool observerOn;
 
 	void selectMap();
-	void selectPlayers(); 
+	void createComponents();
 	void setObservers();
 	void setInitialArmies();
 	void chooseFirstPlayer();

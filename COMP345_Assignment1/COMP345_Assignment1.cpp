@@ -17,23 +17,15 @@
 
 int main()
 {
-	Order* o = new Deploy;
-	cout << o->getType();
+	//Order* o = new Deploy;
+	//cout << o->getType();
 
-	/*
+	
 	GameEngine g;
 	g.startGame();
-	
 	Map* m = g.getMap();
-	for (Territory* t : m->listOfTerritories)
-	{
-		//m->printAdjTerritory(t);
-		//cout << t->index << endl;
-	}
 
-	//cout << m->traverse();
-
-	
+	/**
 	Territory* t1 = new Territory(0, "Canada");
 	Territory* t2 = new Territory(0, "USA");
 	Territory* t3 = new Territory(0, "Mexico");

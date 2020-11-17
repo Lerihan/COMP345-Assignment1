@@ -3,8 +3,6 @@
 #include <ctime>
 #include <random>
 #include "GameEngine.h"
-#include "MapLoader.h"
-#include "Cards.h"
 
 void GameEngine::startGame()
 {
@@ -14,7 +12,7 @@ void GameEngine::startGame()
 	selectMap();
 	cout << endl;
 
-	selectPlayers();
+	createComponents();
 	cout << endl;
 
 	setObservers();
@@ -25,8 +23,6 @@ void GameEngine::startGame()
 
 	/* 
 	TODO/FIX:
-	(1) different valid maps can be loaded and
-		their validity is verified(i.e.it is a connected graph, etc.), and invalid maps are gracefully rejected; 
 	(2) the right number of players is created, a deck with the right number of cards is created;
 	
 	
@@ -63,7 +59,9 @@ void GameEngine::selectMap()
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
-		isValid = map->validate();
+
+		if(map != NULL)
+			isValid = map->validate();
 
 		if (map == NULL || !isValid)
 		{
@@ -72,14 +70,15 @@ void GameEngine::selectMap()
 	} while (map == NULL || !isValid);
 
 	delete mapLoader;
-	//cout << *map;
 }
 
-void GameEngine::selectPlayers()
+void GameEngine::createComponents()
 {
-	// create all the players, create a deck of cards, and assign an empty hand of
-	// cards to each player.
 	int playernum = 0;
+
+	//TODO: create a deck of cards, and assign an empty hand of cards to each player.
+	Deck* d;
+	deck = d;
 
 	do
 	{
@@ -94,11 +93,8 @@ void GameEngine::selectPlayers()
 
 	for (int i = 0; i < playernum; i++)
 	{
-		
-
-
-		//Player* p = new Player(playername);
-		//players.push_back(p);
+		Player* p = new Player(NULL); //TODO: after creating cards, create player with that set of cards
+		players.push_back(p);
 	}
 
 	numOfPlayers = playernum; // set number of players
@@ -153,7 +149,6 @@ void GameEngine::chooseFirstPlayer()
 {
 	int first = randomNumber(0, numOfPlayers - 1);
 	firstPlayer = players.at(first);
-	//cout << *firstPlayer;
 }
 
 // Code from https://stackoverflow.com/questions/12657962/how-do-i-generate-a-random-number-between-two-variables-that-i-have-stored

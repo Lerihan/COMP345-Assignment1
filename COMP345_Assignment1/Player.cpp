@@ -33,10 +33,11 @@ Player::Player()
 }
 
 // Constructor assigns input string to be Player name
-Player::Player(Hand* hand)
+/**
+Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->hand = hand;
+	this->hand = new Hand();
 	this->orders = new OrdersList();
 
 	this->numOfArmies = 0;
@@ -45,6 +46,7 @@ Player::Player(Hand* hand)
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
 }
+*/
 
 // Copy constructor, creates deep copy of each attribute.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
