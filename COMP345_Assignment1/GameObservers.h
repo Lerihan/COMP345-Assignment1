@@ -38,6 +38,5 @@ class GameStatisticsObserver : public Observer {
 		GameStatisticsObserver(GameEngine* gameEngine);
 		void update() override;
 	private:
-		string showGameStats;
 		GameEngine* gameEngine;
 };

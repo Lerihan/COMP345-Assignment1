@@ -57,15 +57,6 @@ GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
 	this->gameEngine = gameEngine;
 }
 
-
-float gameStats(Player* players, Map* map)
-{
-	float numTerritories = (float)players->getTerritories().size();
-	float playerOwnedTerritories = (float)map->listOfTerritories.size();
-	float percentOwned = 100.0*playerOwnedTerritories/numTerritories;
-	return percentOwned;
-}
-
 void GameStatisticsObserver::update() {
 
 	int totalTerritories = gameEngine->getMap()->listOfTerritories.size();
