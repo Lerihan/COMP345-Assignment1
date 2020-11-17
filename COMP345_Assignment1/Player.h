@@ -20,7 +20,7 @@ class Cards;
 class OrdersList;
 class Hand;
 
-class Player: public Subject
+class Player
 {
 private:
 	//static int playerCount; // to keep count of number of players, also needed to initialize playerNumber member
