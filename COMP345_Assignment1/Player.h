@@ -13,7 +13,6 @@
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
-#include "GameObservers.h"
 
 class Order;
 class Cards;
