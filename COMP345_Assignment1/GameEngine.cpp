@@ -26,8 +26,6 @@ void GameEngine::startGame()
 	/* 
 	TODO/FIX:
 	(2) the right number of players is created, a deck with the right number of cards is created;
-	
-	
 	*/
 }
 
@@ -36,13 +34,11 @@ void GameEngine::startupPhase()
 	setRandomOrder();
 	cout << endl;
 
-	setInitialArmies();
+	setRandomTerritory();
 	cout << endl;
 
-	/*
-	TODO/FIX:
-		2. All territories in the map are randomly assigned to players one by one in a round-robin fashion
-	*/
+	setInitialArmies();
+	cout << endl;
 }
 
 Map * GameEngine::getMap()
@@ -93,7 +89,7 @@ void GameEngine::createComponents()
 	// create deck and players with set hand
 	//TODO:
 	//Deck* d;
-	//deck = new Deck();
+	//deck = d;
 
 	for (int i = 0; i < playernum; i++)
 	{
@@ -166,6 +162,36 @@ void GameEngine::setRandomOrder()
 		cout << players[i]->getPlayerNumber() << " ";
 	}
 	cout << endl;
+}
+
+void GameEngine::setRandomTerritory()
+{
+	vector<Territory*> territoriesCopy = map->listOfTerritories;
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(territoriesCopy.begin(), territoriesCopy.end(), std::default_random_engine(seed));
+
+	int turn = 0;
+	for (int i = 0; i < territoriesCopy.size(); i++)
+	{
+		players[turn]->addTerritory(territoriesCopy[i]);
+		turn++;
+
+		if (turn > (players.size() - 1))
+			turn = 0;
+	}
+
+	/* FOR DRIVER
+	for (int j = 0; j < players.size(); j++)
+	{
+		cout << "Player " << j << "'s Territories" << endl;
+		vector<Territory*> temp = players[j]->getTerritories();
+		for (int i = 0; i < players[j]->getTerritories().size(); i++)
+		{
+			cout << temp[i]->name << endl;
+		}
+		cout << endl;
+	}
+	*/
 }
 
 // Function that controls the main game

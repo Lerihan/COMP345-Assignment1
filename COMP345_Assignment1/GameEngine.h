@@ -27,6 +27,7 @@ private:
 	void setObservers();
 	void setInitialArmies();
 	void setRandomOrder();
+	void setRandomTerritory();
 	void mainGameLoop(); // void for now
 	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);
