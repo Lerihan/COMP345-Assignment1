@@ -111,8 +111,11 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 */
 bool Deploy::validate()
 {
-	if (territory->getOwner() == getPlayer() && this->numOfArmies > 0)
+	if (territory->getOwner() == getPlayer())
+	{ 
+		cout << "Deploy order validated." << endl;
 		return true;
+	}
 	cout << "Deploy order is not valid." << endl;
 	return false;
 }
@@ -123,12 +126,20 @@ bool Deploy::execute()
 {
 	if (validate())
 	{ 
-		cout << "Deploying " << numOfArmies << " armies.\n";
+		cout << "Deploy order executed." << endl;
 		executed = true;
 
+		int taken = player->takeArmiesFromReinforcement(numOfArmies);
+
+		if (taken != numOfArmies)
+			numOfArmies = taken;
+
 		territory->addTroops(numOfArmies);
+		cout << "DEPLOY ORDER: Deploying " << numOfArmies << " armies to " << territory->name << "." << endl;
 		return true;
 	}
+
+	cout << "Deploy order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 
@@ -138,7 +149,7 @@ string Deploy::getType() { return "Deploy"; }
 */
 ostream& operator << (std::ostream& o, const Deploy& deploy)
 {
-	return o << "A deploy order has been issued";
+	return o << "A deploy order has been issued.";
 }
 
 /*Default constructor for the Advance class
@@ -188,7 +199,10 @@ Advance& Advance::operator=(const Advance& advance)
 bool Advance::validate()
 {
 	if (current->getOwner() == getPlayer() && current->isAdjacent(next->index))
+	{
+		cout << "Advance order validated." << endl;
 		return true;
+	}
 	cout << "Advance order is not valid." << endl;
 	return false;
 }
@@ -199,6 +213,7 @@ bool Advance::execute()
 {
 	if (validate())
 	{
+		cout << "Advance order executed." << endl;
 		executed = true;
 
 		if (next->getOwner() == getPlayer()) // if defending
@@ -209,7 +224,7 @@ bool Advance::execute()
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
 
-			cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+			cout << "ADVANCE ORDER: "<< player->getName() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		}
 		else // if attacking
 		{
@@ -230,11 +245,19 @@ bool Advance::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player); // change owner to winner
 				next->addTroops(numOfArmies);
+				cout << "ADVANCE ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+			}
+
+			if (current->numberOfArmies == 0) //if player loses
+			{
+				cout << "ADVANCE ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
 		return true;
 	}
+
+	cout << "Advance order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 
@@ -292,7 +315,10 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 bool Bomb::validate()
 {
 	if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
+	{
+		cout << "Bomb order validated." << endl;
 		return true;
+	}
 	cout << "Bomb order is not valid." << endl;
 	return false;
 }
@@ -303,15 +329,18 @@ bool Bomb::execute()
 {
 	if (validate())
 	{
+		cout << "Bomb order executed." << endl;
 		executed = true;
 
 		int numDestroyed = (int)(target->numberOfArmies / 2.0);
 
 		target->removeTroops(numDestroyed);
 
-		cout << "Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
+		cout << "BOMB ORDER: Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
 		return true;
 	}
+
+	cout << "Bomb order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 
@@ -364,7 +393,10 @@ Blockade& Blockade::operator=(const Blockade& blockade)
 bool Blockade::validate()
 {
 	if (target->getOwner() == getPlayer())
+	{
+		cout << "Blockade order validated." << endl;
 		return true;
+	}
 	cout << "Blockade order is not valid." << endl;
 	return false;
 }
@@ -375,16 +407,19 @@ bool Blockade::execute()
 {
 	if (validate())
 	{
+		cout << "Blockade order executed." << endl;
 		executed = true;
 
 		target->addTroops(target->numberOfArmies * 2);
 
 		target->setOwner(new Player()); //neutral player //TODO: Come back to this when neutral player implemented
 
-		cout << "Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
+		cout << "BLOCKADE ORDER: Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
 		
 		return true;
 	}
+
+	cout << "Blockade order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 
@@ -443,7 +478,10 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 bool Airlift::validate()
 {
 	if (current->getOwner() == getPlayer())
+	{
+		cout << "Airlift order validated." << endl;
 		return true;
+	}
 	cout << "Airlift order is not valid." << endl;
 	return false;
 }
@@ -454,6 +492,7 @@ bool Airlift::execute()
 {
 	if (validate())
 	{
+		cout << "Airlift order executed." << endl;
 		executed = true;
 
 		if (next->getOwner() == getPlayer())
@@ -463,7 +502,8 @@ bool Airlift::execute()
 				numOfArmies = armiesToMove;
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
-		}
+
+			cout << "AIRLIFT ORDER: " << player->getName() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
 		else
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
@@ -483,12 +523,20 @@ bool Airlift::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player);
 				next->addTroops(numOfArmies);
+
+				cout << "AIRLIFT ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+			}
+
+			if (current->numberOfArmies == 0) //if player loses
+			{
+				cout << "AIRLIFT ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
-		cout << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << " territory.\n";
 		return true;
 	}
+
+	cout << "Airlift order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 
@@ -540,7 +588,10 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 bool Negotiate::validate()
 {
 	if (getPlayer() != enemy)
+	{
+		cout << "Negotiate order validated." << endl;
 		return true;
+	}
 	cout << "Negotiate order is not valid." << endl;
 	return false;
 }
@@ -551,11 +602,14 @@ bool Negotiate::execute()
 {
 	if (validate())
 	{
+		cout << "Negotiate order executed." << endl;
 		executed = true;
 
-		cout << "Negotiating.. No attack is being performed this turn. (do nothing)\n";
+		cout << "NEGOTIATE ORDER: Negotiating.. No attack is being performed this turn. (do nothing)\n";
 		return true;
 	}
+
+	cout << "Negotiate order invalid: execute() method fails to execute." << endl;
 	return false;
 }
 

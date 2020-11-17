@@ -2,16 +2,18 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "Cards.h"
+#include "GameObservers.h"
 
 using namespace std;
 
-class GameEngine
+class GameEngine : public Subject
 {
 public:
 	void startGame();
 	void startupPhase();
 	Map* getMap();
-	vector<Player*> getPlayers();
+	vector<Player*> getTotalPlayers();
+	string getPhase();
 
 private:
 	Map* map;
@@ -20,6 +22,7 @@ private:
 	Deck* deck;
 	int numOfPlayers;
 	bool observerOn;
+	string phase;
 
 	void selectMap();
 	void createComponents();

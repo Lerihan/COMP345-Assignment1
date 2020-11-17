@@ -36,14 +36,19 @@ void GameEngine::startupPhase()
 	cout << endl;
 }
 
+vector<Player*> GameEngine::getTotalPlayers()
+{
+	return players;
+}
+
 Map * GameEngine::getMap()
 {
 	return map;
 }
 
-vector<Player*> GameEngine::getPlayers()
+string GameEngine::getPhase()
 {
-	return players;
+	return phase;
 }
 
 void GameEngine::selectMap()
@@ -106,24 +111,27 @@ void GameEngine::createComponents()
 void GameEngine::setObservers()
 {
 	char answer;
-	do
-	{
-		cout << "Would you like to turn on the observers ? (y/n): ";
-		cin >> answer;
 
-		if (answer == 'y')
-		{
-			observerOn = true;
-			cout << "Observers will be on." << endl;
-			break;
-		}
-		else if (answer == 'n')
-		{
-			observerOn = false;
-			cout << "Observers will be off." << endl;
-			break;
-		}
-	} while (answer != 'y' || answer != 'n');
+  do
+  {
+    cout << "Would you like to turn on the observers ? (y/n): ";
+    cin >> answer;
+
+    if (answer == 'y')
+    {
+      observerOn = true;
+      new PhaseObserver(this);
+      new GameStatisticsObserver(this);
+      cout << "Observers will be on." << endl;
+      break;
+    }
+    else if (answer == 'n')
+    {
+      observerOn = false;
+      cout << "Observers will be off." << endl;
+      break;
+    }
+  } while (answer != 'y' || answer != 'n');
 }
 
 void GameEngine::setInitialArmies()
@@ -215,6 +223,7 @@ void GameEngine::mainGameLoop()
 		{
 			//cout << "Player " << i << endl;
 			reinforcementPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
@@ -224,6 +233,7 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			issueOrdersPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
@@ -233,6 +243,7 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			executeOrdersPhase(players[i]);
+			notify();
 		}
 		cout << endl;
 
@@ -249,6 +260,8 @@ void GameEngine::mainGameLoop()
 // Determines how many armies to add to the input Player's reinforcement pool at the start of each reinforcement phase
 void GameEngine::reinforcementPhase(Player* currPlayer)
 {
+	phase = "Reinforcement Phase";
+
 	int newArmies = 3; // minimum number of new armies to assign to Player
 
 	// check if Player owns whole Continent
@@ -274,6 +287,8 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 // Prompts user for Order to be issued and calls issueOrder()
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	
+	phase = "Issue Order Phase";
+
 	// issue Deploy orders
 	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory returned by toDefend()
 	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], currPlayer->getNumOfArmies()));
@@ -326,6 +341,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
 {
+	phase = "Execute Order Phase";
 	// execute deploy orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{

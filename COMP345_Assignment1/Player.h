@@ -47,6 +47,7 @@ public:
 	void removeArmies(int toRemove); // removes input number of armies from the Player's number of armies
 	void addReinforcements(int toAdd); // adds input number of armies to reinforcement pool
 	void removeReinforcements(int toRemove); // removes the input number of armies from the Player's reinforcement pool
+	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
 	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
 	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 
