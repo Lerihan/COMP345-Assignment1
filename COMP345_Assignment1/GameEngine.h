@@ -28,4 +28,7 @@ private:
 	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);
 	void executeOrdersPhase(Player* currPlayer);
+	void kickPlayer(); // checks if a Player has lost the game
+	Player* checkWinner(); // checks if a Player has won
+	void endGamePhase(Player* winner); // launches end game winner message
 };

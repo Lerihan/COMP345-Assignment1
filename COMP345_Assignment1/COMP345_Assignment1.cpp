@@ -15,10 +15,12 @@
 * We can keep this file to test out things here and there
 */
 
+// Forward declarations of driver programs
+void driverPart3(); // call for driver program for part 3
+
 int main()
 {
-	Order* o = new Deploy;
-	cout << o->getType();
+	driverPart3();
 
 	/*
 	GameEngine g;
@@ -57,4 +59,12 @@ int main()
 	*/
 
 	return 0;
+}
+
+void driverPart3()
+{
+	cout << "###########################################" << endl;
+	cout << "Part 3: Game play: main game loop -- Driver" << endl;
+	cout << "###########################################" << endl;
+
 }
