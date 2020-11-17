@@ -12,22 +12,28 @@ int main()
 	Player* p2 = new Player("Nuo");
 	Player* p3 = new Player("Melina");
 
-	Territory* t1 = new Territory(1, "Canada");
-	Territory* t2 = new Territory(2, "United States");
-	Territory* t3 = new Territory(3, "Mexico");
-	Territory* t4 = new Territory(4, "Vietnam");
-	Territory* t5 = new Territory(5, "Japan");
-	Territory* t6 = new Territory(6, "Phillipines");
+	Map m;
+	m.name = "World_Map";
+
+	Territory* t1 = new Territory(1, "Canada", 0);
+	Territory* t2 = new Territory(2, "United States", 0);
+	Territory* t3 = new Territory(3, "Mexico", 0);
+	Territory* t4 = new Territory(4, "Vietnam", 1);
+	Territory* t5 = new Territory(5, "Japan", 1);
+	Territory* t6 = new Territory(6, "Phillipines", 1);
+
+	m.addAdjTerritory(t1, t2);
+	m.addAdjTerritory(t2, t3);
 
 	t1->setOwner(p1);
 	t2->setOwner(p2);
 	t3->setOwner(p3);
 
-	Deploy* d1 = new Deploy(p1, t1, 1000);
-	Advance* a1 = new Advance(p2, t2, t1, 5000);
+	Deploy* d1 = new Deploy(p1, t1, 10);
+	Advance* a1 = new Advance(p2, t2, t1, 20);
 	Bomb* b1 = new Bomb(p3, t3, t2);
 	Blockade* blck1 = new Blockade(p1, t1);
-	Airlift* air1 = new Airlift(p1, t2, t4, 100);
+	Airlift* air1 = new Airlift(p1, t2, t4, 15);
 	Negotiate* n1 = new Negotiate(p2, p3);
 
 	cout << *d1 << endl;
@@ -37,31 +43,47 @@ int main()
 	cout << *air1 << endl;
 	cout << *n1 << endl << endl;
 
-	cout << endl << "==============================" << endl;
+	cout << "===========================================" << endl;
+	cout << "Testing validate() and execute() methods..." << endl;
+	cout << "===========================================" << endl << endl;
 
-	cout << "Testing validate() and execute() methods..." << endl << endl;
-
-	cout << "validate() method of Deploy class: " << d1->validate() << endl;
+	p1->addReinforcements(20);
+	cout << "Deploy class:\n" << endl;
+	cout << "Initially, territory has " << t1->numberOfArmies << " armies and its owner has " << p1->getReinforcementPool() << " reinforcements.\n" << endl;
 	d1->execute();
+	cout << "\nAfter, territory has " << t1->numberOfArmies << " armies and its owner has " << p1->getReinforcementPool() << " reinforcements." << endl;
 
-	cout << "validate() method of Advance class: " << a1->validate() << endl;
+	cout << endl << endl;
+
+	cout << "Advance class:\n" << endl;
 	a1->execute();
 
-	cout << "validate() method of Bomb class: " << b1->validate() << endl;
+	cout << endl << endl;
+
+	cout << "Bomb class:\n" << endl;
 	b1->execute();
 
-	cout << "validate() method of Blockade class: " << blck1->validate() << endl;
+	cout << endl << endl;
+
+	cout << "Blockade class:\n" << endl;
 	blck1->execute();
 
-	cout << "validate() method of Airlift class: " << air1->validate() << endl;
+	cout << endl << endl;
+
+	cout << "Airlift class:\n" << endl;
 	air1->execute();
 
-	cout << "validate() method of Negotiate class: " << n1->validate() << endl;
+	cout << endl << endl;
+
+	cout << "Negotiate class:\n" << endl;
 	n1->execute();
 
-	cout << endl << "==============================" << endl;
+	cout << endl << endl;
 
+	cout << "==============================" << endl;
 	cout << "Testing OrdersList......" << endl;
+	cout << "==============================" << endl << endl;
+
 	OrdersList* ol = new OrdersList();
 	ol->add(d1);
 	ol->add(a1);
