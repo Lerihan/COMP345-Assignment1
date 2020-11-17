@@ -119,6 +119,8 @@ void GameEngine::setObservers()
 	if (answer == 'y')
 	{
 		observerOn = true;
+		new PhaseObserver(this);
+		new GameStatisticsObserver(this);
 		cout << "Observers will be on." << endl;
 	}
 	else if (answer == 'n')
