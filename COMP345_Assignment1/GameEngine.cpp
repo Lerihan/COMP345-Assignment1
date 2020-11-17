@@ -46,6 +46,12 @@ Map * GameEngine::getMap()
 	return map;
 }
 
+// Accessor of the GameEngine's players vector
+vector<Player*> GameEngine::getPlayers()
+{
+	return this->players;
+}
+
 string GameEngine::getPhase()
 {
 	return phase;
@@ -212,13 +218,13 @@ void GameEngine::mainGameLoop()
 	int rounds = 0; // number of rounds the game lasted
 	Player* winner = NULL;
 	do {
-		cout << "##########" << endl;
-		cout << "Round " << ++rounds;
-		cout << "##########" << endl << endl;
+		cout << "========" << endl;
+		cout << "Round " << ++rounds << endl;
+		cout << "========" << endl << endl;
 
 		// Reinforcement phase
 		cout << "Reinforcement phase:" << endl;
-		cout << "====================" << endl;
+		cout << "--------------------" << endl;
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			//cout << "Player " << i << endl;
@@ -229,7 +235,7 @@ void GameEngine::mainGameLoop()
 
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
-		cout << "=====================" << endl;
+		cout << "---------------------" << endl;
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			issueOrdersPhase(players[i]);
@@ -239,7 +245,7 @@ void GameEngine::mainGameLoop()
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
-		cout << "=======================" << endl;
+		cout << "-----------------------" << endl;
 		for (int i = 0; i < numOfPlayers; i++)
 		{
 			executeOrdersPhase(players[i]);
@@ -247,14 +253,11 @@ void GameEngine::mainGameLoop()
 		}
 		cout << endl;
 
-		if (checkWinner() != NULL) // check if a Player has already won before continuing
-		{
-			endGamePhase(checkWinner());
-		}
 		kickPlayer(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
 	} while (winner == NULL);
 
+	endGamePhase(winner);
 }
 
 // Determines how many armies to add to the input Player's reinforcement pool at the start of each reinforcement phase
@@ -392,11 +395,19 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 // a Player loses if he does not control any Territories
 void GameEngine::kickPlayer()
 {
-	for (int i = 0; i < this->numOfPlayers; i++)
+	for (int i = 0; i < this->getPlayers().size(); i++)
 	{
 		if (this->players[i]->getTerritories().size() <= 0) // if Player has no Territories delete them from the game
 		{
 			cout << "Player " << this->players[i]->getPlayerNumber() << " controls no more Territories. They are removed from the game." << endl;
+			// put the losing Player's Cards back in the Deck
+
+			Hand* hand = this->players[i]->getHand(); // for readability
+			for (int j = 0; i < hand->getCardsInHand().size(); j++)
+			{
+				// put each Card back in the Deck
+			}
+			hand = NULL;
 			//delete this->players[i]; //uncomment when Player destructor is fixed; until then there will be memory leak
 			this->players.erase(this->players.begin() + i);
 			this->players[i] = NULL;

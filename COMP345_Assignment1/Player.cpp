@@ -58,20 +58,22 @@ Player::Player(Player& p)
 }
 
 // Destructor deletes thiss Player object.
-// idk if it should also delete all their cards and territories
+// this will NOT delete the Territories of the Player (just the vector that stores the pointers)
+// it will delete their Orders and OrdersList
+// also when this destructor is called it is assumed that the Player lost the game and their Cards have already been put back in the Deck,
+// so we can simply delete the Hand
 Player::~Player()
 {
 	delete this->hand; // delete Player's Hand pointer
 
 	for (int i = 0; i < this->territories.size(); i++)
 	{
-		delete this->territories[i]; // delete pointer for each Territory
+		//delete this->territories[i]; // delete pointer for each Territory
 		this->territories[i] = NULL; // avoid dangling pointers
 	}
 	this->territories.clear(); // remove placeholder memory locations
 
 	delete this->orders; // delete pointer to OrdersList
-	delete this; // finally delete this pointer
 }
 
 // Returns vector of Territories.
@@ -302,9 +304,11 @@ ostream& operator <<(ostream& strm, Player& player)
 		s+= ", ";
 	}
 	s += "\b\b.";
-	return strm << "Player: " << player.playerNumber << "\nCards: " << *(player.hand) << "\nTerritories: " << s;
+	return strm << "Player: " << player.playerNumber << "\nCards: " << *(player.hand)
+		<< "Territories: " << s << "\nReinforcement pool: " << player.reinforcementPool << endl;;
 }
 
+/*
 // In stream operator, allows user to choose the Player's name.
 istream & operator >> (istream& strm,  Player& player)
 {
@@ -312,6 +316,7 @@ istream & operator >> (istream& strm,  Player& player)
     strm >> player.playerNumber;
     return strm;
 }
+*/
 
 // Equality operator for two Player objects.
 // For now, considers two Players equal if they share the same name. Note this is not enforce
