@@ -151,7 +151,8 @@ void Deck::draw(Player* p) {
 	h->cardsInHand.push_back(this->cardsInDeck.at(randomCardIndex));
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
-	cout << "Player has added a card into their hand" << endl;
+
+	//cout << "Player " << p->getPlayerNumber() << " has added a card into their hand" << endl;
 }
 
 void Deck::insertBackToDeck(Card* c) {

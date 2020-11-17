@@ -73,7 +73,7 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 */
 Deploy::Deploy(): Order()
 {
-	Territory(0, "current", 0);
+	//Territory(0, "current", 0);
 }
 
 /*Parametrized constructor for the Deploy class
@@ -156,8 +156,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 */
 Advance::Advance(): Order()
 {
-	Territory(0, "current", 0);
-	Territory(0, "Next", 0);
+	//Territory(0, "current", 0);
+	//Territory(0, "Next", 0);
 }
 
 /*Parametrized constructor for the Advance class
@@ -274,8 +274,8 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 */
 Bomb::Bomb() : Order()
 {
-	Territory(0, "source", 0);
-	Territory(0, "target", 0);
+	//Territory(0, "source", 0);
+	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Bomb class
@@ -357,7 +357,7 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 */
 Blockade::Blockade() : Order()
 {
-	Territory(0, "target", 0);
+	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Blockade class
@@ -376,8 +376,7 @@ Blockade::Blockade(const Blockade& blockade) : Order(blockade)
 
 Blockade::~Blockade()
 {
-	delete this->target;
-	delete this;
+	this->target = NULL;
 }
 
 /*Assignment operator for the Blockade class
@@ -413,7 +412,7 @@ bool Blockade::execute()
 
 		target->addTroops(target->numberOfArmies * 2);
 
-		target->setOwner(new Player("Neutral"));
+		target->setOwner(new Player()); //neutral player //TODO: Come back to this when neutral player implemented
 
 		cout << "BLOCKADE ORDER: Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
 		

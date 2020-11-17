@@ -2,18 +2,19 @@
 #include <string>
 #include <ctime>
 #include <random>
+#include <algorithm>
+#include <chrono> 
 #include "GameEngine.h"
-#include "MapLoader.h"
 
 void GameEngine::startGame()
 {
-	cout << "Welcome!" << endl; //TODO: change to better message later
+	cout << "Welcome!" << endl;
 	cout << endl;
 
 	selectMap();
 	cout << endl;
 
-	selectPlayers();
+	createComponents();
 	cout << endl;
 
 	setObservers();
@@ -21,29 +22,18 @@ void GameEngine::startGame()
 
 	//start up phase
 	startupPhase();
-
-	/* 
-	TODO/FIX:
-	(1) different valid maps can be loaded and
-		their validity is verified(i.e.it is a connected graph, etc.), and invalid maps are gracefully rejected; 
-	(2) the right number of players is created, a deck with the right number of cards is created;
-	
-	
-	*/
 }
 
 void GameEngine::startupPhase()
 {
-	chooseFirstPlayer();
+	setRandomOrder();
+	cout << endl;
+
+	setRandomTerritory();
 	cout << endl;
 
 	setInitialArmies();
 	cout << endl;
-
-	/*
-	TODO/FIX:
-		2. All territories in the map are randomly assigned to players one by one in a round-robin fashion
-	*/
 }
 
 vector<Player*> GameEngine::getTotalPlayers()
@@ -65,6 +55,7 @@ void GameEngine::selectMap()
 {
 	string dominationMap;
 	MapLoader* mapLoader = new MapLoader();
+	bool isValid = false;
 
 	do
 	{
@@ -72,21 +63,22 @@ void GameEngine::selectMap()
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
 
-		if (map == NULL)
+		if(map != NULL)
+			isValid = map->validate();
+
+		if (map == NULL || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == NULL);
+	} while (map == NULL || !isValid);
 
-	//cout << *map;
+	delete mapLoader;
 }
 
-void GameEngine::selectPlayers()
+void GameEngine::createComponents()
 {
-	// create all the players, create a deck of cards, and assign an empty hand of
-	// cards to each player.
+	// how many players
 	int playernum = 0;
-
 	do
 	{
 		cout << "Select the number of players (2-5): ";
@@ -97,37 +89,49 @@ void GameEngine::selectPlayers()
 			cout << "Please enter a valid number of players." << endl;
 		}
 	} while (playernum < 2 || playernum > 5);
+	numOfPlayers = playernum; // set number of players
 
-	string playername;
+	// create deck and players with set hand
+	deck = new Deck();
+
 	for (int i = 0; i < playernum; i++)
 	{
-		cout << "What is the name of player " << (i + 1) << " ?: ";
-		cin >> playername;
-		Player* p = new Player(playername);
+		Player* p = new Player(); // deallocate memory later
+
+		// Draw 5 cards from the deck and place it in the player's hand
+		for (int i = 0; i < 5; i++)
+		{
+			deck->draw(p);
+		}
+
 		players.push_back(p);
 	}
-
-	numOfPlayers = playernum; // set number of players
 }
 
 void GameEngine::setObservers()
 {
 	char answer;
-	cout << "Would you like to turn on the observers ? (y/n): ";
-	cin >> answer;
 
-	if (answer == 'y')
-	{
-		observerOn = true;
-		new PhaseObserver(this);
-		new GameStatisticsObserver(this);
-		cout << "Observers will be on." << endl;
-	}
-	else if (answer == 'n')
-	{
-		observerOn = false;
-		cout << "Observers will be off." << endl;
-	}
+  do
+  {
+    cout << "Would you like to turn on the observers ? (y/n): ";
+    cin >> answer;
+
+    if (answer == 'y')
+    {
+      observerOn = true;
+      new PhaseObserver(this);
+      new GameStatisticsObserver(this);
+      cout << "Observers will be on." << endl;
+      break;
+    }
+    else if (answer == 'n')
+    {
+      observerOn = false;
+      cout << "Observers will be off." << endl;
+      break;
+    }
+  } while (answer != 'y' || answer != 'n');
 }
 
 void GameEngine::setInitialArmies()
@@ -157,22 +161,48 @@ void GameEngine::setInitialArmies()
 	}
 }
 
-void GameEngine::chooseFirstPlayer()
+// shuffle code from: http://www.cplusplus.com/reference/algorithm/shuffle/
+void GameEngine::setRandomOrder()
 {
-	int first = randomNumber(0, numOfPlayers - 1);
-	firstPlayer = players.at(first);
-	//cout << *firstPlayer;
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(players.begin(), players.end(), std::default_random_engine(seed));
+
+	std::cout << "The playing order is: ";
+	for (int i = 0; i < numOfPlayers; i++)
+	{
+		cout << players[i]->getPlayerNumber() << " ";
+	}
+	cout << endl;
 }
 
-// Code from https://stackoverflow.com/questions/12657962/how-do-i-generate-a-random-number-between-two-variables-that-i-have-stored
-int GameEngine::randomNumber(int min, int max)
+void GameEngine::setRandomTerritory()
 {
-	std::random_device seeder;
-	std::mt19937 engine(seeder());
-	std::uniform_int_distribution<int> dist(min, max);
-	int rand = dist(engine);
+	vector<Territory*> territoriesCopy = map->listOfTerritories;
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(territoriesCopy.begin(), territoriesCopy.end(), std::default_random_engine(seed));
 
-	return rand;
+	int turn = 0;
+	for (int i = 0; i < territoriesCopy.size(); i++)
+	{
+		players[turn]->addTerritory(territoriesCopy[i]);
+		turn++;
+
+		if (turn > (players.size() - 1))
+			turn = 0;
+	}
+
+	/* FOR DRIVER
+	for (int j = 0; j < players.size(); j++)
+	{
+		cout << "Player " << j << "'s Territories" << endl;
+		vector<Territory*> temp = players[j]->getTerritories();
+		for (int i = 0; i < players[j]->getTerritories().size(); i++)
+		{
+			cout << temp[i]->name << endl;
+		}
+		cout << endl;
+	}
+	*/
 }
 
 // Function that controls the main game

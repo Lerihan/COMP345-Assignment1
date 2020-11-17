@@ -1,5 +1,7 @@
 #pragma once
+#include "MapLoader.h"
 #include "Map.h"
+#include "Cards.h"
 #include "GameObservers.h"
 
 using namespace std;
@@ -9,24 +11,25 @@ class GameEngine : public Subject
 public:
 	void startGame();
 	void startupPhase();
-	vector<Player*> getTotalPlayers();
 	Map* getMap();
+	vector<Player*> getTotalPlayers();
 	string getPhase();
 
 private:
 	Map* map;
 	vector<Player*> players;
 	Player* firstPlayer;
+	Deck* deck;
 	int numOfPlayers;
 	bool observerOn;
 	string phase;
 
 	void selectMap();
-	void selectPlayers(); 
+	void createComponents();
 	void setObservers();
 	void setInitialArmies();
-	void chooseFirstPlayer();
-	int randomNumber(int min,  int max);
+	void setRandomOrder();
+	void setRandomTerritory();
 	void mainGameLoop(); // void for now
 	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);
