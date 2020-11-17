@@ -123,10 +123,15 @@ bool Deploy::execute()
 {
 	if (validate())
 	{ 
-		cout << "Deploying " << numOfArmies << " armies.\n";
 		executed = true;
 
+		int taken = player->takeArmiesFromReinforcement(numOfArmies);
+
+		if (taken != numOfArmies)
+			numOfArmies = taken;
+
 		territory->addTroops(numOfArmies);
+		cout << "DEPLOY ORDER: Deploying " << numOfArmies << " armies " << " to " << territory << endl;
 		return true;
 	}
 	return false;
@@ -209,7 +214,7 @@ bool Advance::execute()
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
 
-			cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+			cout << "ADVANCE ORDER: "<< player->getName() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		}
 		else // if attacking
 		{
@@ -230,6 +235,12 @@ bool Advance::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player); // change owner to winner
 				next->addTroops(numOfArmies);
+				cout << "ADVANCE ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+			}
+
+			if (current->numberOfArmies == 0) //if player loses
+			{
+				cout << "ADVANCE ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
@@ -309,7 +320,7 @@ bool Bomb::execute()
 
 		target->removeTroops(numDestroyed);
 
-		cout << "Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
+		cout << "BOMB ORDER: Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
 		return true;
 	}
 	return false;
@@ -382,7 +393,7 @@ bool Blockade::execute()
 
 		target->setOwner(new Player("Neutral"));
 
-		cout << "Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
+		cout << "BLOCKADE ORDER: Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
 		
 		return true;
 	}
@@ -464,7 +475,8 @@ bool Airlift::execute()
 				numOfArmies = armiesToMove;
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
-		}
+
+			cout << "AIRLIFT ORDER: " << player->getName() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
 		else
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
@@ -484,10 +496,16 @@ bool Airlift::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player);
 				next->addTroops(numOfArmies);
+
+				cout << "AIRLIFT ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+			}
+
+			if (current->numberOfArmies == 0) //if player loses
+			{
+				cout << "AIRLIFT ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
-		cout << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << " territory.\n";
 		return true;
 	}
 	return false;
@@ -554,7 +572,7 @@ bool Negotiate::execute()
 	{
 		executed = true;
 
-		cout << "Negotiating.. No attack is being performed this turn. (do nothing)\n";
+		cout << "NEGOTIATE ORDER: Negotiating.. No attack is being performed this turn. (do nothing)\n";
 		return true;
 	}
 	return false;

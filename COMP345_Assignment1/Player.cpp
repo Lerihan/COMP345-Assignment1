@@ -144,6 +144,11 @@ int Player::getNumOfArmies()
 	return numOfArmies;
 }
 
+int Player::getReinforcementPool()
+{
+	return reinforcementPool;
+}
+
 // Adds the input Territory pointer this Player's Territories vector.
 void Player::addTerritory(Territory* t)
 {
@@ -173,6 +178,16 @@ void Player::addReinforcements(int toAdd)
 void Player::removeReinforcements(int toRemove)
 {
 	this->reinforcementPool -= toRemove;
+}
+
+// take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
+int Player::takeArmiesFromReinforcement(int numOfArmies) {
+
+	int taken = std::min(numOfArmies, reinforcementPool);
+
+	reinforcementPool = std::max(0, (reinforcementPool - numOfArmies));
+
+	return taken;
 }
 
 // Returns vector of Territories to attack.
