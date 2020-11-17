@@ -8,7 +8,7 @@
 
 void GameEngine::startGame()
 {
-	cout << "Welcome!" << endl; //TODO: change to better message later
+	cout << "Welcome!" << endl;
 	cout << endl;
 
 	selectMap();
@@ -22,11 +22,6 @@ void GameEngine::startGame()
 
 	//start up phase
 	startupPhase();
-
-	/* 
-	TODO/FIX:
-	(2) the right number of players is created, a deck with the right number of cards is created;
-	*/
 }
 
 void GameEngine::startupPhase()
@@ -87,18 +82,16 @@ void GameEngine::createComponents()
 	numOfPlayers = playernum; // set number of players
 
 	// create deck and players with set hand
-	//TODO:
-	//Deck* d;
-	//deck = d;
+	deck = new Deck();
 
 	for (int i = 0; i < playernum; i++)
 	{
-		Player* p = new Player(); // memory deallocated when calling destructor of GameEngine ?
+		Player* p = new Player(); // deallocate memory later
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)
 		{
-			//deck->draw(p);
+			deck->draw(p);
 		}
 
 		players.push_back(p);
@@ -108,19 +101,24 @@ void GameEngine::createComponents()
 void GameEngine::setObservers()
 {
 	char answer;
-	cout << "Would you like to turn on the observers ? (y/n): ";
-	cin >> answer;
+	do
+	{
+		cout << "Would you like to turn on the observers ? (y/n): ";
+		cin >> answer;
 
-	if (answer == 'y')
-	{
-		observerOn = true;
-		cout << "Observers will be on." << endl;
-	}
-	else if (answer == 'n')
-	{
-		observerOn = false;
-		cout << "Observers will be off." << endl;
-	}
+		if (answer == 'y')
+		{
+			observerOn = true;
+			cout << "Observers will be on." << endl;
+			break;
+		}
+		else if (answer == 'n')
+		{
+			observerOn = false;
+			cout << "Observers will be off." << endl;
+			break;
+		}
+	} while (answer != 'y' || answer != 'n');
 }
 
 void GameEngine::setInitialArmies()
@@ -156,7 +154,7 @@ void GameEngine::setRandomOrder()
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	shuffle(players.begin(), players.end(), std::default_random_engine(seed));
 
-	std::cout << "The playing order: ";
+	std::cout << "The playing order is: ";
 	for (int i = 0; i < numOfPlayers; i++)
 	{
 		cout << players[i]->getPlayerNumber() << " ";
