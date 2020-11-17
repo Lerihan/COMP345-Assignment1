@@ -73,7 +73,7 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 */
 Deploy::Deploy(): Order()
 {
-	Territory(0, "current", 0);
+	//Territory(0, "current", 0);
 }
 
 /*Parametrized constructor for the Deploy class
@@ -156,8 +156,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 */
 Advance::Advance(): Order()
 {
-	Territory(0, "current", 0);
-	Territory(0, "Next", 0);
+	//Territory(0, "current", 0);
+	//Territory(0, "Next", 0);
 }
 
 /*Parametrized constructor for the Advance class
@@ -224,7 +224,7 @@ bool Advance::execute()
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
 
-			cout << "ADVANCE ORDER: "<< player->getName() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+			cout << "ADVANCE ORDER: Player "<< player->getPlayerNumber() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		}
 		else // if attacking
 		{
@@ -245,12 +245,12 @@ bool Advance::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player); // change owner to winner
 				next->addTroops(numOfArmies);
-				cout << "ADVANCE ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				cout << "ADVANCE ORDER: Player " << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 
 			if (current->numberOfArmies == 0) //if player loses
 			{
-				cout << "ADVANCE ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				cout << "ADVANCE ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
@@ -274,8 +274,8 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 */
 Bomb::Bomb() : Order()
 {
-	Territory(0, "source", 0);
-	Territory(0, "target", 0);
+	//Territory(0, "source", 0);
+	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Bomb class
@@ -357,7 +357,7 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 */
 Blockade::Blockade() : Order()
 {
-	Territory(0, "target", 0);
+	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Blockade class
@@ -376,8 +376,7 @@ Blockade::Blockade(const Blockade& blockade) : Order(blockade)
 
 Blockade::~Blockade()
 {
-	delete this->target;
-	delete this;
+	this->target = NULL;
 }
 
 /*Assignment operator for the Blockade class
@@ -413,7 +412,7 @@ bool Blockade::execute()
 
 		target->addTroops(target->numberOfArmies * 2);
 
-		target->setOwner(new Player("Neutral"));
+		target->setOwner(new Player()); //neutral player //TODO: Come back to this when neutral player implemented
 
 		cout << "BLOCKADE ORDER: Blockading " << target->name << " territory, doubling its forces, making it neutral.\n";
 		
@@ -504,7 +503,7 @@ bool Airlift::execute()
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
 
-			cout << "AIRLIFT ORDER: " << player->getName() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
+			cout << "AIRLIFT ORDER: Player " << player->getPlayerNumber() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
 		else
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
@@ -525,12 +524,12 @@ bool Airlift::execute()
 				next->setOwner(player);
 				next->addTroops(numOfArmies);
 
-				cout << "AIRLIFT ORDER: " << player->getName() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				cout << "AIRLIFT ORDER: Player" << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 
 			if (current->numberOfArmies == 0) //if player loses
 			{
-				cout << "AIRLIFT ORDER: attacking player " << player->getName() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				cout << "AIRLIFT ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 

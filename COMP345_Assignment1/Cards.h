@@ -137,7 +137,7 @@ public:
 	friend istream& operator << (istream& in, const Hand& h);
 };
 
-class Deck : public Card {
+class Deck{
 protected:
 public:
 	std::vector<Card*> cardsInDeck;

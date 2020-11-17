@@ -31,13 +31,9 @@ private:
 	Hand* hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
 
-	string name; // name of player
-
-
 public:
 	// constructors and destructors
 	Player(); // default constructor
-	Player(string name); // for now take string as name to differentiate players
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 
@@ -58,7 +54,6 @@ public:
 	// accessors and mutators
 	void setHand(Hand* h); // sets input Hand to be that of this Player
 	int getPlayerNumber();
-	string getName();
 	void setNumOfArmies(int n);
 	int getNumOfArmies();
 	int getReinforcementPool();

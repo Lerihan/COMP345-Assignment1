@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "Player.h"
 #include "Order.h"
 #include "Map.h"
@@ -16,28 +17,12 @@
 
 //class Territory;
 
-int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of the Player in the GameEngine
+int Player::totalPlayers = 1; // start at 0 so playerNumber matches the index of the Player in the GameEngine
 
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->name = "Player " + playerNumber;
-	this->hand = new Hand();
-	this->orders = new OrdersList();
-
-	this->numOfArmies = 0;
-	this->reinforcementPool = 0;
-
-	vector<Territory*> terr;
-	this->territories = terr; // create empty vector of Territories
-}
-
-// Constructor assigns input string to be Player name
-Player::Player(string name)
-{
-	this->playerNumber = totalPlayers++;
-	this->name = name;
 	this->hand = new Hand();
 	this->orders = new OrdersList();
 
@@ -53,7 +38,6 @@ Player::Player(string name)
 Player::Player(Player& p)
 {
 	this->playerNumber = p.playerNumber;
-	this->name = p.name;
 	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
 	// copy orders
 	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
@@ -129,11 +113,6 @@ void Player::setHand(Hand* h)
 int Player::getPlayerNumber()
 {
 	return playerNumber;
-}
-
-string Player::getName()
-{
-	return name;
 }
 
 void Player::setNumOfArmies(int n)
@@ -333,8 +312,8 @@ ostream& operator <<(ostream& strm, Player& player)
 // In stream operator, allows user to choose the Player's name.
 istream & operator >> (istream& strm,  Player& player)
 {
-    cout << "Enter Player name: ";
-    strm >> player.name;
+    cout << "Enter Player number: ";
+    strm >> player.playerNumber;
     return strm;
 }
 */
