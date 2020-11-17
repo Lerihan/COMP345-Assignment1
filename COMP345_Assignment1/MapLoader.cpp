@@ -136,9 +136,9 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 		}
 	}
 	catch (const std::exception& e) {
+		return NULL;
 		cout << e.what() << endl;
 	}
-
 }
 
 //Code from http://www.cplusplus.com/forum/beginner/99171/

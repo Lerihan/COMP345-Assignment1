@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "Player.h"
 #include "Order.h"
 #include "Map.h"
