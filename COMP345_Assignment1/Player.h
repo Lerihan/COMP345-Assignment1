@@ -43,11 +43,14 @@ public:
 
 	// other methods
 	void addTerritory(Territory* r); // add input Territory pointer to data member vector
+	void removeTerritory(Territory* toRemove); // removes Territory from the Player's list of Territories
 	void issueOrder(Order* o); // for now just adds default Deploy order
 	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
 	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
 	void addArmies(int toAdd); // adds the input number of armies to the Player's reinforcement pool
+	void removeArmies(int toRemove); // removes input number of armies from the Player's number of armies
 	void addReinforcements(int toAdd); // adds input number of armies to reinforcement pool
+	void removeReinforcements(int toRemove); // removes the input number of armies from the Player's reinforcement pool
 	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
 	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 
