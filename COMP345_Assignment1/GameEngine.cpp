@@ -306,6 +306,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
 {
+	phase = "Execute Order Phase";
 	// execute deploy orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
