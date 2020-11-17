@@ -113,6 +113,7 @@ bool Deploy::validate()
 {
 	if (territory->getOwner() == getPlayer() && this->numOfArmies > 0)
 		return true;
+	cout << "Deploy order is not valid." << endl;
 	return false;
 }
 
@@ -131,7 +132,7 @@ bool Deploy::execute()
 	return false;
 }
 
-string Deploy::getType() { return "deploy"; }
+string Deploy::getType() { return "Deploy"; }
 
 /*Stream insertion operator for Deploy class order
 */
@@ -188,6 +189,7 @@ bool Advance::validate()
 {
 	if (current->getOwner() == getPlayer() && current->isAdjacent(next->index))
 		return true;
+	cout << "Advance order is not valid." << endl;
 	return false;
 }
 
@@ -199,7 +201,7 @@ bool Advance::execute()
 	{
 		executed = true;
 
-		if (next->getOwner() == getPlayer())
+		if (next->getOwner() == getPlayer()) // if defending
 		{
 			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
 			if (armiesToMove != numOfArmies)
@@ -209,7 +211,7 @@ bool Advance::execute()
 
 			cout << "Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		}
-		else
+		else // if attacking
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
 			{
@@ -223,9 +225,10 @@ bool Advance::execute()
 					numOfArmies--;
 			}
 
-			if (next->numberOfArmies == 0)
+			if (next->numberOfArmies == 0) // if next owner loses
 			{
-				next->setOwner(player);
+				next->getOwner()->removeTerritory(next); // remove Territory from losing player
+				next->setOwner(player); // change owner to winner
 				next->addTroops(numOfArmies);
 			}
 		}
@@ -235,7 +238,7 @@ bool Advance::execute()
 	return false;
 }
 
-string Advance::getType() { return "advance"; }
+string Advance::getType() { return "Advance"; }
 
 /*Stream insertion operator for Advance class order
 */
@@ -290,6 +293,7 @@ bool Bomb::validate()
 {
 	if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
 		return true;
+	cout << "Bomb order is not valid." << endl;
 	return false;
 }
 
@@ -311,7 +315,7 @@ bool Bomb::execute()
 	return false;
 }
 
-string Bomb::getType() { return "bomb"; }
+string Bomb::getType() { return "Bomb"; }
 
 /*Stream insertion operator for Bomb class order
 */
@@ -361,6 +365,7 @@ bool Blockade::validate()
 {
 	if (target->getOwner() == getPlayer())
 		return true;
+	cout << "Blockade order is not valid." << endl;
 	return false;
 }
 
@@ -383,7 +388,7 @@ bool Blockade::execute()
 	return false;
 }
 
-string Blockade::getType() { return "blockade"; }
+string Blockade::getType() { return "Blockade"; }
 
 /*Stream insertion operator for Blockade class order
 */
@@ -439,6 +444,7 @@ bool Airlift::validate()
 {
 	if (current->getOwner() == getPlayer())
 		return true;
+	cout << "Airlift order is not valid." << endl;
 	return false;
 }
 
@@ -474,6 +480,7 @@ bool Airlift::execute()
 
 			if (next->numberOfArmies == 0)
 			{
+				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				next->setOwner(player);
 				next->addTroops(numOfArmies);
 			}
@@ -485,7 +492,7 @@ bool Airlift::execute()
 	return false;
 }
 
-string Airlift::getType() { return "airlift"; }
+string Airlift::getType() { return "Airlift"; }
 
 /*Stream insertion operator for Airlift class order
 */
@@ -534,6 +541,7 @@ bool Negotiate::validate()
 {
 	if (getPlayer() != enemy)
 		return true;
+	cout << "Negotiate order is not valid." << endl;
 	return false;
 }
 
@@ -551,7 +559,7 @@ bool Negotiate::execute()
 	return false;
 }
 
-string Negotiate::getType() { return "negotiate"; }
+string Negotiate::getType() { return "Negotiate"; }
 
 /*Stream insertion operator for Negotiate class order
 */

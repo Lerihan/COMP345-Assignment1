@@ -15,10 +15,16 @@
 * We can keep this file to test out things here and there
 */
 
+// Forward declarations of driver programs
+void driverPart3(); // call for driver program for part 3
+
 int main()
 {
 	// DRIVER PART 1
 	// -------------
+  
+	driverPart3();
+  
 	/*
 	(1) different valid maps can be loaded and their validity is verified (i.e. it is a connected graph, etc.), and invalid maps are gracefully rejected; 
 	(2) the right number of players is created, a deck with the right number of cards is created; 
@@ -79,4 +85,12 @@ int main()
 	*/
 
 	return 0;
+}
+
+void driverPart3()
+{
+	cout << "###########################################" << endl;
+	cout << "Part 3: Game play: main game loop -- Driver" << endl;
+	cout << "###########################################" << endl;
+
 }
