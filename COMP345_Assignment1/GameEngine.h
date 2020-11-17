@@ -18,6 +18,7 @@ private:
 	vector<Player*> players;
 	Player* firstPlayer;
 	Deck* deck;
+	
 	int numOfPlayers;
 	bool observerOn;
 
@@ -25,8 +26,7 @@ private:
 	void createComponents();
 	void setObservers();
 	void setInitialArmies();
-	void chooseFirstPlayer();
-	int randomNumber(int min,  int max);
+	void setRandomOrder();
 	void mainGameLoop(); // void for now
 	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);

@@ -34,7 +34,6 @@ private:
 public:
 	// constructors and destructors
 	Player(); // default constructor
-	Player(Hand* hand);
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 

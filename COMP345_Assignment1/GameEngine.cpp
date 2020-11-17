@@ -2,6 +2,8 @@
 #include <string>
 #include <ctime>
 #include <random>
+#include <algorithm>
+#include <chrono> 
 #include "GameEngine.h"
 
 void GameEngine::startGame()
@@ -31,7 +33,7 @@ void GameEngine::startGame()
 
 void GameEngine::startupPhase()
 {
-	chooseFirstPlayer();
+	setRandomOrder();
 	cout << endl;
 
 	setInitialArmies();
@@ -74,12 +76,8 @@ void GameEngine::selectMap()
 
 void GameEngine::createComponents()
 {
+	// how many players
 	int playernum = 0;
-
-	//TODO: create a deck of cards, and assign an empty hand of cards to each player.
-	Deck* d;
-	deck = d;
-
 	do
 	{
 		cout << "Select the number of players (2-5): ";
@@ -90,14 +88,25 @@ void GameEngine::createComponents()
 			cout << "Please enter a valid number of players." << endl;
 		}
 	} while (playernum < 2 || playernum > 5);
+	numOfPlayers = playernum; // set number of players
+
+	// create deck and players with set hand
+	//TODO:
+	//Deck* d;
+	//deck = new Deck();
 
 	for (int i = 0; i < playernum; i++)
 	{
-		Player* p = new Player(NULL); //TODO: after creating cards, create player with that set of cards
+		Player* p = new Player(); // memory deallocated when calling destructor of GameEngine ?
+
+		// Draw 5 cards from the deck and place it in the player's hand
+		for (int i = 0; i < 5; i++)
+		{
+			//deck->draw(p);
+		}
+
 		players.push_back(p);
 	}
-
-	numOfPlayers = playernum; // set number of players
 }
 
 void GameEngine::setObservers()
@@ -145,21 +154,18 @@ void GameEngine::setInitialArmies()
 	}
 }
 
-void GameEngine::chooseFirstPlayer()
+// shuffle code from: http://www.cplusplus.com/reference/algorithm/shuffle/
+void GameEngine::setRandomOrder()
 {
-	int first = randomNumber(0, numOfPlayers - 1);
-	firstPlayer = players.at(first);
-}
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(players.begin(), players.end(), std::default_random_engine(seed));
 
-// Code from https://stackoverflow.com/questions/12657962/how-do-i-generate-a-random-number-between-two-variables-that-i-have-stored
-int GameEngine::randomNumber(int min, int max)
-{
-	std::random_device seeder;
-	std::mt19937 engine(seeder());
-	std::uniform_int_distribution<int> dist(min, max);
-	int rand = dist(engine);
-
-	return rand;
+	std::cout << "The playing order: ";
+	for (int i = 0; i < numOfPlayers; i++)
+	{
+		cout << players[i]->getPlayerNumber() << " ";
+	}
+	cout << endl;
 }
 
 // Function that controls the main game

@@ -16,7 +16,7 @@
 
 //class Territory;
 
-int Player::totalPlayers = 0; // start at 0 so playerNumber matches the index of the Player in the GameEngine
+int Player::totalPlayers = 1; // start at 0 so playerNumber matches the index of the Player in the GameEngine
 
 // Default constructor sets attributes to be empty vectors.
 Player::Player()
@@ -31,22 +31,6 @@ Player::Player()
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
 }
-
-// Constructor assigns input string to be Player name
-/**
-Player::Player()
-{
-	this->playerNumber = totalPlayers++;
-	this->hand = new Hand();
-	this->orders = new OrdersList();
-
-	this->numOfArmies = 0;
-	this->reinforcementPool = 0;
-
-	vector<Territory*> terr;
-	this->territories = terr; // create empty vector of Territories
-}
-*/
 
 // Copy constructor, creates deep copy of each attribute.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
