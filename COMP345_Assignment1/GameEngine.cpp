@@ -41,6 +41,11 @@ Map * GameEngine::getMap()
 	return map;
 }
 
+vector<Player*> GameEngine::getPlayers()
+{
+	return players;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;

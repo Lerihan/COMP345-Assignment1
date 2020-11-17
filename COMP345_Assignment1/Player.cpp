@@ -122,6 +122,11 @@ int Player::getNumOfArmies()
 	return numOfArmies;
 }
 
+int Player::getReinforcementPool()
+{
+	return reinforcementPool;
+}
+
 // Adds the input Territory pointer this Player's Territories vector.
 void Player::addTerritory(Territory* t)
 {

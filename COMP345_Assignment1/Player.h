@@ -52,6 +52,7 @@ public:
 	int getPlayerNumber();
 	void setNumOfArmies(int n);
 	int getNumOfArmies();
+	int getReinforcementPool();
 	vector<Territory*> getTerritories();
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member

@@ -10,15 +10,14 @@ class GameEngine
 public:
 	void startGame();
 	void startupPhase();
-
 	Map* getMap();
+	vector<Player*> getPlayers();
 
 private:
 	Map* map;
 	vector<Player*> players;
 	Player* firstPlayer;
 	Deck* deck;
-	
 	int numOfPlayers;
 	bool observerOn;
 
