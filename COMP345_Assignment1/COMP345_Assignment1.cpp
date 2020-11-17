@@ -15,8 +15,14 @@
 * We can keep this file to test out things here and there
 */
 
+// Forward declarations of driver programs
+void driverPart3(); // call for driver program for part 3
+
 int main()
 {
+	driverPart3();
+
+	/*
 	GameEngine g;
 	g.startGame();
 	
@@ -29,7 +35,7 @@ int main()
 
 	//cout << m->traverse();
 
-	/*
+	
 	Territory* t1 = new Territory(0, "Canada");
 	Territory* t2 = new Territory(0, "USA");
 	Territory* t3 = new Territory(0, "Mexico");
@@ -53,4 +59,12 @@ int main()
 	*/
 
 	return 0;
+}
+
+void driverPart3()
+{
+	cout << "###########################################" << endl;
+	cout << "Part 3: Game play: main game loop -- Driver" << endl;
+	cout << "###########################################" << endl;
+
 }

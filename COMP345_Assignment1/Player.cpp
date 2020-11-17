@@ -151,11 +151,28 @@ void Player::addTerritory(Territory* t)
 	t->setOwner(this); // set the owner of the input Territory to be this Player
 }
 
+// Removes the input Territory from this Player's list of Territoriess
+void Player::removeTerritory(Territory* toRemove)
+{
+	for (int i = 0; i < this->territories.size(); i++) // loop through each of the Player's Territories
+	{
+		if (this->territories[i] == toRemove) // remove the one that is the input Territory
+			this->territories.erase(this->territories.begin() + i);
+	}
+}
+
 // Adds the input number of armies to the Player's reinforcement pool
 // used in game startup phase
 void Player::addReinforcements(int toAdd)
 {
 	this->reinforcementPool += toAdd;
+}
+
+// Removes the input number of reinforcements from this Player's reinforcement pool
+// used only for Delpoy()
+void Player::removeReinforcements(int toRemove)
+{
+	this->reinforcementPool -= toRemove;
 }
 
 // Returns vector of Territories to attack.
@@ -194,6 +211,14 @@ void Player::issueOrder(Order* o)
 void Player::addArmies(int toAdd)
 {
 	this->numOfArmies += toAdd;
+}
+
+// Removes the input number of armies from the Player's number of armies
+void Player::removeArmies(int toRemove)
+{
+	this->numOfArmies -= toRemove;
+	if (this->numOfArmies < 0) // if it goes below 0 set it back to 0
+		this->numOfArmies = 0;
 }
 
 // Uses bubble sort to sort the Player's Territories in increasing order of number of armies

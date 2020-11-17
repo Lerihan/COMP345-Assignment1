@@ -13,7 +13,8 @@ Card::Card() {
 }
 
 Card::~Card() {
-	delete this;
+	this->cardHolder = NULL;
+	this->d = NULL;
 }
 
 //assignment constructor
@@ -49,8 +50,7 @@ Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 }
 
 Hand::~Hand() {
-	delete this->player;
-	delete this;
+	this->player = NULL;
 }
 
 //assignment constructor
@@ -125,7 +125,6 @@ Deck::Deck(std::vector<Card*> newCardsInDeck) {
 }
 
 Deck::~Deck() {
-	delete this;
 }
 
 //assignment constructor
@@ -172,8 +171,7 @@ BombCard::BombCard(Territory* target) {
 }
 
 BombCard::~BombCard() {
-	delete this->target;
-	delete this;
+	this->target = NULL;
 }
 
 void BombCard::setTarget(Territory* target) {
@@ -215,7 +213,6 @@ ReinforcementCard::ReinforcementCard(int numArmies) {
 }
 
 ReinforcementCard::~ReinforcementCard() {
-	delete this;
 }
 
 void ReinforcementCard::setNumArmies(int numArmies) {
@@ -247,8 +244,7 @@ BlockadeCard::BlockadeCard(Territory* target) {
 }
 
 BlockadeCard::~BlockadeCard() {
-	delete this->target;
-	delete this;
+	this->target = NULL;
 }
 
 void BlockadeCard::setTarget(Territory* target) {
@@ -294,9 +290,8 @@ AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
 
 AirliftCard::~AirliftCard()
 {
-	delete this->current;
-	delete this->target;
-	delete this;
+	this->current = NULL;
+	this->target = NULL;
 }
 
 void AirliftCard::setCurrent(Territory* current) {
@@ -353,8 +348,7 @@ DiplomacyCard::DiplomacyCard(Player* enemy) {
 }
 
 DiplomacyCard::~DiplomacyCard() {
-	delete this->enemy;
-	delete this;
+	this->enemy= NULL;
 }
 
 void DiplomacyCard::setEnemy(Player* enemy) {
