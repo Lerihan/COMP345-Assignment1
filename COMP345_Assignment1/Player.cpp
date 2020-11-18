@@ -104,6 +104,13 @@ vector<Territory*> Player::getTerritories()
 	return t;
 }
 
+// Set the input vector to be this Player's list of Territories.
+// used in driver part 3 only
+void Player::setTerritories(vector<Territory*> t)
+{
+	this->territories = t;
+}
+
 // Returns the Hand object of this Player
 Hand* Player::getHand()
 {
@@ -162,6 +169,7 @@ void Player::removeTerritory(Territory* toRemove)
 	for (int i = 0; i < this->territories.size(); i++) // loop through each of the Player's Territories
 	{
 		if (this->territories[i] == toRemove) // remove the one that is the input Territory
+			toRemove->setOwner(NULL); // this should be changed to a new Player when it is reassigned
 			this->territories.erase(this->territories.begin() + i);
 	}
 }
@@ -185,7 +193,7 @@ int Player::takeArmiesFromReinforcement(int numOfArmies) {
 
 	int taken = std::min(numOfArmies, reinforcementPool);
 
-	reinforcementPool = std::max(0, (reinforcementPool - numOfArmies));
+	this->reinforcementPool = std::max(0, (reinforcementPool - numOfArmies));
 
 	return taken;
 }
@@ -291,6 +299,14 @@ void Player::eliminatePlayer()
 	this->eliminated = true;
 }
 
+// Resets the total number of Players to 0.
+// needed if creating 2 GameEngines in one mian()
+// used for part 3 driver only
+void Player::resetTotalPlayers()
+{
+	this->totalPlayers = 1;
+}
+
 // = operator, performs deep copy.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player& Player::operator =(const Player& player)
@@ -337,8 +353,22 @@ ostream& operator <<(ostream& strm, Player& player)
 		s+= ", ";
 	}
 	s += "\b\b.";
-	return strm << "Player: " << player.playerNumber << "\nCards: " << *(player.hand)
-		<< "Territories: " << s << "\nReinforcement pool: " << player.reinforcementPool << endl;;
+
+	string o = "";
+	for (int i = 0; i < player.getOrders().size(); i++)
+	{
+		o += player.getOrders()[i]->getType();
+		o += ", ";
+	}
+	o += "\b\b.";
+
+	return strm << "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl
+		<< "Player: " << player.playerNumber 
+		<< "\nCards: " << *(player.hand)
+		<< "Territories: " << s 
+		<< "\nReinforcement pool: " << player.reinforcementPool 
+		<< "\nOrders: " << o << endl
+		<< "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl;
 }
 
 /*
@@ -352,7 +382,8 @@ istream & operator >> (istream& strm,  Player& player)
 */
 
 // Equality operator for two Player objects.
-// For now, considers two Players equal if they share the same name. Note this is not enforce
+// For now, considers two Players equal if they share the same number
+// this should only be true if the Player's copy constructor was used
 bool operator ==(const Player& p1, const Player& p2)
 {
 	return (p1.playerNumber == p2.playerNumber);

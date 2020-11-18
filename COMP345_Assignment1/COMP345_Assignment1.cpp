@@ -24,7 +24,11 @@ int main()
 {
 	//driverPart1();
 	//driverPart2();
-	driverPart3();
+	//driverPart3();
+
+	GameEngine g;
+	g.startGame();
+	g.mainGameLoop();
 
 	return 0;
 }
@@ -75,21 +79,71 @@ void driverPart3()
 {
 	cout << "###########################################" << endl;
 	cout << "Part 3: Game play: main game loop -- Driver" << endl;
-	cout << "###########################################" << endl;
+	cout << "###########################################" << endl << endl;
 
-	GameEngine g;
-	g.startGame();
-	for (int i = 0; i < g.getPlayers().size(); i++)
-	{
-		cout << *g.getPlayers()[i] << endl;
-	}
-	
 	// (1) a player receives the correct number of armies in the reinforcement phase (showing different cases)
+	cout << "Start the game twice using different maps/number of players to show that initial reinforcement pool is correct:" << endl
+		<< "---------------------------------------------------------------------------------------------------------------" << endl;
+	// run startup phase twice to see how reinforcement pool changes with number of players
+	GameEngine* g = new GameEngine;
+	g->startGame();
+	Player* p = g->getPlayers()[0];
 
+	cout << *p << endl;
+
+	g->reinforcementPhase(p);
+	cout << *p << endl;
+
+	p->resetTotalPlayers();
+	delete g;
+	//delete p;
+
+	// create new GameEngine
+	g = new GameEngine;
+	g->startGame();
+	p = g->getPlayers()[0];
+
+	cout << *p << endl;
+
+	g->reinforcementPhase(p);
+	cout << *p << endl << endl;
+
+	// test bonus reinforcements
+	cout << "Give the player all territories of a continent to show they get the bonus army value of reinforcements:" << endl
+		<< "------------------------------------------------------------------------------------------------------" << endl;
+	Player* pTemp = NULL;
+	Territory* tTemp = NULL;
+	for (int i = 0; i < g->getPlayers().size(); i++)
+	{
+		pTemp = g->getPlayers()[i];
+		for (int j = 0; j < pTemp->getTerritories().size(); j++)
+		{
+			tTemp = pTemp->getTerritories()[j];
+			if (tTemp->continentIndex == 1)
+			{
+				pTemp->removeTerritory(tTemp);
+				p->addTerritory(tTemp);
+			}
+		}
+	}
+	pTemp = NULL;
+	tTemp = NULL;
+	
+	g->reinforcementPhase(p);
+	cout << *p << endl;
 
 	// (2) a player will only issue deploy orders and no other kind of orders if they still have armies in their reinforcement pool
+	cout << "Player will issue deploy orders until their reinforcement pool is emptied:" << endl
+		<< "--------------------------------------------------------------------------" << endl;
+	g->issueOrdersPhase(p);
 
 	// (3) the game engine will only execute non-deploy orders when all the deploy orders of all players have been executed
+	g->executeOrdersPhase(p);
+
+	for (int i = 0; i < g->getPlayers().size(); i++)
+	{
+		cout << g->getPlayers()[i] << endl;
+	}
 
 	// (4) a player can issue advance orders to either defend or attack, based on the toAttack() and toDefend() lists
 
@@ -98,5 +152,6 @@ void driverPart3()
 	// (6) a player that does not control any territory is removed from the game
 
 	// (7) the game ends when a single player controls all the territories
-
+	
+	delete g;
 }

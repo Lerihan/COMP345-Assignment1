@@ -18,6 +18,11 @@ public:
 	vector<Player*> getPlayers();
 	string getPhase();
 
+	// made public for now so I can use them in part 3 driver
+	void reinforcementPhase(Player* currPlayer); // void for now
+	void issueOrdersPhase(Player* currPlayer);
+	void executeOrdersPhase(Player* currPlayer);
+
 private:
 	Map* map;
 	vector<Player*> players;
@@ -33,9 +38,6 @@ private:
 	void setInitialArmies();
 	void setRandomOrder();
 	void setRandomTerritory();
-	void reinforcementPhase(Player* currPlayer); // void for now
-	void issueOrdersPhase(Player* currPlayer);
-	void executeOrdersPhase(Player* currPlayer);
 	void kickPlayers(); // checks if a Player has lost the game
 	Player* checkWinner(); // checks if a Player has won
 	void endGamePhase(Player* winner); // launches end game winner message

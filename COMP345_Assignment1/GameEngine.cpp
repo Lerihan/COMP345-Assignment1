@@ -249,12 +249,8 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
+		cout << *(this->players[0]) << endl;
 
-		for (int i = 0; i < this->players.size(); i++)
-		{
-			cout << *this->players[i] << endl;
-		}
-		cout << endl;
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
 		cout << "---------------------" << endl;
@@ -267,10 +263,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		for (int i = 0; i < this->players.size(); i++)
-		{
-			cout << *(this->players[i]->getOrdersList()) << endl;
-		}
+		cout << *(this->players[0]) << endl;
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
@@ -284,6 +277,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
+		cout << *(this->players[0]) << endl;
 
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
@@ -325,13 +319,18 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	phase = "Issue Order Phase";
 
 	// issue Deploy orders
-	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory returned by toDefend()
-	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], currPlayer->getNumOfArmies()));
+	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory
+	// returned by toDefend()
+	// based on the assignment instructions it seems as if the reiforcements should be removed from the pool here, instead
+	// of in the execution phase, so that's what I'm doing
+	int toDeploy = currPlayer->getReinforcementPool();
+	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], toDeploy));
+	currPlayer->removeReinforcements(toDeploy);
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
-
+	cout << *currPlayer << endl;
+	
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
-
 	// first issue an advance order to attack
 	Territory* target = currPlayer->toAttack()[0]; // first Territory returned by toAttack() is the Territory to attack
 	Territory* source = target; // Territory to move armies from
@@ -347,6 +346,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+	cout << *currPlayer << endl;
 
 	// now issue an advance order to defend
 	target = currPlayer->toDefend()[0]; // first Territory returned by toDefend() is the Territory to defend
@@ -365,13 +365,14 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+	cout << *currPlayer << endl;
 
 	target = NULL;
 	source = NULL;
 
 	// play the first Card in the Player's Hand
 	Card* c = currPlayer->getHand()->cardsInHand[0]; // for readability
-	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << c->getType() << "." << endl;
+	//cout << "Player " << currPlayer->getPlayerNumber() << " played a " << c->getType() << "." << endl;
 
 	/*
 	// check for each type of card so the proper data members can be created
@@ -405,6 +406,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	c = NULL;
 	currPlayer->getHand()->play();
+	cout << *currPlayer << endl;
+
 }
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)

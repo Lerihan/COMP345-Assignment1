@@ -53,6 +53,7 @@ public:
 	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
+	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver
 
 	// accessors and mutators
 	void setHand(Hand* h); // sets input Hand to be that of this Player
@@ -61,6 +62,7 @@ public:
 	int getNumOfArmies();
 	int getReinforcementPool();
 	vector<Territory*> getTerritories();
+	void setTerritories(vector<Territory*> t); // sets the input vector to be the Player's territories; used in driver part 3
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
