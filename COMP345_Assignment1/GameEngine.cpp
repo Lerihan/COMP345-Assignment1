@@ -267,6 +267,10 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
+		for (int i = 0; i < this->players.size(); i++)
+		{
+			cout << *(this->players[i]->getOrdersList()) << endl;
+		}
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
