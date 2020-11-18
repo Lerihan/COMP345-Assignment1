@@ -66,6 +66,11 @@ string GameEngine::getPhase()
 	return phase;
 }
 
+Deck* GameEngine::getDeck()
+{
+	return this->deck;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;
@@ -237,19 +242,28 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			if (!this->players[i]->isEliminated())
+			{
 				reinforcementPhase(players[i]);
-			notify();
+				notify();
+			}
 		}
 		cout << endl;
 
+		for (int i = 0; i < this->players.size(); i++)
+		{
+			cout << *this->players[i] << endl;
+		}
+		cout << endl;
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
 		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			if (!this->players[i]->isEliminated())
+			{
 				issueOrdersPhase(players[i]);
-			notify();
+				notify();
+			}
 		}
 		cout << endl;
 
@@ -259,8 +273,10 @@ void GameEngine::mainGameLoop()
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			if (!this->players[i]->isEliminated())
+			{
 				executeOrdersPhase(players[i]);
-			notify();
+				notify();
+			}
 		}
 		cout << endl;
 
@@ -290,7 +306,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 	currContinent = NULL;
 
 	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
-	if ((currPlayer->getTerritories().size() / 3) < newArmies)
+	if ((currPlayer->getTerritories().size() / 3) > newArmies)
 		newArmies = currPlayer->getTerritories().size() / 3;
 
 	cout << "Player " << currPlayer->getPlayerNumber() << " will receive " << newArmies << " new reinforcements " 
@@ -313,7 +329,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	// first issue an advance order to attack
 	Territory* target = currPlayer->toAttack()[0]; // first Territory returned by toAttack() is the Territory to attack
-	Territory* source = NULL; // Territory to move armies from
+	Territory* source = target; // Territory to move armies from
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
 		// find the first adjacent Territory of toAttack that the Player owns to take armies from
@@ -349,7 +365,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	source = NULL;
 
 	// play the first Card in the Player's Hand
-	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0] << "." << endl;
+	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0]->getType() << "." << endl;
 	currPlayer->getHand()->play();
 }
 

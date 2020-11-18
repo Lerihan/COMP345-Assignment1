@@ -29,10 +29,11 @@ class Card {
 		virtual ~Card();
 
 		virtual void play() = 0;
+		virtual string getType() = 0;
 
 		Card& operator = (const Card& c);
-		friend ostream& operator << (ostream& out, const Card& c);
-		friend istream& operator << (istream& in, const Card& c);
+		//friend ostream& operator << (ostream& out, const Card& c);
+		friend istream& operator >> (istream& in, const Card& c);
 };
 
 class BombCard : public Card {
@@ -44,6 +45,7 @@ class BombCard : public Card {
 		~BombCard();
 
 		void play();
+		string getType();
 
 		void setTarget(Territory* target);
 		Territory* getTarget();
@@ -61,6 +63,7 @@ class ReinforcementCard : public Card {
 		~ReinforcementCard();
 
 		void play();
+		string getType();
 
 		void setNumArmies(int numArmies);
 		int getNumArmies();
@@ -77,6 +80,7 @@ public:
 	~BlockadeCard();
 
 	void play();
+	string getType();
 
 	void setTarget(Territory* target);
 	Territory* getTarget();
@@ -95,6 +99,7 @@ public:
 	~AirliftCard();
 
 	void play();
+	string getType();
 
 	void setCurrent(Territory* current);
 	Territory* getCurrent();
@@ -115,13 +120,14 @@ public:
 	~DiplomacyCard();
 
 	void play();
+	string getType();
 
 	void setEnemy(Player* enemy);
 	Player* getEnemy();
 	friend ostream& operator << (ostream& out, const DiplomacyCard& c);
 };
 
-class Hand : public Card {
+class Hand {
 friend class Deck;
 protected:
 	Player* player;	
@@ -135,7 +141,7 @@ public:
 	std::vector<Card*> getCardsInHand();
 	void play();
 	friend ostream& operator << (ostream& out, const Hand& h);
-	friend istream& operator << (istream& in, const Hand& h);
+	friend istream& operator >> (istream& in, const Hand& h);
 };
 
 class Deck{
@@ -148,7 +154,7 @@ public:
 	~Deck();
 	Deck& operator = (const Deck &d);
 	friend ostream& operator << (ostream& out, const Deck& d);
-	friend istream& operator << (istream& in, const Deck& d);
+	friend istream& operator >> (istream& in, const Deck& d);
 	void draw(Player* p);
 	void insertBackToDeck(Card* c);
 };
