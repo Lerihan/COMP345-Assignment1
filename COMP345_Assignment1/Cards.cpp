@@ -347,7 +347,7 @@ int AirliftCard::getNumArmies(int numArmies) {
 void AirliftCard::play() {
 	Player* p = this->cardHolder;
 
-	cout << "toAttack: " << p->toAttack().size() << " toDefend: " << p->toDefend().size() << " terr: " << p->getTerritories().size() << endl;
+	//cout << "toAttack: " << p->toAttack().size() << " toDefend: " << p->toDefend().size() << " terr: " << p->getTerritories().size() << endl;
 
 	// creates new airlift order where Player airlifts from his Territory with the most armies, to his Territory with the least
 	// TODO later: if target is enemy Territory, initiate attack
