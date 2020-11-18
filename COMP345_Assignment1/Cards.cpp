@@ -49,6 +49,8 @@ Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 	this->cardsInHand = playersCards;
 }
 
+// If we delete the Hand, it is because its Player has been eliminated.
+// Its Cards have thus been put back into the Deck so we do not delete them.
 Hand::~Hand() {
 	this->player = NULL;
 }
@@ -124,7 +126,15 @@ Deck::Deck(std::vector<Card*> newCardsInDeck) {
 	this->cardsInDeck = newCardsInDeck;
 }
 
-Deck::~Deck() {
+// If we are deleting the Deck it is because the game is over, so we can delete all the Cards;
+Deck::~Deck()
+{
+	for (int i = 0; i < this->cardsInDeck.size(); i++)
+	{
+		delete this->cardsInDeck[i];
+		this->cardsInDeck[i] = NULL;
+	}
+	this->cardsInDeck.clear();
 }
 
 //assignment constructor

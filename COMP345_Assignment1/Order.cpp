@@ -699,7 +699,6 @@ OrdersList::~OrdersList()
 		this->ordersList[i] = NULL;
 	}
 	this->ordersList.clear(); // remove placeholder memory locations
-	delete this;
 }
 
 /*Stream insertion operator for OrdersList class

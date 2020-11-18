@@ -78,11 +78,22 @@ Map& Map::operator = (const Map &m)
 	return *this;
 }
 
-/*
-* Destructor
-*/
+// A Map is deleted when the game is over.
+// To delete a Map, we delete all its Continents, which in turn delete all its Territories.
 Map::~Map()
 {
+	for (int i = 0; i < this->listOfContinents.size(); i++)
+	{
+		delete this->listOfContinents[i];
+		this->listOfContinents[i] = NULL;
+	}
+	this->listOfContinents.clear();
+
+	for (int i = 0; i < this->listOfTerritories.size(); i++)
+	{
+		this->listOfTerritories[i] = NULL;
+	}
+	this->listOfTerritories.clear();
 }
 
 
@@ -302,11 +313,22 @@ Continent& Continent::operator = (const Continent &c)
 	return *this;
 }
 
-/*
-* Destructor
-*/
+// Deleting a Continent will also delete its Territories.
+// We delete a Continent when the game is over
 Continent::~Continent()
 {
+	for (int i = 0; i < this->listOfTerritories.size(); i++)
+	{
+		delete this->listOfTerritories[i];
+		this->listOfTerritories[i] = NULL;
+	}
+	this->listOfTerritories.clear();
+
+	for (int i = 0; i < this->listOfAdjContinents.size(); i++)
+	{
+		this->listOfAdjContinents[i] = NULL;
+	}
+	this->listOfAdjContinents.clear();
 }
 
 //Stream override
@@ -448,6 +470,11 @@ Territory& Territory::operator = (const Territory &t)
 Territory::~Territory()
 {
 	this->owner = NULL;
+	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
+	{
+		this->listOfAdjTerritories[i] = NULL;
+	}
+	this->listOfAdjTerritories.clear();
 }
 
 /*

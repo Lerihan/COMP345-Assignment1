@@ -24,12 +24,13 @@ class Card {
 	public:
 		Player* cardHolder;
 		Deck* d;
+
 		Card();
 		virtual ~Card();
-		Card& operator = (const Card &c);
 
 		virtual void play() = 0;
 
+		Card& operator = (const Card& c);
 		friend ostream& operator << (ostream& out, const Card& c);
 		friend istream& operator << (istream& in, const Card& c);
 };
