@@ -89,9 +89,7 @@ istream& operator >> (istream& in, const Hand& h) {
 
 void Hand::play() {
 	//plays the first card of the player's hand automatically
-	cout << "HERE1 " << cardsInHand.at(0)->getType() << endl;
 	this->cardsInHand.at(0)->play();
-	cout << "HERE2" << endl;
 	//deletes the card from the player's hand by placing it at the end and then erasing it.
 	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
 	this->cardsInHand.erase(cardToMove);
@@ -181,7 +179,6 @@ void Deck::draw(Player* p) {
 
 void Deck::insertBackToDeck(Card* c) {
 	//adding the card to the end of the deck
-	cout << "Here1a " << c->getType() << endl;
 	this->cardsInDeck.push_back(c);
 }
 
@@ -209,10 +206,10 @@ Territory* BombCard::getTarget() {
 }
 
 void BombCard::play() {
+	Player* p = this->cardHolder;
 	//creates new bomb order
 	Bomb* bombOrder = new Bomb();
 	//adds new bomb order to the player's orderlist
-	Player* p = this->cardHolder;
 	p->issueOrder(bombOrder);
 	cout << "Player has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
