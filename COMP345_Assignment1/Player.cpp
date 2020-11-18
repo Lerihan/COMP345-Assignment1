@@ -28,6 +28,7 @@ Player::Player()
 
 	this->numOfArmies = 0;
 	this->reinforcementPool = 0;
+	this->eliminated = false;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -46,6 +47,8 @@ Player::Player(Player& p)
 	this->territories = p.territories; // assumes Territory = operator is correctly implemented
 
 	this->numOfArmies = p.numOfArmies;
+	this->eliminated = p.eliminated;
+
 	/*
 	// copy territories
 	for (int i = 0; i < p.territories.size(); i++)
@@ -58,13 +61,29 @@ Player::Player(Player& p)
 }
 
 // Destructor deletes thiss Player object.
+// Note that this depends on the destructors of the Player's data members. The Player destructor is not responsible for deleting the 
+// data members of ITS data members.
 // this will NOT delete the Territories of the Player (just the vector that stores the pointers)
 // it will delete their Orders and OrdersList
 // also when this destructor is called it is assumed that the Player lost the game and their Cards have already been put back in the Deck,
 // so we can simply delete the Hand
 Player::~Player()
 {
-	delete this->hand; // delete Player's Hand pointer
+	// if the Player is not eliminated when the game is over their Hand has not already been cleared
+	if (!this->eliminated)
+	{
+		// clear the Player's Hand
+		Hand* hand = this->getHand(); // for readability
+		for (int i = 0; i < this->hand->getCardsInHand().size(); i++)
+		{
+			delete hand->getCardsInHand()[i];
+			hand->getCardsInHand()[i] = NULL;
+		}
+		hand->getCardsInHand().clear(); // Player's Hand size is now 0
+		hand = NULL;
+
+		delete this->hand; // delete Player's Hand pointer
+	}
 
 	for (int i = 0; i < this->territories.size(); i++)
 	{
@@ -73,7 +92,7 @@ Player::~Player()
 	}
 	this->territories.clear(); // remove placeholder memory locations
 
-	delete this->orders; // delete pointer to OrdersList
+	delete this->orders; // delete to OrdersList
 }
 
 // Returns vector of Territories.
@@ -256,6 +275,18 @@ vector<Territory*> Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
 
 	temp = NULL;
 	return toAttack;
+}
+
+// Returns whether this Player is eliminated or not.
+bool Player::isEliminated()
+{
+	return this->eliminated;
+}
+
+// Sets this Player's eliminated data member to true.
+void Player::eliminatePlayer()
+{
+	this->eliminated = true;
 }
 
 // = operator, performs deep copy.

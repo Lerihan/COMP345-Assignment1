@@ -30,6 +30,7 @@ private:
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	std::vector<Territory*> territories; // territories belonging to the player
+	bool eliminated; // will store whether the Player has been eliminated from the game or not
 
 public:
 	// constructors and destructors
@@ -50,6 +51,8 @@ public:
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
 	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
 	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
+	bool isEliminated(); // return whether the Player is eliminated or not
+	void eliminatePlayer(); // sets the Player's eliminated data member to true
 
 	// accessors and mutators
 	void setHand(Hand* h); // sets input Hand to be that of this Player

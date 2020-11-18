@@ -51,7 +51,7 @@ int main()
 
 	cout << endl;
 	cout << "Check that players are given an inital number of armies" << endl << endl;
-	vector<Player*> players = g.getTotalPlayers();
+	vector<Player*> players = g.getPlayers();
 	for (int i = 0; i < players.size(); i++)
 	{
 		cout << "The number of initial armies in the reinforcement pool is " << players[i]->getReinforcementPool() << endl;
