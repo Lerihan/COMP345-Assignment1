@@ -16,33 +16,46 @@
 */
 
 // Forward declarations of driver programs
+void driverPart1(); // call for driver program for part 1
+void driverPart2(); // call for driver program for part 2
 void driverPart3(); // call for driver program for part 3
 
 int main()
 {
+	//driverPart1();
+	//driverPart2();
+	driverPart3();
+
+	return 0;
+}
+
+void driverPart1()
+{
 	// DRIVER PART 1
 	// -------------
-  
-	driverPart3();
-  
+
 	/*
-	(1) different valid maps can be loaded and their validity is verified (i.e. it is a connected graph, etc.), and invalid maps are gracefully rejected; 
-	(2) the right number of players is created, a deck with the right number of cards is created; 
+	(1) different valid maps can be loaded and their validity is verified (i.e. it is a connected graph, etc.), and invalid maps are gracefully rejected;
+	(2) the right number of players is created, a deck with the right number of cards is created;
 	(3) the observers can be turned on/off during the game start phase */
 	cout << "Starting driver for Part 1" << endl;
 	cout << "--------------------------" << endl;
 	GameEngine g;
 	g.startGame();
+}
 
+void driverPart2()
+{
 	// DRIVER PART 2
 	// -------------
 	/*
-	(1) all territories in the map have been assigned to one and only one player; 
+	(1) all territories in the map have been assigned to one and only one player;
 	(2) Players are given a number of armies which is put in their reinforcement pool */
 	cout << "Starting driver for Part 2" << endl;
 	cout << "--------------------------" << endl;
 
 	cout << "Check that territories have been assigned one and only one player: " << endl << endl;
+	GameEngine g;
 	Map* m = g.getMap();
 	for (int i = 0; i < m->listOfTerritories.size(); i++)
 	{
@@ -56,35 +69,6 @@ int main()
 	{
 		cout << "The number of initial armies in the reinforcement pool is " << players[i]->getReinforcementPool() << endl;
 	}
-
-	//Order* o = new Deploy;
-	//cout << o->getType();
-
-
-	/**
-	Territory* t1 = new Territory(0, "Canada");
-	Territory* t2 = new Territory(0, "USA");
-	Territory* t3 = new Territory(0, "Mexico");
-
-	std::vector<Territory*> t;
-	t.push_back(t1);
-	t.push_back(t2);
-	t.push_back(t3);
-	t.push_back(t3);
-
-	for (int i = 0; i < t.size(); i++)
-	{
-		cout << *t[i] << endl;
-	}
-
-	delete t1;
-	delete t2;
-	delete t3;
-	t1, t2, t3 = NULL;
-	t.clear();
-	*/
-
-	return 0;
 }
 
 void driverPart3()
@@ -93,16 +77,51 @@ void driverPart3()
 	cout << "Part 3: Game play: main game loop -- Driver" << endl;
 	cout << "###########################################" << endl;
 
+	/*
+	Deck deck;
+	/*
+	OrdersList o;
+	o.add(new Airlift);
+	o.add(new Bomb);
+	o.add(new Advance);
+
+	for (int i = 0; i < o.getOrdersList().size(); i++)
+	{
+		cout << o << " " ;
+	}
+	
+	cout << deck.cardsInDeck.size() << endl;
+	cout << deck << endl;
+
+	/**/
 	GameEngine g;
 	g.startGame();
 
+	
 	for (int i = 0; i < g.getPlayers().size(); i++)
 	{
 		cout << *g.getPlayers()[i] << endl;
 	}
 
-	g.mainGameLoop();
+	/*
+	// print toAttack
+	Territory* t = NULL;
+	for (int i = 0; i < g.getPlayers()[0]->toAttack().size(); i++)
+	{
+		t = g.getPlayers()[0]->toAttack()[i];
+		cout << t->name << " ";
+	}
+	cout << endl;
 
+	//print toDefend
+	for (int i = 0; i < g.getPlayers()[0]->toDefend().size(); i++)
+	{
+		cout << g.getPlayers()[0]->toDefend()[i]->name << " ";
+	}
+	*/
+
+	g.mainGameLoop();
+	
 	// (1) a player receives the correct number of armies in the reinforcement phase (showing different cases)
 
 

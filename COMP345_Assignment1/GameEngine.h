@@ -13,6 +13,7 @@ public:
 	void startGame();
 	void startupPhase();
 	Map* getMap();
+	Deck* getDeck();
 	void mainGameLoop(); // void for now
 	vector<Player*> getPlayers();
 	string getPhase();

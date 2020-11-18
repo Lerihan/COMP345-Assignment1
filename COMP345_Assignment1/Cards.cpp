@@ -21,12 +21,13 @@ Card::~Card() {
 Card& Card::operator = (const Card& c) {
 	return *this;
 }
-
+/*
 //stream insertion operators
 ostream& operator << (ostream& out, const Card& c) {
-	return out;
-}
-istream& operator << (istream& in, const Card& c) {
+	return out << "card ";
+}*/
+
+istream& operator >> (istream& in, const Card& c) {
 	return in;
 }
 
@@ -74,22 +75,23 @@ vector<Card*> Hand::getCardsInHand() {
 //stream insertion operators
 // Returns a string of all the cards in the input Hand.
 ostream& operator << (ostream& out, const Hand& h) {
-	for (int i = 0; i < h.cardsInHand.size(); i++)
+	for (Card* c : h.cardsInHand)
 	{
-		Card* c = h.cardsInHand.at(i); // only works if I make this line separate from the one below for some reason
-		out << *c << ", ";
+		out << c->getType() << ", ";
 	}
 	out << "\b\b.";
 
 	return out << endl;
 }
-istream& operator << (istream& in, const Hand& h) {
+istream& operator >> (istream& in, const Hand& h) {
 	return in;
 }
 
 void Hand::play() {
 	//plays the first card of the player's hand automatically
-	this->cardsInHand.at(0)->play();	
+	cout << "HERE1 " << cardsInHand.at(0)->getType() << endl;
+	this->cardsInHand.at(0)->play();
+	cout << "HERE2" << endl;
 	//deletes the card from the player's hand by placing it at the end and then erasing it.
 	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
 	this->cardsInHand.erase(cardToMove);
@@ -113,6 +115,7 @@ Deck::Deck() {
 			cardsInDeck.push_back(new DiplomacyCard());
 	}
 	random_shuffle(&cardsInDeck.at(0), &cardsInDeck.at(deckSize - 1));
+
 }
 
 //copy constructor
@@ -145,9 +148,14 @@ Deck& Deck::operator = (const Deck& d) {
 
 //stream insertion operators
 ostream& operator << (ostream& out, const Deck& d) {
+	for (Card* c : d.cardsInDeck)
+	{
+		out << c->getType() << ", ";
+	}
+	out << "\b\b.";
 	return out;
 }
-istream& operator << (istream& in, const Deck& d) {
+istream& operator >> (istream& in, const Deck& d) {
 	return in;
 }
 
@@ -158,15 +166,20 @@ void Deck::draw(Player* p) {
 	srand(time(NULL));
 	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0; 
 	//simply add the card to the end of the player's hand
-	h->cardsInHand.push_back(this->cardsInDeck.at(randomCardIndex));
+	Card* c = this->cardsInDeck.at(randomCardIndex); // for readability
+	c->cardHolder = p;
+	h->cardsInHand.push_back(c); // put the Card in the Player's Hand
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
 
+	h = NULL;
+	c = NULL;
 	//cout << "Player " << p->getPlayerNumber() << " has added a card into their hand" << endl;
 }
 
 void Deck::insertBackToDeck(Card* c) {
 	//adding the card to the end of the deck
+	cout << "Here1a " << c->getType() << endl;
 	this->cardsInDeck.push_back(c);
 }
 
@@ -201,9 +214,12 @@ void BombCard::play() {
 	p->issueOrder(bombOrder);
 	cout << "Player has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
+	this->cardHolder = NULL;
+	this->d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
+
+	bombOrder = NULL;
+	p = NULL;
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
@@ -234,6 +250,7 @@ int ReinforcementCard::getNumArmies() {
 	return this->numArmies;
 }
 
+// TODO: what is this supposed to be doing?
 void ReinforcementCard::play() {
 
 }
@@ -274,9 +291,13 @@ void BlockadeCard::play() {
 	p->issueOrder(blockOrder);
 	cout << "Player has played a Block Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
+	this->cardHolder = NULL;
+
+	this->d->insertBackToDeck(this);
 	cout << "Block Card has been added to the deck." << endl;
+
+	blockOrder = NULL;
+	p = NULL;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
@@ -337,9 +358,13 @@ void AirliftCard::play() {
 	p->issueOrder(airliftOrder);
 	cout << "Player has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
+	this->cardHolder = NULL;
+
+	this->d->insertBackToDeck(this);
 	cout << "Airlift Card has been added to the deck." << endl;
+
+	airliftOrder = NULL;
+	p = NULL;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
@@ -378,12 +403,22 @@ void DiplomacyCard::play() {
 	p->issueOrder(diplomacyOrder);
 	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
-	Deck* d = this->d;
-	d->insertBackToDeck(this);
+	this->cardHolder = NULL;
+
+	this->d->insertBackToDeck(this);
 	cout << "Diplomacy Card has been added to the deck." << endl;
+
+	diplomacyOrder = NULL;
+	p = NULL;
 }
 
-ostream& operator << (ostream& out, const DiplomacyCard& c) {
+
+ostream& operator << (ostream& out, DiplomacyCard& c) {
 	 return out << "DiplomacyCard";
 }
 
+string BombCard::getType() { return "BombCard"; }
+string ReinforcementCard::getType() { return "ReinforcementCard"; }
+string BlockadeCard::getType() { return "BlockadeCard"; }
+string AirliftCard::getType() { return "AirliftCard"; }
+string DiplomacyCard::getType() { return "DiplomacyCard"; }
