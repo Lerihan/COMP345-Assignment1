@@ -40,11 +40,11 @@ void PhaseObserver::update() {
 	//why is there no switch 
 	if (currentPhase == "Reinforcement Phase") {
 		cout << "Current Phase:" << currentPhase << endl;
-		cout << "-------------------------------"<< endl;
+		cout << "-------------------------------" << endl;
 	}
 	if (currentPhase == "Issue Order Phase") {
 		cout << "Current Phase:" << currentPhase << endl;
-		cout << "-------------------------------"<< endl;
+		cout << "-------------------------------" << endl;
 	}
 	if (currentPhase == "Execute Order Phase") {
 		cout << "Current Phase: " << currentPhase << endl;
@@ -64,7 +64,7 @@ void GameStatisticsObserver::update() {
 
 	int totalTerritories = gameEngine->getMap()->listOfTerritories.size();
 
-	cout << "\nCurrent Game Statistics: " << endl;
+	cout << "\nCurrent Game Statistics" << endl;
 	cout << "-------------------------------" << endl;
 
 	for (int i = 0; i < gameEngine->getPlayers().size(); i++) {
@@ -74,11 +74,12 @@ void GameStatisticsObserver::update() {
 		}
 		else if (playerOwnedTerritory == totalTerritories)
 		{
-			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " has won the game." << endl;;
+			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " has won the game." << endl;
 		}
 		else 
 		{
-			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " owns " << 100.0*(playerOwnedTerritory/totalTerritories) << "% of the map." << endl;
+			cout << "Player " << gameEngine->getPlayers()[i]->getPlayerNumber() << " owns " 
+				<< 100.0*(playerOwnedTerritory/totalTerritories) << "% of the map" << endl;
 		}
 	}
 }

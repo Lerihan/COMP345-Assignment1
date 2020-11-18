@@ -199,9 +199,11 @@ vector<Territory*> Player::toAttack()
 	{
 		for (int j = 0; j < this->territories[i]->listOfAdjTerritories.size(); j++) // loop through each of the Territory's adjacent Territories
 		{
-			if (this->territories[i]->listOfAdjTerritories[j]->getOwner() != this // if that Territory does not belong to this Player, add it to list
-				&& !Territory::containsTerritory(attackList, this->territories[i])) // and Territory is not already in toAttack vector
-				attackList.push_back(this->territories[i]);
+			if ((this->territories[i]->listOfAdjTerritories[j]->getOwner() != this) // if that Territory does not belong to this Player, add it to list
+				&& !(this->territories[i]->listOfAdjTerritories[j]->containsTerritory(attackList)))  // and Territory is not already in toAttack vector
+			{
+				attackList.push_back(this->territories[i]->listOfAdjTerritories[j]);
+			}
 		}
 	}
 	return this->sortTerritoriesToAttack(attackList);

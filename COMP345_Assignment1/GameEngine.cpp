@@ -66,6 +66,11 @@ string GameEngine::getPhase()
 	return phase;
 }
 
+Deck* GameEngine::getDeck()
+{
+	return this->deck;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;
@@ -199,6 +204,7 @@ void GameEngine::setRandomTerritory()
 	int turn = 0;
 	for (int i = 0; i < territoriesCopy.size(); i++)
 	{
+		territoriesCopy[i]->setOwner(players[turn]); // set the owner of this Territory to be the Player it is assigned to
 		players[turn]->addTerritory(territoriesCopy[i]);
 		turn++;
 
@@ -236,22 +242,29 @@ void GameEngine::mainGameLoop()
 		cout << "--------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated()) {
+			if (!this->players[i]->isEliminated())
+			{
 				reinforcementPhase(players[i]);
 				notify();
-			}	
+			}
 		}
 		cout << endl;
 
+		for (int i = 0; i < this->players.size(); i++)
+		{
+			cout << *this->players[i] << endl;
+		}
+		cout << endl;
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
 		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated()) {
+			if (!this->players[i]->isEliminated())
+			{
 				issueOrdersPhase(players[i]);
 				notify();
-			}	
+			}
 		}
 		cout << endl;
 
@@ -260,10 +273,11 @@ void GameEngine::mainGameLoop()
 		cout << "-----------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated()) {
+			if (!this->players[i]->isEliminated())
+			{
 				executeOrdersPhase(players[i]);
 				notify();
-			}	
+			}
 		}
 		cout << endl;
 
@@ -293,7 +307,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 	currContinent = NULL;
 
 	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
-	if ((currPlayer->getTerritories().size() / 3) < newArmies)
+	if ((currPlayer->getTerritories().size() / 3) > newArmies)
 		newArmies = currPlayer->getTerritories().size() / 3;
 
 	cout << "Player " << currPlayer->getPlayerNumber() << " will receive " << newArmies << " new reinforcements " 
@@ -316,7 +330,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	// first issue an advance order to attack
 	Territory* target = currPlayer->toAttack()[0]; // first Territory returned by toAttack() is the Territory to attack
-	Territory* source = NULL; // Territory to move armies from
+	Territory* source = target; // Territory to move armies from
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
 		// find the first adjacent Territory of toAttack that the Player owns to take armies from
@@ -352,7 +366,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	source = NULL;
 
 	// play the first Card in the Player's Hand
-	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0] << "." << endl;
+	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0]->getType() << "." << endl;
 	currPlayer->getHand()->play();
 }
 
@@ -362,46 +376,58 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 	// execute deploy orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Deploy")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Deploy")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute airlift orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Airlift")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Airlift")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute blockade orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Blockade")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Blockade")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute all other orders in the order they appear in the OrdersList
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-		currPlayer->getOrders()[i]->execute();
-		delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-		currPlayer->getOrders()[i] = NULL;
+		if (!currPlayer->getOrders()[i]->isExecuted())
+		{
+			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+			currPlayer->getOrders()[i]->execute();
+			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+			currPlayer->getOrders()[i] = NULL;
+		}
 	}
 }
 

@@ -31,7 +31,7 @@ public:
 	bool isAdjacent(int id);
 	bool addTroops(int n);
 	bool removeTroops(int n);
-	static bool containsTerritory(vector<Territory*> territories, Territory* t); // checks if the input Territory is contained in the input vector
+	bool containsTerritory(vector<Territory*> territories); // checks if this Territory is contained in the input vector
 
 	friend bool operator ==(const Territory& t1, const Territory& t2);
 	friend ostream & operator << (ostream &out, const Territory &c);
