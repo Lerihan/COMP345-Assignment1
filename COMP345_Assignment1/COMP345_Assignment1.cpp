@@ -77,50 +77,12 @@ void driverPart3()
 	cout << "Part 3: Game play: main game loop -- Driver" << endl;
 	cout << "###########################################" << endl;
 
-	/*
-	Deck deck;
-	/*
-	OrdersList o;
-	o.add(new Airlift);
-	o.add(new Bomb);
-	o.add(new Advance);
-
-	for (int i = 0; i < o.getOrdersList().size(); i++)
-	{
-		cout << o << " " ;
-	}
-	
-	cout << deck.cardsInDeck.size() << endl;
-	cout << deck << endl;
-
-	/**/
 	GameEngine g;
 	g.startGame();
-
-	
 	for (int i = 0; i < g.getPlayers().size(); i++)
 	{
 		cout << *g.getPlayers()[i] << endl;
 	}
-
-	/*
-	// print toAttack
-	Territory* t = NULL;
-	for (int i = 0; i < g.getPlayers()[0]->toAttack().size(); i++)
-	{
-		t = g.getPlayers()[0]->toAttack()[i];
-		cout << t->name << " ";
-	}
-	cout << endl;
-
-	//print toDefend
-	for (int i = 0; i < g.getPlayers()[0]->toDefend().size(); i++)
-	{
-		cout << g.getPlayers()[0]->toDefend()[i]->name << " ";
-	}
-	*/
-
-	g.mainGameLoop();
 	
 	// (1) a player receives the correct number of armies in the reinforcement phase (showing different cases)
 
