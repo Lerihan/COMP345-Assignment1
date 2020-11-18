@@ -113,6 +113,8 @@ Deck::Deck() {
 			cardsInDeck.push_back(new AirliftCard());
 		else if (i < 55) 
 			cardsInDeck.push_back(new DiplomacyCard());
+
+		cardsInDeck[i]->d = this;
 	}
 	random_shuffle(&cardsInDeck.at(0), &cardsInDeck.at(deckSize - 1));
 
@@ -289,7 +291,7 @@ void BlockadeCard::play() {
 	//adds new block order to the player's orderlist
 	Player* p = this->cardHolder;
 	p->issueOrder(blockOrder);
-	cout << "Player has played a Block Card from their hand.\n" << endl;
+	cout << "Player has played a Blockade Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
 	this->cardHolder = NULL;
 
