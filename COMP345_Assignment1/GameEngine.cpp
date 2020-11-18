@@ -370,7 +370,40 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	source = NULL;
 
 	// play the first Card in the Player's Hand
-	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << currPlayer->getHand()->cardsInHand[0]->getType() << "." << endl;
+	Card* c = currPlayer->getHand()->cardsInHand[0]; // for readability
+	cout << "Player " << currPlayer->getPlayerNumber() << " played a " << c->getType() << "." << endl;
+
+	/*
+	// check for each type of card so the proper data members can be created
+	// need to downcast each Card to be able to set subclass data members
+	// for all orders that need a target Territory, take the first one returned in Player's toAttack()
+	// for all orders that need a source Territory, take the first one returned in Player's toDefend()
+	if (c->getType() == "BombCard")
+	{
+		((BombCard*)c)->setTarget(currPlayer->toAttack()[0]);
+		((BombCard*)c)->setSource(currPlayer->toDefend()[0]);
+	}
+	else if (c->getType() == "ReinforcementCard")
+	{
+		// nothing needs to be done here I think but leave this if statement for now
+	}
+	else if (c->getType() == "BlockadeCard")
+	{
+		((BlockadeCard*)c)->setTarget(currPlayer->toAttack()[0]);
+	}
+	else if (c->getType() == "AirliftCard")
+	{
+		// for now, make Airlift only to one of the current Player's Territories
+		((AirliftCard*)c)->setTarget(currPlayer->toDefend()[0]);
+	}
+	else if (c->getType() == "DiplomacyCard")
+	{
+		// set enemey to be the owner of first Territory returned by Player's toAttack()
+		((DiplomacyCard*)c)->setEnemy(currPlayer->toAttack()[0]->getOwner());
+	}
+	*/
+
+	c = NULL;
 	currPlayer->getHand()->play();
 }
 
@@ -433,6 +466,7 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			currPlayer->getOrders()[i] = NULL;
 		}
 	}
+	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 
 // Checks if a Player has lost the game.
