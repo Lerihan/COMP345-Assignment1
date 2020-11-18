@@ -206,10 +206,10 @@ Territory* BombCard::getTarget() {
 }
 
 void BombCard::play() {
-	Player* p = this->cardHolder;
 	//creates new bomb order
 	Bomb* bombOrder = new Bomb();
 	//adds new bomb order to the player's orderlist
+	Player* p = this->cardHolder;
 	p->issueOrder(bombOrder);
 	cout << "Player has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
@@ -231,22 +231,9 @@ ostream& operator << (ostream& out, const BombCard& c) {
 // ReinforcementCard
 // ######################################
 ReinforcementCard::ReinforcementCard() {
-	this->numArmies = 0;
-}
-
-ReinforcementCard::ReinforcementCard(int numArmies) {
-	this->numArmies = numArmies;
 }
 
 ReinforcementCard::~ReinforcementCard() {
-}
-
-void ReinforcementCard::setNumArmies(int numArmies) {
-	this->numArmies = numArmies;
-}
-
-int ReinforcementCard::getNumArmies() {
-	return this->numArmies;
 }
 
 // TODO: what is this supposed to be doing?
