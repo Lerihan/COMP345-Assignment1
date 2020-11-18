@@ -39,6 +39,8 @@ public:
 
 	void setPlayer(Player* player);
 
+	bool isExecuted();
+
 	Player* player;
 
 protected:

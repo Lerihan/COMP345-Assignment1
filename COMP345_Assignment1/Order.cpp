@@ -62,6 +62,11 @@ void Order::setPlayer(Player* player)
 	this->player = player;
 }
 
+bool Order::isExecuted()
+{
+	return this->executed;
+}
+
 /*Stream insertion operator for the base Order class
 */
 std::ostream& operator<<(std::ostream& o, const Order& order) 
@@ -248,7 +253,7 @@ bool Advance::execute()
 				cout << "ADVANCE ORDER: Player " << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 
-			if (current->numberOfArmies == 0) //if player loses
+			else if (current->numberOfArmies == 0) //if player loses
 			{
 				cout << "ADVANCE ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}

@@ -204,6 +204,7 @@ void GameEngine::setRandomTerritory()
 	int turn = 0;
 	for (int i = 0; i < territoriesCopy.size(); i++)
 	{
+		territoriesCopy[i]->setOwner(players[turn]); // set the owner of this Territory to be the Player it is assigned to
 		players[turn]->addTerritory(territoriesCopy[i]);
 		turn++;
 
@@ -375,46 +376,58 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 	// execute deploy orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Deploy")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Deploy")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute airlift orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Airlift")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Airlift")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute blockade orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (currPlayer->getOrders()[i]->getType() == "Blockade")
+		if (!currPlayer->getOrders()[i]->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			if (currPlayer->getOrders()[i]->getType() == "Blockade")
+			{
+				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				currPlayer->getOrders()[i]->execute();
+				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+				currPlayer->getOrders()[i] = NULL;
+			}
 		}
 	}
 
 	// execute all other orders in the order they appear in the OrdersList
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-		currPlayer->getOrders()[i]->execute();
-		delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-		currPlayer->getOrders()[i] = NULL;
+		if (!currPlayer->getOrders()[i]->isExecuted())
+		{
+			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+			currPlayer->getOrders()[i]->execute();
+			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
+			currPlayer->getOrders()[i] = NULL;
+		}
 	}
 }
 
