@@ -236,9 +236,10 @@ void GameEngine::mainGameLoop()
 		cout << "--------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players[i]->isEliminated()) {
 				reinforcementPhase(players[i]);
-			notify();
+				notify();
+			}	
 		}
 		cout << endl;
 
@@ -247,9 +248,10 @@ void GameEngine::mainGameLoop()
 		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players[i]->isEliminated()) {
 				issueOrdersPhase(players[i]);
-			notify();
+				notify();
+			}	
 		}
 		cout << endl;
 
@@ -258,9 +260,10 @@ void GameEngine::mainGameLoop()
 		cout << "-----------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players[i]->isEliminated()) {
 				executeOrdersPhase(players[i]);
-			notify();
+				notify();
+			}	
 		}
 		cout << endl;
 
