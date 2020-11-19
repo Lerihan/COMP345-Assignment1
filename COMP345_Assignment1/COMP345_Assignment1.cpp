@@ -28,10 +28,12 @@ int main()
 	//driverPart3();
 	//driverPart4();
 	
+	/*
 	GameEngine g;
 	g.startGame();
 	g.startupPhase();
 	g.mainGameLoop();
+	*/
 	
 
 	return 0;
@@ -61,7 +63,7 @@ void driverPart2()
 	(2) Players are given a number of armies which is put in their reinforcement pool */
 	GameEngine g;
 	g.startGame();
-	g.startupPhase();
+	//g.startupPhase();
 	cout << "Starting driver for Part 2" << endl;
 	cout << "--------------------------" << endl;
 

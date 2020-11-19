@@ -33,6 +33,8 @@ void GameEngine::startGame()
 
 	setObservers();
 	cout << endl;
+
+	startupPhase();
 }
 
 void GameEngine::startupPhase()
@@ -208,19 +210,6 @@ void GameEngine::setRandomTerritory()
 		if (turn > (players.size() - 1))
 			turn = 0;
 	}
-
-	/* FOR DRIVER
-	for (int j = 0; j < players.size(); j++)
-	{
-		cout << "Player " << j << "'s Territories" << endl;
-		vector<Territory*> temp = players[j]->getTerritories();
-		for (int i = 0; i < players[j]->getTerritories().size(); i++)
-		{
-			cout << temp[i]->name << endl;
-		}
-		cout << endl;
-	}
-	*/
 }
 
 // Function that controls the main game
@@ -316,10 +305,11 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 }
 
 // Prompts user for Order to be issued and calls issueOrder()
+// Prompts user for Order to be issued and calls issueOrder()
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
-	
+
 	phase = "Issue Order Phase";
-	notify();
+
 	// issue Deploy orders
 	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory
 	// returned by toDefend()
@@ -329,10 +319,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], toDeploy));
 	currPlayer->removeReinforcements(toDeploy);
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
-	phase = "Issue Order Phase: Issue Deploy Order";
-	notify();
 	cout << *currPlayer << endl;
-  
+
 	// TODO: if toAttack() vector is empty, do an Advance order to defend instead
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
@@ -352,44 +340,35 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 				break;
 			}
 		}
-	
+
 		// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-		phase = "Issue Order Phase: Issue Advance Order";
-		notify();
-		cout << *currPlayer << endl;
 	}
-	else {
-		// now issue an advance order to defend
-		target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
-		source = NULL; // same as target unless a better choice is found in loop below
-		int maxArmies = 0;
-		for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
+	cout << *currPlayer << endl;
+
+	// now issue an advance order to defend
+	target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
+	source = NULL; // same as target unless a better choice is found in loop below
+	int maxArmies = 0;
+	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
+	{
+		if (target->listOfAdjTerritories[i]->owner == currPlayer)  // if player owns the adjacent territory
 		{
-			if (target->listOfAdjTerritories[i]->owner == currPlayer)  // if player owns the adjacent territory
+			if (target->listOfAdjTerritories[i]->numberOfArmies > maxArmies) // if adjacent territory has more armies, use this one as source
 			{
-				if (target->listOfAdjTerritories[i]->numberOfArmies > maxArmies) // if adjacent territory has more armies, use this one as source
-				{
-					source = target->listOfAdjTerritories[i];
-					maxArmies = target->listOfAdjTerritories[i]->numberOfArmies;
-				}
+				source = target->listOfAdjTerritories[i];
+				maxArmies = target->listOfAdjTerritories[i]->numberOfArmies;
 			}
 		}
 	}
-	
-
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	// issue an advance order if there are adjacent enemy Territories
 	if (source != NULL)
 	{
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-		phase = "Issue Order Phase: Issue Advance Order";
-		notify();
 	}
-
-
 	cout << *currPlayer << endl;
 
 	target = NULL;
@@ -401,7 +380,6 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 		currPlayer->getHand()->play();
 	}
 	cout << *currPlayer << endl;
-
 }
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
@@ -462,12 +440,12 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 	// execute all other orders in the order they appear in the OrdersList
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
-		if (!currPlayer->getOrders()[i]->isExecuted())
+		if (!currPlayer->getOrders().at(i)->isExecuted())
 		{
-			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
-			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
+			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders().at(i)->getType() << " order." << endl;
+			currPlayer->getOrders().at(i)->execute();
+			delete currPlayer->getOrders().at(i); // deleting the Order will not change the size of teh vector during the loop
+			currPlayer->getOrders().at(i) = NULL;
 		}
 	}
 	// TODO: should we delete the execute orders here, or just leave them as executed?
