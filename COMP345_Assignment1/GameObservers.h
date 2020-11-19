@@ -24,6 +24,7 @@ class PhaseObserver : public Observer {
 	public:
 		PhaseObserver();
 		PhaseObserver(GameEngine* gameEngine);
+		~PhaseObserver();
 		void update() override;
 
 	private:
@@ -36,6 +37,7 @@ class GameStatisticsObserver : public Observer {
 	public:
 		GameStatisticsObserver();
 		GameStatisticsObserver(GameEngine* gameEngine);
+		~GameStatisticsObserver();
 		void update() override;
 	private:
 		GameEngine* gameEngine;
