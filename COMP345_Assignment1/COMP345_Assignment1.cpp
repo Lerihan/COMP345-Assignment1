@@ -29,7 +29,7 @@ int main()
 	/**/
 	GameEngine g;
 	g.startGame();
-	g.mainGameLoop();
+	//g.mainGameLoop();
 	/**/
 
 	return 0;
