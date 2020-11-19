@@ -315,7 +315,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 
 // Prompts user for Order to be issued and calls issueOrder()
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
-	
+
 	phase = "Issue Order Phase";
 
 	// issue Deploy orders
@@ -328,7 +328,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	currPlayer->removeReinforcements(toDeploy);
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
 	cout << *currPlayer << endl;
-	
+
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
 	// first issue an advance order to attack
@@ -350,6 +350,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	// now issue an advance order to defend
 	target = currPlayer->toDefend()[0]; // first Territory returned by toDefend() is the Territory to defend
+	source = currPlayer->toDefend()[0]; // same as target unless a better choice is found in loop below
 	int maxArmies = 0;
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
@@ -370,42 +371,11 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	target = NULL;
 	source = NULL;
 
-	// play the first Card in the Player's Hand
-	Card* c = currPlayer->getHand()->cardsInHand[0]; // for readability
-	//cout << "Player " << currPlayer->getPlayerNumber() << " played a " << c->getType() << "." << endl;
-
-	/*
-	// check for each type of card so the proper data members can be created
-	// need to downcast each Card to be able to set subclass data members
-	// for all orders that need a target Territory, take the first one returned in Player's toAttack()
-	// for all orders that need a source Territory, take the first one returned in Player's toDefend()
-	if (c->getType() == "BombCard")
+	// play the first Card in the Player's Hand if they have one
+	if (currPlayer->getHand()->getCardsInHand().size() != 0)
 	{
-		((BombCard*)c)->setTarget(currPlayer->toAttack()[0]);
-		((BombCard*)c)->setSource(currPlayer->toDefend()[0]);
+		currPlayer->getHand()->play();
 	}
-	else if (c->getType() == "ReinforcementCard")
-	{
-		// nothing needs to be done here I think but leave this if statement for now
-	}
-	else if (c->getType() == "BlockadeCard")
-	{
-		((BlockadeCard*)c)->setTarget(currPlayer->toAttack()[0]);
-	}
-	else if (c->getType() == "AirliftCard")
-	{
-		// for now, make Airlift only to one of the current Player's Territories
-		((AirliftCard*)c)->setTarget(currPlayer->toDefend()[0]);
-	}
-	else if (c->getType() == "DiplomacyCard")
-	{
-		// set enemey to be the owner of first Territory returned by Player's toAttack()
-		((DiplomacyCard*)c)->setEnemy(currPlayer->toAttack()[0]->getOwner());
-	}
-	*/
-
-	c = NULL;
-	currPlayer->getHand()->play();
 	cout << *currPlayer << endl;
 
 }
@@ -422,8 +392,6 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
 				currPlayer->getOrders()[i]->execute();
-				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
-				currPlayer->getOrders()[i] = NULL;
 			}
 		}
 	}
@@ -437,8 +405,6 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
 				currPlayer->getOrders()[i]->execute();
-				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-				currPlayer->getOrders()[i] = NULL;
 			}
 		}
 	}
@@ -452,8 +418,6 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
 				currPlayer->getOrders()[i]->execute();
-				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-				currPlayer->getOrders()[i] = NULL;
 			}
 		}
 	}
@@ -465,8 +429,6 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 		{
 			cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
 			currPlayer->getOrders()[i]->execute();
-			delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-			currPlayer->getOrders()[i] = NULL;
 		}
 	}
 	// TODO: should we delete the execute orders here, or just leave them as executed?
