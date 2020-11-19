@@ -357,8 +357,11 @@ ostream& operator <<(ostream& strm, Player& player)
 	string o = "";
 	for (int i = 0; i < player.getOrders().size(); i++)
 	{
-		o += player.getOrders()[i]->getType();
-		o += ", ";
+		if (!player.getOrders().at(i)->isExecuted())
+		{
+			o += player.getOrders().at(i)->getType();
+			o += ", ";
+		}
 	}
 	o += "\b\b.";
 
