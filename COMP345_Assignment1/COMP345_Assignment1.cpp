@@ -167,7 +167,8 @@ void driverPart3()
 
 	cout << *p << endl;
 
-	g->mainGameLoop();
+	cout << "WINNER " << g->checkWinner()->getPlayerNumber() << endl;
+	//g->mainGameLoop();
 
 	// (7) the game ends when a single player controls all the territories
 	
