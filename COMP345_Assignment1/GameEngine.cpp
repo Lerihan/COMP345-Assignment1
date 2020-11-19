@@ -33,9 +33,6 @@ void GameEngine::startGame()
 
 	setObservers();
 	cout << endl;
-
-	//start up phase
-	startupPhase();
 }
 
 void GameEngine::startupPhase()

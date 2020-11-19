@@ -19,16 +19,18 @@
 void driverPart1(); // call for driver program for part 1
 void driverPart2(); // call for driver program for part 2
 void driverPart3(); // call for driver program for part 3
+void driverPart4(); // call for driver program for part 3
 
 int main()
 {
 	//driverPart1();
 	//driverPart2();
 	//driverPart3();
-
+	//driverPart4();
 	
 	GameEngine g;
 	g.startGame();
+	g.startupPhase();
 	g.mainGameLoop();
 	
 
@@ -57,11 +59,13 @@ void driverPart2()
 	/*
 	(1) all territories in the map have been assigned to one and only one player;
 	(2) Players are given a number of armies which is put in their reinforcement pool */
+	GameEngine g;
+	g.startGame();
+	g.startupPhase();
 	cout << "Starting driver for Part 2" << endl;
 	cout << "--------------------------" << endl;
 
 	cout << "Check that territories have been assigned one and only one player: " << endl << endl;
-	GameEngine g;
 	Map* m = g.getMap();
 	for (int i = 0; i < m->listOfTerritories.size(); i++)
 	{

@@ -428,7 +428,7 @@ Territory::Territory()
 	index = 0;
 	name = "";
 	continentIndex = 0;
-	numberOfArmies = 0;
+	numberOfArmies = 1;
 	this->owner = NULL;
 }
 
@@ -439,7 +439,7 @@ Territory::Territory(int id, string n, int continentid)
 	index = id;
 	name = n;
 	continentIndex = continentid;
-	numberOfArmies = 0;
+	numberOfArmies = 1;
 
 	this->owner = NULL;
 }

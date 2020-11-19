@@ -235,7 +235,7 @@ bool Advance::execute()
 		}
 		else // if attacking
 		{
-			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			while (next->numberOfArmies > 0 && current->numberOfArmies > 0)
 			{
 				srand(time(NULL));
 
@@ -513,7 +513,7 @@ bool Airlift::execute()
 			cout << "AIRLIFT ORDER: Player " << player->getPlayerNumber() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
 		else
 		{
-			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			while (next->numberOfArmies > 0 && current->numberOfArmies > 0)
 			{
 				srand(time(NULL));
 
