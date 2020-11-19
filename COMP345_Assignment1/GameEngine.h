@@ -23,7 +23,6 @@ public:
 	void issueOrdersPhase(Player* currPlayer);
 	void executeOrdersPhase(Player* currPlayer);
 
-	Player* checkWinner(); // checks if a Player has won
 
 private:
 	Map* map;
@@ -42,4 +41,5 @@ private:
 	void setRandomTerritory();
 	void kickPlayers(); // checks if a Player has lost the game
 	void endGamePhase(Player* winner); // launches end game winner message
+	Player* checkWinner(); // checks if a Player has won
 };
