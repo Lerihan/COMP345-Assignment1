@@ -149,9 +149,14 @@ void driverPart3()
 
 	// (4) a player can issue advance orders to either defend or attack, based on the toAttack() and toDefend() lists
 
+
 	// (5) a player can play cards to issue orders
+	// should see this above when issueOrdersPhase() is called
 
 	// (6) a player that does not control any territory is removed from the game
+	//g->mainGameLoop();
+
+	// (7) the game ends when a single player controls all the territories
 	// give our Player all Territories so he can win the game
 	Territory* t = NULL; // for readability
 	for (int i = 0; i < g->getMap()->listOfTerritories.size(); i++)
@@ -165,12 +170,16 @@ void driverPart3()
 	}
 	t = NULL;
 
-	cout << *p << endl;
+	cout << "Print Players to show their Territories, and call the mainGameLoop() to kick the eliminated Player and declare the winner:" << endl
+		<< "--------------------------------------------------------------------------------------------------------------------------" << endl;
+	for (int i = 0; i < g->getPlayers().size(); i++)
+	{
+		cout << *g->getPlayers().at(i) << endl;
+	}
 
 	g->mainGameLoop();
-
-	// (7) the game ends when a single player controls all the territories
 	
+
 }
 
 void driverPart4()
