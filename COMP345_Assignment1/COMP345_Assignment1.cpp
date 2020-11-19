@@ -24,13 +24,13 @@ int main()
 {
 	//driverPart1();
 	//driverPart2();
-	driverPart3();
+	//driverPart3();
 
-	/*
+	/**/
 	GameEngine g;
 	g.startGame();
 	g.mainGameLoop();
-	*/
+	/**/
 
 	return 0;
 }
