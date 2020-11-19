@@ -245,7 +245,7 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				reinforcementPhase(players[i]);
-				notify();
+				//notify();
 			}
 		}
 		cout << endl;
@@ -259,7 +259,7 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				issueOrdersPhase(players[i]);
-				notify();
+				//notify();
 			}
 		}
 		cout << endl;
@@ -273,7 +273,7 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				executeOrdersPhase(players[i]);
-				notify();
+				//notify();
 			}
 		}
 		cout << endl;
@@ -281,6 +281,7 @@ void GameEngine::mainGameLoop()
 
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
+		notify();
 	} while (winner == NULL);
 
 	endGamePhase(winner);
@@ -290,6 +291,7 @@ void GameEngine::mainGameLoop()
 void GameEngine::reinforcementPhase(Player* currPlayer)
 {
 	phase = "Reinforcement Phase";
+	notify();
 
 	int newArmies = 3; // minimum number of new armies to assign to Player
 
@@ -317,7 +319,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	
 	phase = "Issue Order Phase";
-
+	notify();
 	// issue Deploy orders
 	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory
 	// returned by toDefend()
@@ -327,6 +329,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], toDeploy));
 	currPlayer->removeReinforcements(toDeploy);
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
+	phase = "Issue Order Phase: Issue Deploy Order";
+	notify();
 	cout << *currPlayer << endl;
 	
 	// issue Advance orders
@@ -346,6 +350,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+	phase = "Issue Order Phase: Issue Advance Order";
+	notify();
 	cout << *currPlayer << endl;
 
 	// now issue an advance order to defend
@@ -365,6 +371,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+	phase = "Issue Order Phase: Issue Advance Order";
+	notify();
 	cout << *currPlayer << endl;
 
 	target = NULL;
@@ -413,6 +421,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 void GameEngine::executeOrdersPhase(Player* currPlayer)
 {
 	phase = "Execute Order Phase";
+	notify();
 	// execute deploy orders
 	for (int i = 0; i < currPlayer->getOrders().size(); i++)
 	{
@@ -421,6 +430,8 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			if (currPlayer->getOrders()[i]->getType() == "Deploy")
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				phase = "Execute Order Phase: Deploy Order";
+				notify();
 				currPlayer->getOrders()[i]->execute();
 				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of the vector during the loop
 				currPlayer->getOrders()[i] = NULL;
@@ -436,9 +447,11 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			if (currPlayer->getOrders()[i]->getType() == "Airlift")
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				phase = "Execute Order Phase: Airlift Order";
+				notify();
 				currPlayer->getOrders()[i]->execute();
 				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
-				currPlayer->getOrders()[i] = NULL;
+				currPlayer->getOrders()[i] = NULL;	
 			}
 		}
 	}
@@ -451,6 +464,8 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			if (currPlayer->getOrders()[i]->getType() == "Blockade")
 			{
 				cout << "Player " << currPlayer->getPlayerNumber() << " has executed a " << currPlayer->getOrders()[i]->getType() << " order." << endl;
+				phase = "Execute Order Phase: Blockade Order";
+				notify();
 				currPlayer->getOrders()[i]->execute();
 				delete currPlayer->getOrders()[i]; // deleting the Order will not change the size of teh vector during the loop
 				currPlayer->getOrders()[i] = NULL;
