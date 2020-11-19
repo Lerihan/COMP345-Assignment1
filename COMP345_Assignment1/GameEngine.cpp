@@ -232,7 +232,11 @@ void GameEngine::mainGameLoop()
 {
 	int rounds = 0; // number of rounds the game lasted
 	Player* winner = NULL;
-	do {
+	while (winner == NULL)
+	{
+		winner = checkWinner(); // check if a Player has won the game
+		if (winner != NULL)
+			break;
 		cout << "========" << endl;
 		cout << "Round " << ++rounds << endl;
 		cout << "========" << endl << endl;
@@ -280,9 +284,7 @@ void GameEngine::mainGameLoop()
 		cout << *(this->players[0]) << endl;
 
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
-		winner = checkWinner(); // check if a Player has won the game
-	} while (winner == NULL);
-
+	}
 	endGamePhase(winner);
 }
 
@@ -332,7 +334,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
 	// first issue an advance order to attack
-	Territory* target = currPlayer->toAttack()[0]; // first Territory returned by toAttack() is the Territory to attack
+	Territory* target = currPlayer->toAttack().at(0); // first Territory returned by toAttack() is the Territory to attack
 	Territory* source = target; // Territory to move armies from
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
@@ -349,8 +351,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	cout << *currPlayer << endl;
 
 	// now issue an advance order to defend
-	target = currPlayer->toDefend()[0]; // first Territory returned by toDefend() is the Territory to defend
-	source = currPlayer->toDefend()[0]; // same as target unless a better choice is found in loop below
+	target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
+	source = currPlayer->toDefend().at(0); // same as target unless a better choice is found in loop below
 	int maxArmies = 0;
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
@@ -465,7 +467,7 @@ void GameEngine::kickPlayers()
 // a Player has won if they conrol all the Territories on the Map
 Player* GameEngine::checkWinner()
 {
-	Player* checkIfWinner = this->players[0]; // to check if it is the same Player that owns all Territories
+	Player* checkIfWinner = this->players.at(0); // to check if it is the same Player that owns all Territories
 	for (int i = 1; i < this->getMap()->listOfTerritories.size(); i++)
 	{
 		if (this->getMap()->listOfTerritories[i]->owner == checkIfWinner) // if owner is different then there is no winner yet
@@ -478,7 +480,7 @@ Player* GameEngine::checkWinner()
 void GameEngine::endGamePhase(Player* winner)
 {
 	cout << "########################################" << endl;
-	cout << "			Winner!!!" << endl;
+	cout << "            Winner!!!" << endl;
 	cout << "########################################" << endl;
 	cout << "Congratulations, Player " << winner->getPlayerNumber() << "! You won!" << endl;
 	cout << "Restart the program to play again." << endl;

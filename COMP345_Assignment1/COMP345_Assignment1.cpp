@@ -24,13 +24,13 @@ int main()
 {
 	//driverPart1();
 	//driverPart2();
-	//driverPart3();
+	driverPart3();
 
-	
+	/*
 	GameEngine g;
 	g.startGame();
 	g.mainGameLoop();
-	
+	*/
 
 	return 0;
 }
@@ -152,6 +152,22 @@ void driverPart3()
 	// (5) a player can play cards to issue orders
 
 	// (6) a player that does not control any territory is removed from the game
+	// give our Player all Territories so he can win the game
+	Territory* t = NULL; // for readability
+	for (int i = 0; i < g->getMap()->listOfTerritories.size(); i++)
+	{
+		t = g->getMap()->listOfTerritories.at(i);
+		if (t->getOwner() != p)
+		{
+			t->getOwner()->removeTerritory(t);
+			p->addTerritory(t);
+		}
+	}
+	t = NULL;
+
+	cout << *p << endl;
+
+	g->mainGameLoop();
 
 	// (7) the game ends when a single player controls all the territories
 	
