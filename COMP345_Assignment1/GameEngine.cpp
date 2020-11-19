@@ -355,17 +355,13 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 				break;
 			}
 		}
-	}
-	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
-	currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
-	cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-	phase = "Issue Order Phase: Issue Advance Order";
-	notify();
-	cout << *currPlayer << endl;
-
+	
 		// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
+		phase = "Issue Order Phase: Issue Advance Order";
+		notify();
+		cout << *currPlayer << endl;
 	}
 	else {
 		// now issue an advance order to defend
@@ -392,8 +388,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	{
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-    phase = "Issue Order Phase: Issue Advance Order";
-	  notify();
+		phase = "Issue Order Phase: Issue Advance Order";
+		notify();
 	}
 
 
