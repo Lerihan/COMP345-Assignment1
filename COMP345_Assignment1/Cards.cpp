@@ -207,18 +207,18 @@ Territory* BombCard::getTarget() {
 
 void BombCard::play() {
 	Player* p = this->cardHolder;
-	//creates new bomb order
-	Bomb* bombOrder = new Bomb();
+	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
+	Bomb* bombOrder = new Bomb(p,p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
 	p->issueOrder(bombOrder);
-	cout << "Player has played a Bomb Card from their hand.\n" << endl;
+	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
-	this->cardHolder = NULL;
 	this->d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
 
 	bombOrder = NULL;
 	p = NULL;
+	this->cardHolder = NULL;
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
@@ -231,27 +231,22 @@ ostream& operator << (ostream& out, const BombCard& c) {
 // ReinforcementCard
 // ######################################
 ReinforcementCard::ReinforcementCard() {
-	this->numArmies = 0;
-}
-
-ReinforcementCard::ReinforcementCard(int numArmies) {
-	this->numArmies = numArmies;
 }
 
 ReinforcementCard::~ReinforcementCard() {
 }
 
-void ReinforcementCard::setNumArmies(int numArmies) {
-	this->numArmies = numArmies;
-}
-
-int ReinforcementCard::getNumArmies() {
-	return this->numArmies;
-}
-
-// TODO: what is this supposed to be doing?
 void ReinforcementCard::play() {
+	Player* p = this->cardHolder;
+	//creates new reinforcement order where player reinforcementss are increased by 5
+	p->addReinforcements(5);
+	cout << "Player " << p->getPlayerNumber() << " has played a Reinforcement Card from their hand.\n" << endl;
+	//adds the reinforcement card to the end of the deck
+	this->d->insertBackToDeck(this);
+	cout << "Reinforcement Card has been added to the deck." << endl;
 
+	p = NULL;
+	this->cardHolder = NULL;
 }
 
 ostream& operator << (ostream& out, const ReinforcementCard& c) {
@@ -283,20 +278,20 @@ Territory* BlockadeCard::getTarget() {
 }
 
 void BlockadeCard::play() {
-	//creates new block order
-	Blockade* blockOrder = new Blockade();
-	//adds new block order to the player's orderlist
 	Player* p = this->cardHolder;
+	//creates new block order where player's territory becomes neutral and the number of armies on that territory is multiplied
+	Blockade* blockOrder = new Blockade(p,p->toDefend().at(0));
+	//adds new block order to the player's orderlist
 	p->issueOrder(blockOrder);
-	cout << "Player has played a Blockade Card from their hand.\n" << endl;
+	cout << "Player " << p->getPlayerNumber() << " has played a Blockade Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
-	this->cardHolder = NULL;
 
 	this->d->insertBackToDeck(this);
-	cout << "Block Card has been added to the deck." << endl;
+	cout << "Blockade Card has been added to the deck." << endl;
 
 	blockOrder = NULL;
 	p = NULL;
+	this->cardHolder = NULL;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
@@ -350,20 +345,24 @@ int AirliftCard::getNumArmies(int numArmies) {
 }
 
 void AirliftCard::play() {
-	//creates new airlift order
-	Airlift* airliftOrder = new Airlift();
-	//adds new airlift order to the player's orderlist
 	Player* p = this->cardHolder;
+
+	//cout << "toAttack: " << p->toAttack().size() << " toDefend: " << p->toDefend().size() << " terr: " << p->getTerritories().size() << endl;
+
+	// creates new airlift order where Player airlifts from his Territory with the most armies, to his Territory with the least
+	// TODO later: if target is enemy Territory, initiate attack
+	Airlift* airliftOrder = new Airlift(p, p->toDefend().back(), p->toDefend().at(0), p->toDefend().back()->numberOfArmies);
+	//adds new airlift order to the player's orderlist
 	p->issueOrder(airliftOrder);
-	cout << "Player has played a Airlift Card from their hand.\n" << endl;
+	cout << "Player " << p->getPlayerNumber() << " has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
-	this->cardHolder = NULL;
 
 	this->d->insertBackToDeck(this);
 	cout << "Airlift Card has been added to the deck." << endl;
 
 	airliftOrder = NULL;
 	p = NULL;
+	this->cardHolder = NULL;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
@@ -395,20 +394,20 @@ Player* DiplomacyCard::getEnemy() {
 }
 
 void DiplomacyCard::play() {
-	//creates new diplomacy order
-	Negotiate* diplomacyOrder = new Negotiate();
-	//adds new diplomacy order to the player's orderlist
 	Player* p = this->cardHolder;
+	//creates new diplomacy order where player negotiates witht the owner of the territory with the highest toAttack priority
+	Negotiate* diplomacyOrder = new Negotiate(p, p->toAttack().at(0)->getOwner());
+	//adds new diplomacy order to the player's orderlist
 	p->issueOrder(diplomacyOrder);
-	cout << "Player has played a Diplomacy Card from their hand.\n" << endl;
+	cout << "Player " << p->getPlayerNumber() << " has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
-	this->cardHolder = NULL;
 
 	this->d->insertBackToDeck(this);
 	cout << "Diplomacy Card has been added to the deck." << endl;
 
 	diplomacyOrder = NULL;
 	p = NULL;
+	this->cardHolder = NULL;
 }
 
 

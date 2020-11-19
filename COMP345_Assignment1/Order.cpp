@@ -229,7 +229,7 @@ bool Advance::execute()
 			current->removeTroops(numOfArmies);
 			next->addTroops(numOfArmies);
 
-			cout << "ADVANCE ORDER: Player "<< player->getPlayerNumber() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+			cout << "ADVANCE ORDER (to defend): Player "<< player->getPlayerNumber() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
 		}
 		else // if attacking
 		{
@@ -245,17 +245,17 @@ bool Advance::execute()
 					numOfArmies--;
 			}
 
-			if (next->numberOfArmies == 0) // if next owner loses
+			if (next->numberOfArmies == 0) // if next owner (enemy) loses
 			{
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
-				next->setOwner(player); // change owner to winner
+				player->addTerritory(next); // add Territory to winning Player
 				next->addTroops(numOfArmies);
-				cout << "ADVANCE ORDER: Player " << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				cout << "ADVANCE ORDER (to attack): Player " << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 
 			else if (current->numberOfArmies == 0) //if player loses
 			{
-				cout << "ADVANCE ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
 			}
 		}
 
@@ -695,7 +695,7 @@ OrdersList::OrdersList()
 	this->ordersList = o;	
 }
 
-// Destructor. Deletes pointer of each Order contained in the OrdersList vector, and the OrdersList pointer itself.
+// Destructor. Deletes pointer of each Order contained in the OrdersList vector.
 OrdersList::~OrdersList()
 {
 	for (int i = 0; i < this->ordersList.size(); i++)
@@ -716,7 +716,7 @@ ostream& operator <<(ostream& o, const OrdersList& ol)
 
 	for (Order* order : ol.ordersList)
 	{
-		ss << "\t" << "An order of " << typeid(*order).name() << " is in the list,\n";
+		ss << "\t" << "An order of " << order->getType() << " is in the list,\n";
 	}
 
 	return o << ss.str() << "==============================" << endl;

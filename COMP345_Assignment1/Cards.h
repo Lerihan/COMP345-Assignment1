@@ -55,18 +55,14 @@ class BombCard : public Card {
 
 class ReinforcementCard : public Card {
 	private:
-		int numArmies; // number of armies to add to Player
 
 	public:
 		ReinforcementCard();
-		ReinforcementCard(int numArmies);
 		~ReinforcementCard();
 
 		void play();
 		string getType();
 
-		void setNumArmies(int numArmies);
-		int getNumArmies();
 		friend ostream& operator << (ostream& out, const ReinforcementCard& c);
 };
 
