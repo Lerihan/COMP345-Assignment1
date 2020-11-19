@@ -26,9 +26,11 @@ int main()
 	//driverPart2();
 	//driverPart3();
 
+	
 	GameEngine g;
 	g.startGame();
 	g.mainGameLoop();
+	
 
 	return 0;
 }
@@ -142,7 +144,7 @@ void driverPart3()
 
 	for (int i = 0; i < g->getPlayers().size(); i++)
 	{
-		cout << g->getPlayers()[i] << endl;
+		cout << *g->getPlayers()[i] << endl;
 	}
 
 	// (4) a player can issue advance orders to either defend or attack, based on the toAttack() and toDefend() lists
@@ -153,5 +155,5 @@ void driverPart3()
 
 	// (7) the game ends when a single player controls all the territories
 	
-	delete g;
+	//delete g;
 }

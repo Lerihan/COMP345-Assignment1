@@ -129,10 +129,10 @@ bool Deploy::validate()
 */
 bool Deploy::execute()
 {
+	executed = true;
 	if (validate())
 	{ 
 		cout << "Deploy order executed." << endl;
-		executed = true;
 
 		int taken = player->takeArmiesFromReinforcement(numOfArmies);
 
@@ -161,6 +161,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 */
 Advance::Advance(): Order()
 {
+	this->current = NULL;
+	this->next = NULL;
 	//Territory(0, "current", 0);
 	//Territory(0, "Next", 0);
 }
@@ -216,10 +218,10 @@ bool Advance::validate()
 */
 bool Advance::execute()
 {
+	executed = true;
 	if (validate())
 	{
 		cout << "Advance order executed." << endl;
-		executed = true;
 
 		if (next->getOwner() == getPlayer()) // if defending
 		{
@@ -332,10 +334,10 @@ bool Bomb::validate()
 */
 bool Bomb::execute()
 {
+	executed = true;
 	if (validate())
 	{
 		cout << "Bomb order executed." << endl;
-		executed = true;
 
 		int numDestroyed = (int)(target->numberOfArmies / 2.0);
 
@@ -410,10 +412,10 @@ bool Blockade::validate()
 */
 bool Blockade::execute()
 {
+	executed = true;
 	if (validate())
 	{
 		cout << "Blockade order executed." << endl;
-		executed = true;
 
 		target->addTroops(target->numberOfArmies * 2);
 
@@ -495,10 +497,10 @@ bool Airlift::validate()
 */
 bool Airlift::execute()
 {
+	executed = true;
 	if (validate())
 	{
 		cout << "Airlift order executed." << endl;
-		executed = true;
 
 		if (next->getOwner() == getPlayer())
 		{
@@ -605,10 +607,10 @@ bool Negotiate::validate()
 */
 bool Negotiate::execute()
 {
+	executed = true;
 	if (validate())
 	{
 		cout << "Negotiate order executed." << endl;
-		executed = true;
 
 		cout << "NEGOTIATE ORDER: Negotiating.. No attack is being performed this turn. (do nothing)\n";
 		return true;
@@ -630,12 +632,15 @@ ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 // Create a new vector of the Orders in this OrdersList and return it
 vector<Order*> OrdersList::getOrdersList()
 {
+	/*
 	vector<Order*> o;
 	for (int i = 0; i < ordersList.size(); i++)
 	{
 		o.push_back(ordersList.at(i));
 	}
 	return o;
+	*/
+	return this->ordersList;
 }
 
 /*Copy constructor for the OrdersList class
