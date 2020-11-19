@@ -165,7 +165,7 @@ void driverPart3()
 	}
 	t = NULL;
 
-	cout << *p << endl;
+	//cout << *p << endl;
 
 	cout << "WINNER " << g->checkWinner()->getPlayerNumber() << endl;
 	//g->mainGameLoop();
