@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include <string>
+
+#include <ctime> // for testing -Michael
+
 #include "MapLoader.h"
 #include "Map.h"
 #include "Player.h"
 #include "Cards.h"
 #include "Order.h"
-
 #include "GameEngine.h"
 
 /*
@@ -23,6 +25,32 @@ void driverPart4(); // call for driver program for part 3
 
 int main()
 {
+
+	//testing my toAttack bubble sort
+	MapLoader* mapLoader = new MapLoader();
+	Map* map = mapLoader->GetMap("europe.map");
+
+	Territory* t = NULL;
+	srand(time(NULL));  // Initialize random number generator.
+	for (int i = 0; i < map->listOfTerritories.size(); i++)
+	{
+		t = map->listOfTerritories.at(i);
+		t->addTroops((rand() % 50) + 1);
+		cout << t->name << "=" << t->numberOfArmies << endl;
+	}
+	cout << endl;
+
+	Player* temp = new Player();
+	temp->sortTerritoriesToAttack(map->listOfTerritories);
+	for (int i = 0; i < map->listOfTerritories.size(); i++)
+	{
+		t = map->listOfTerritories.at(i);
+		cout << t->name << "=" << t->numberOfArmies << endl;
+	}
+
+	delete mapLoader;
+	//delete temp;
+
 	//driverPart1();
 	//driverPart2();
 	//driverPart3();

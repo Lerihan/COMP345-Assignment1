@@ -216,7 +216,8 @@ vector<Territory*> Player::toAttack()
 	}
 	if (attackList.size() == 0)
 		return attackList;
-	return this->sortTerritoriesToAttack(attackList);
+	this->sortTerritoriesToAttack(attackList);
+	return attackList;
 }
 
 
@@ -270,23 +271,9 @@ void Player::sortTerritoriesToDefend()
 
 // Sort the input vector of Territories in increasing order of number of armies
 // Uses bubble sort
-vector<Territory*> Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
+void Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
 {
-	Territory* temp = NULL;
-	int i, j;
-	for (i = 0; i < toAttack.size(); i++) {
-		// Last i elements are already in place  
-		for (j = 0; j < toAttack.size() - i - 1; j++) {
-			if (toAttack[j]->numberOfArmies > toAttack[j + 1]->numberOfArmies) {
-				temp = toAttack[j + 1];
-				toAttack[j + 1] = this->territories[j];
-				toAttack[j] = temp;
-			}
-		}
-	}
-
-	temp = NULL;
-	return toAttack;
+	sort(toAttack.begin(), toAttack.end(), compareByNumArmies);
 }
 
 // Returns whether this Player is eliminated or not.
@@ -397,4 +384,12 @@ bool operator ==(const Player& p1, const Player& p2)
 bool operator !=(const Player& p1, const Player& p2)
 {
 	return !(p1 == p2);
+}
+
+// Compares the two input Territories according to their number of armies.
+// returns true if t1 has more armies, returns false otherwise
+// used in sorting methods for toAttack() and toDefend()
+bool compareByNumArmies(Territory* t1, Territory* t2)
+{
+	return (t1->numberOfArmies > t2->numberOfArmies);
 }

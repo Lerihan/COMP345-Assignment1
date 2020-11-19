@@ -50,7 +50,7 @@ public:
 	void removeReinforcements(int toRemove); // removes the input number of armies from the Player's reinforcement pool
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
 	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
-	vector<Territory*> sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
+	void sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
 	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver
@@ -74,3 +74,5 @@ public:
 	friend bool operator ==(const Player &p1, const Player &p2);
 	friend bool operator !=(const Player &p1, const Player &p2);
 };
+
+bool compareByNumArmies(Territory* t1, Territory* t2); // compares input Territories according to their number of armies
