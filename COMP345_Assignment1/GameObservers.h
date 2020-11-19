@@ -23,20 +23,25 @@ class GameEngine;
 class PhaseObserver : public Observer {
 	public:
 		PhaseObserver();
+		PhaseObserver(const PhaseObserver& po);
+		PhaseObserver& operator = (const PhaseObserver& po);
 		PhaseObserver(GameEngine* gameEngine);
+		friend ostream& operator << (ostream& out, const PhaseObserver& po);
 		~PhaseObserver();
 		void update() override;
 
 	private:
 		int currentPlayerNum;
-		enum Phase {Reinforcement, IssuingOrder, OrdersExecution, NoPhase};
 		GameEngine* gameEngine;
 };
 
 class GameStatisticsObserver : public Observer {
 	public:
 		GameStatisticsObserver();
+		GameStatisticsObserver(const GameStatisticsObserver& gso); 
+		GameStatisticsObserver& operator = (const GameStatisticsObserver& gso); 
 		GameStatisticsObserver(GameEngine* gameEngine);
+		friend ostream& operator << (ostream& out, const GameStatisticsObserver& gso);
 		~GameStatisticsObserver();
 		void update() override;
 	private:

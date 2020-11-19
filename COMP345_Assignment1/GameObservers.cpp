@@ -26,7 +26,22 @@ void Subject::notify() {
 	}
 }
 
-PhaseObserver::PhaseObserver(){}
+PhaseObserver::PhaseObserver(){
+}
+
+PhaseObserver::PhaseObserver(const PhaseObserver& po)
+{
+	gameEngine = po.gameEngine;
+	currentPlayerNum = po.currentPlayerNum;
+}
+
+PhaseObserver& PhaseObserver::operator=(const PhaseObserver& po)
+{
+	gameEngine = po.gameEngine;
+	currentPlayerNum = po.currentPlayerNum;
+
+	return *this;
+}
 
 PhaseObserver::PhaseObserver(GameEngine* gameEngine)
 {
@@ -86,6 +101,18 @@ void PhaseObserver::update() {
 
 GameStatisticsObserver::GameStatisticsObserver(){}
 
+GameStatisticsObserver::GameStatisticsObserver(const GameStatisticsObserver& gso)
+{
+	gameEngine = gso.gameEngine;
+}
+
+GameStatisticsObserver& GameStatisticsObserver::operator=(const GameStatisticsObserver& gso)
+{
+	gameEngine = gso.gameEngine;
+	return *this;
+}
+
+
 GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
 {
 	gameEngine->attach(this);
@@ -110,9 +137,21 @@ void GameStatisticsObserver::update() {
 		if (playerOwnedTerritory == 0) {
 			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " has been eliminated from the game." << endl;
 		}
-		else if (playerOwnedTerritory == totalTerritories)
+		if (playerOwnedTerritory == totalTerritories)
 		{
 			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " has won the game." << endl;
 		}
 	}
+}
+
+ostream& operator<<(ostream& out, const PhaseObserver& po)
+{
+	out << "" <<endl;
+	return out;
+}
+
+ostream& operator<<(ostream& out, const GameStatisticsObserver& gso)
+{
+	out << "" << endl;
+	return out;
 }
