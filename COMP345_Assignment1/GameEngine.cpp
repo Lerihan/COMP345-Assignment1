@@ -245,7 +245,6 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				reinforcementPhase(players[i]);
-				//notify();
 			}
 		}
 		cout << endl;
@@ -259,7 +258,6 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				issueOrdersPhase(players[i]);
-				//notify();
 			}
 		}
 		cout << endl;
@@ -273,7 +271,6 @@ void GameEngine::mainGameLoop()
 			if (!this->players[i]->isEliminated())
 			{
 				executeOrdersPhase(players[i]);
-				//notify();
 			}
 		}
 		cout << endl;
