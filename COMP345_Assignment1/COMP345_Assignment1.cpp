@@ -171,7 +171,6 @@ void driverPart3()
 
 	// (7) the game ends when a single player controls all the territories
 	
-	//delete g;
 }
 
 void driverPart4()
