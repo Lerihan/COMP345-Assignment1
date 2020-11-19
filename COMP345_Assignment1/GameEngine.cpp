@@ -358,23 +358,24 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
 	}
-	cout << *currPlayer << endl;
-
-	// now issue an advance order to defend
-	target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
-	source = NULL; // same as target unless a better choice is found in loop below
-	int maxArmies = 0;
-	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
-	{
-		if (target->listOfAdjTerritories[i]->owner == currPlayer)  // if player owns the adjacent territory
+	else {
+		// now issue an advance order to defend
+		target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
+		source = NULL; // same as target unless a better choice is found in loop below
+		int maxArmies = 0;
+		for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 		{
-			if (target->listOfAdjTerritories[i]->numberOfArmies > maxArmies) // if adjacent territory has more armies, use this one as source
+			if (target->listOfAdjTerritories[i]->owner == currPlayer)  // if player owns the adjacent territory
 			{
-				source = target->listOfAdjTerritories[i];
-				maxArmies = target->listOfAdjTerritories[i]->numberOfArmies;
+				if (target->listOfAdjTerritories[i]->numberOfArmies > maxArmies) // if adjacent territory has more armies, use this one as source
+				{
+					source = target->listOfAdjTerritories[i];
+					maxArmies = target->listOfAdjTerritories[i]->numberOfArmies;
+				}
 			}
 		}
 	}
+	/*
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	// issue an advance order if there are adjacent enemy Territories
 	if (source != NULL)
@@ -382,6 +383,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
 	}
+	*/
 	cout << *currPlayer << endl;
 
 	target = NULL;
@@ -492,10 +494,10 @@ Player* GameEngine::checkWinner()
 		}
 	}
 
-	if (players > 1) {
-		return NULL;
+	if (players == 1) {
+		return winner;
 	}
-	return winner;
+	return NULL;
 }
 
 // Launches end of game winner message
