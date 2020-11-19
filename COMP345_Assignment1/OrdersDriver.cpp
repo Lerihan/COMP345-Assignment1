@@ -8,9 +8,9 @@ using namespace std;
 
 int main()
 {
-	Player* p1 = new Player("Michael");
-	Player* p2 = new Player("Nuo");
-	Player* p3 = new Player("Melina");
+	Player* p1 = new Player();
+	Player* p2 = new Player();
+	Player* p3 = new Player();
 
 	Map m;
 	m.name = "World_Map";
@@ -22,18 +22,24 @@ int main()
 	Territory* t5 = new Territory(5, "Japan", 1);
 	Territory* t6 = new Territory(6, "Phillipines", 1);
 
-	m.addAdjTerritory(t1, t2);
-	m.addAdjTerritory(t2, t3);
+	t3->addTroops(100);
+
+	t1->listOfAdjTerritories.push_back(t2);
+	t2->listOfAdjTerritories.push_back(t1);
+	t2->listOfAdjTerritories.push_back(t3);
+	t3->listOfAdjTerritories.push_back(t2);
 
 	t1->setOwner(p1);
 	t2->setOwner(p2);
 	t3->setOwner(p3);
+	t4->setOwner(p3);
+	t5->setOwner(p2);
 
 	Deploy* d1 = new Deploy(p1, t1, 10);
 	Advance* a1 = new Advance(p2, t2, t1, 20);
 	Bomb* b1 = new Bomb(p3, t3, t2);
-	Blockade* blck1 = new Blockade(p1, t1);
-	Airlift* air1 = new Airlift(p1, t2, t4, 15);
+	Blockade* blck1 = new Blockade(p2, t5);
+	Airlift* air1 = new Airlift(p3, t3, t4, 15);
 	Negotiate* n1 = new Negotiate(p2, p3);
 
 	cout << *d1 << endl;
