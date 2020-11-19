@@ -396,7 +396,11 @@ Player* DiplomacyCard::getEnemy() {
 void DiplomacyCard::play() {
 	Player* p = this->cardHolder;
 	//creates new diplomacy order where player negotiates witht the owner of the territory with the highest toAttack priority
-	Negotiate* diplomacyOrder = new Negotiate(p, p->toAttack().at(0)->getOwner());
+	// if there are no adjacent enemy Territories then negotiate with himself (this will create an invalid order though)
+	Player* enemy = p;
+	if (p->toAttack().size() != 0)
+		enemy = p->toAttack().at(0)->getOwner();
+	Negotiate* diplomacyOrder = new Negotiate(p, enemy);
 	//adds new diplomacy order to the player's orderlist
 	p->issueOrder(diplomacyOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Diplomacy Card from their hand.\n" << endl;

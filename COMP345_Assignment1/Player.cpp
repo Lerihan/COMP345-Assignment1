@@ -214,6 +214,8 @@ vector<Territory*> Player::toAttack()
 			}
 		}
 	}
+	if (attackList.size() == 0)
+		return attackList;
 	return this->sortTerritoriesToAttack(attackList);
 }
 
