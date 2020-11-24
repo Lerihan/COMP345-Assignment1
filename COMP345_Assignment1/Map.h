@@ -32,6 +32,9 @@ public:
 	bool addTroops(int n);
 	bool removeTroops(int n);
 	bool containsTerritory(vector<Territory*> territories); // checks if this Territory is contained in the input vector
+	static bool compareNumArmiesLessThan(Territory* t1, Territory* t2); // compares input Territories according to their number of armies
+	static bool compareNumArmiesGreaterThan(Territory* t1, Territory* t2); // compares input Territories according to their number of armies
+	static void sortTerritoriesByArmies(vector<Territory*>& toDefend, int increasing); // sorts the Player's Territories by priority to defend
 
 	friend bool operator ==(const Territory& t1, const Territory& t2);
 	friend ostream & operator << (ostream &out, const Territory &c);

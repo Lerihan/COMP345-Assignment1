@@ -210,7 +210,7 @@ void BombCard::play() {
 	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
 	Bomb* bombOrder = new Bomb(p,p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
-	p->issueOrder(bombOrder);
+	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
 	this->d->insertBackToDeck(this);
@@ -282,7 +282,7 @@ void BlockadeCard::play() {
 	//creates new block order where player's territory becomes neutral and the number of armies on that territory is multiplied
 	Blockade* blockOrder = new Blockade(p,p->toDefend().at(0));
 	//adds new block order to the player's orderlist
-	p->issueOrder(blockOrder);
+	p->getOrdersList()->add(blockOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Blockade Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
 
@@ -353,7 +353,7 @@ void AirliftCard::play() {
 	// TODO later: if target is enemy Territory, initiate attack
 	Airlift* airliftOrder = new Airlift(p, p->toDefend().back(), p->toDefend().at(0), p->toDefend().back()->numberOfArmies);
 	//adds new airlift order to the player's orderlist
-	p->issueOrder(airliftOrder);
+	p->getOrdersList()->add(airliftOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
 
@@ -402,7 +402,7 @@ void DiplomacyCard::play() {
 		enemy = p->toAttack().at(0)->getOwner();
 	Negotiate* diplomacyOrder = new Negotiate(p, enemy);
 	//adds new diplomacy order to the player's orderlist
-	p->issueOrder(diplomacyOrder);
+	p->getOrdersList()->add(diplomacyOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
 

@@ -13,11 +13,13 @@
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
+#include "PlayerStrategies.h"
 
 class Order;
 class Cards;
 class OrdersList;
 class Hand;
+class PlayerStrategy;
 
 class Player
 {
@@ -31,27 +33,28 @@ private:
 	Hand* hand; // player's hand of cards
 	bool eliminated; // will store whether the Player has been eliminated from the game or not
 
+	PlayerStrategy* strategy;
+
 public:
 	std::vector<Territory*> territories; // territories belonging to the player
 
 	// constructors and destructors
 	Player(); // default constructor
+	Player(string strategy);
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 
 	// other methods
 	void addTerritory(Territory* r); // add input Territory pointer to data member vector
 	void removeTerritory(Territory* toRemove); // removes Territory from the Player's list of Territories
-	void issueOrder(Order* o); // for now just adds default Deploy order
-	vector<Territory*> toDefend(); // returns vector of arbitrary Territories
-	vector<Territory*> toAttack(); // returns vector of arbitrary Territories
+	void issueOrder(); // calls issueOrder of the Player's strategy class
+	vector<Territory*> toDefend();
+	vector<Territory*> toAttack();
 	void addArmies(int toAdd); // adds the input number of armies to the Player's reinforcement pool
 	void removeArmies(int toRemove); // removes input number of armies from the Player's number of armies
 	void addReinforcements(int toAdd); // adds input number of armies to reinforcement pool
 	void removeReinforcements(int toRemove); // removes the input number of armies from the Player's reinforcement pool
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
-	void sortTerritoriesToDefend(vector<Territory*>& toDefend); // sorts the Player's Territories by priority to defend
-	void sortTerritoriesToAttack(vector<Territory*>& toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
 	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver
@@ -67,13 +70,11 @@ public:
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
+	void setStrategy(PlayerStrategy* strategy); // to change Player strategy during game
 
 	// operators
 	Player& operator =(const Player& player);
 	friend ostream& operator <<(ostream &strm, Player &player);
-	//friend istream & operator >>(istream& strm,  Player& player); // not needed
 	friend bool operator ==(const Player &p1, const Player &p2);
 	friend bool operator !=(const Player &p1, const Player &p2);
 };
-
-bool compareByNumArmies(Territory* t1, Territory* t2); // compares input Territories according to their number of armies

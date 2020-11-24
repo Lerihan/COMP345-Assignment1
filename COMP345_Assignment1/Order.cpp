@@ -254,7 +254,7 @@ bool Advance::execute()
 				next->addTroops(numOfArmies);
 				cout << "ADVANCE ORDER (to attack): Player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
-
+			 
 			else if (current->numberOfArmies == 0) //if player loses
 			{
 				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
