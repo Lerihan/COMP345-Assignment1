@@ -562,7 +562,7 @@ bool Territory::containsTerritory(vector<Territory*> territories)
 	{
 		for (int i = 0; i < territories.size(); i++)
 		{
-			if (territories[i] == this)
+			if (territories.at(i) == this)
 				return true;
 		}
 	}
@@ -570,22 +570,30 @@ bool Territory::containsTerritory(vector<Territory*> territories)
 }
 
 // Compares the two input Territories according to their number of armies.
-// put increasing = 1 if you want increasing order (least armies to most armies); 0 for decreasing order (most armies to least armies)
-// returns true if t1 has more armies, returns false otherwise
+// returns true if t1 has less armies, returns false otherwise
 // used in sorting methods for toAttack() and toDefend()
-bool Territory::compareByNumArmies(Territory* t1, Territory* t2)
+bool Territory::compareNumArmiesLessThan(Territory* t1, Territory* t2)
 {
-	//if (increasing == 1) // if increasing order
 	return (t1->numberOfArmies < t2->numberOfArmies);
-	/*else  // if dereasing order
-		return (t1->numberOfArmies > t2->numberOfArmies);*/
 }
 
-// Sort the input vector of Territories in increasing order of number of armies
+// Compares the two input Territories according to their number of armies.
+// returns true if t1 has mroe armies, returns false otherwise
+// used in sorting methods for toAttack() and toDefend()
+bool Territory::compareNumArmiesGreaterThan(Territory* t1, Territory* t2)
+{
+	return (t1->numberOfArmies > t2->numberOfArmies);
+}
+
+// Sort the input vector of Territories by number of armies
+// set increasing parameter = 1 for increasing (least armies to most armies); = 0 for decreasing (least armies to most)
 // Uses bubble sort
 void Territory::sortTerritoriesByArmies(vector<Territory*>& toAttack, int increasing)
 {
-	sort(toAttack.begin(), toAttack.end(), compareByNumArmies);
+	if (increasing == 1)
+		sort(toAttack.begin(), toAttack.end(), compareNumArmiesLessThan);
+	else
+		sort(toAttack.begin(), toAttack.end(), compareNumArmiesGreaterThan);
 }
 
 
@@ -603,8 +611,9 @@ ostream& operator << (ostream &out, const Territory &t)
 	{
 		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
 	}
-
 	cout << endl;
+
+	cout << "continent " << t.continentIndex << " territory " << t.index << endl;
 	out << "--------------------------------------" << endl;
 
 	return out;

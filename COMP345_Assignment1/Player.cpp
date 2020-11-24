@@ -222,7 +222,10 @@ vector<Territory*> Player::toAttack()
 		{
 			if (t->listOfAdjTerritories.at(j)->getOwner() != this) // if this Player does not own that Territory
 			{
-				attack.push_back(t->listOfAdjTerritories.at(j));
+				if (!(t->listOfAdjTerritories.at(j)->containsTerritory(attack))) // if Territory is not alredy in list
+				{
+					attack.push_back(t->listOfAdjTerritories.at(j));
+				}
 			}
 		}
 	}

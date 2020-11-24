@@ -50,11 +50,13 @@ int main()
 	vector<Territory*> attack = temp->toAttack();
 	for (int i = 0; i < attack.size(); i++)
 	{
-		t = attack.at(i);
+		t = attack[i];
 		cout << t->name << " = " << t->numberOfArmies << endl;
+		//cout << *attack.at(i) << endl;
 	}
 
-	cout << endl <<  "TO DEFEND" << endl
+	/**/
+	cout << endl << "TO DEFEND" << endl
 		<< "===========================" << endl;
 	for (int i = 0; i < temp->getTerritories().size(); i++) 
 	{
@@ -76,7 +78,7 @@ int main()
 		t = defend.at(i);
 		cout << t->name << " = " << t->numberOfArmies << endl;
 	}
-
+	
 
 	delete mapLoader;
 	//delete temp;
