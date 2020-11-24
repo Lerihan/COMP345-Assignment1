@@ -270,7 +270,6 @@ void GameEngine::mainGameLoop()
 		cout << endl;
 		cout << *(this->players[0]) << endl;
 
-		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		notify();
 	}
 	endGamePhase(winner);

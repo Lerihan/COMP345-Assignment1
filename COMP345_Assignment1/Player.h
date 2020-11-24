@@ -29,10 +29,11 @@ private:
 	int reinforcementPool; // Player's reinforcement pool, where armies for Deploy orders are taken
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
-	std::vector<Territory*> territories; // territories belonging to the player
 	bool eliminated; // will store whether the Player has been eliminated from the game or not
 
 public:
+	std::vector<Territory*> territories; // territories belonging to the player
+
 	// constructors and destructors
 	Player(); // default constructor
 	Player(Player& p); // copy constructor
@@ -49,8 +50,8 @@ public:
 	void addReinforcements(int toAdd); // adds input number of armies to reinforcement pool
 	void removeReinforcements(int toRemove); // removes the input number of armies from the Player's reinforcement pool
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
-	void sortTerritoriesToDefend(); // sorts the Player's Territories by priority to defend
-	void sortTerritoriesToAttack(vector<Territory*> toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
+	void sortTerritoriesToDefend(vector<Territory*>& toDefend); // sorts the Player's Territories by priority to defend
+	void sortTerritoriesToAttack(vector<Territory*>& toAttack); // sorts enemy Territories adjacent to Player's by priority to attack
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
 	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver

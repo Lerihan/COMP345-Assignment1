@@ -222,11 +222,15 @@ vector<Territory*> Player::toAttack()
 
 
 // Returns vector of Territories to defend.
-// For now, returns a vector of pointers to two default, newly generated Territories.
 vector<Territory*> Player::toDefend()
 {
-	this->sortTerritoriesToDefend(); // sort Territories by priority
-	return this->territories; // return the sorted vector
+	vector<Territory*> toDefend;
+	for (int i = 0; i < this->territories.size(); i++)
+	{
+		toDefend.push_back(this->territories.at(i));
+	}
+	this->sortTerritoriesToDefend(toDefend); // sort Territories by priority
+	return toDefend; // return the sorted vector
 }
 
 // Adds argument Order to the Player's Order vector attribute.
@@ -250,28 +254,14 @@ void Player::removeArmies(int toRemove)
 }
 
 // Uses bubble sort to sort the Player's Territories in increasing order of number of armies
-void Player::sortTerritoriesToDefend()
+void Player::sortTerritoriesToDefend(vector<Territory*>& toDefend)
 {
-	Territory* temp = NULL;
-	int i, j;
-	for (i = 0; i < this->territories.size(); i++) {
-		// Last i elements are already in place  
-		for (j = 0; j < this->territories.size() - i - 1; j++) {
-			if (this->territories[j]->numberOfArmies > this->territories[j + 1]->numberOfArmies)
-			{
-				temp = this->territories[j + 1];
-				this->territories[j + 1] = this->territories[j];
-				this->territories[j] = temp;
-			}
-		}
-	}
-
-	temp = NULL;
+	sort(toDefend.begin(), toDefend.end(), compareByNumArmies);
 }
 
 // Sort the input vector of Territories in increasing order of number of armies
 // Uses bubble sort
-void Player::sortTerritoriesToAttack(vector<Territory*> toAttack)
+void Player::sortTerritoriesToAttack(vector<Territory*>& toAttack)
 {
 	sort(toAttack.begin(), toAttack.end(), compareByNumArmies);
 }

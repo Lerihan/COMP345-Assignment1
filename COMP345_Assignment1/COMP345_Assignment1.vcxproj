@@ -176,6 +176,7 @@
     <ClCompile Include="PlayerDriver.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="PlayerStrategies.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dortmund.map" />
