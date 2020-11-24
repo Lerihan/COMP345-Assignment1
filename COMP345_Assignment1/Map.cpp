@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <string>
+#include <algorithm>
 
 /*
 * Function that connects continent 2 to continent 1 (adjacency) by adding it to a listOfAdjContinents vector
@@ -567,7 +568,26 @@ bool Territory::containsTerritory(vector<Territory*> territories)
 	}
 	return false;
 }
-	
+
+// Compares the two input Territories according to their number of armies.
+// put increasing = 1 if you want increasing order (least armies to most armies); 0 for decreasing order (most armies to least armies)
+// returns true if t1 has more armies, returns false otherwise
+// used in sorting methods for toAttack() and toDefend()
+bool Territory::compareByNumArmies(Territory* t1, Territory* t2)
+{
+	//if (increasing == 1) // if increasing order
+	return (t1->numberOfArmies < t2->numberOfArmies);
+	/*else  // if dereasing order
+		return (t1->numberOfArmies > t2->numberOfArmies);*/
+}
+
+// Sort the input vector of Territories in increasing order of number of armies
+// Uses bubble sort
+void Territory::sortTerritoriesByArmies(vector<Territory*>& toAttack, int increasing)
+{
+	sort(toAttack.begin(), toAttack.end(), compareByNumArmies);
+}
+
 
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following

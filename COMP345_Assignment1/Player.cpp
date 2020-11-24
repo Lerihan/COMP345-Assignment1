@@ -156,6 +156,11 @@ int Player::getReinforcementPool()
 	return reinforcementPool;
 }
 
+void Player::setStrategy(PlayerStrategy* strategy)
+{
+	this->strategy = strategy;
+}
+
 // Adds the input Territory pointer this Player's Territories vector.
 void Player::addTerritory(Territory* t)
 {
@@ -198,45 +203,44 @@ int Player::takeArmiesFromReinforcement(int numOfArmies) {
 	return taken;
 }
 
-// Returns vector of Territories to attack.
-// For now, returns a vector of pointers to two default, newly generated Territories.
-vector<Territory*> Player::toAttack()
-{
-	vector<Territory*> attackList;
-	for (int i = 0; i < this->territories.size(); i++) // loop through each of this Player's Territories
-	{
-		for (int j = 0; j < this->territories[i]->listOfAdjTerritories.size(); j++) // loop through each of the Territory's adjacent Territories
-		{
-			if ((this->territories[i]->listOfAdjTerritories[j]->getOwner() != this) // if that Territory does not belong to this Player, add it to list
-				&& !(this->territories[i]->listOfAdjTerritories[j]->containsTerritory(attackList)))  // and Territory is not already in toAttack vector
-			{
-				attackList.push_back(this->territories[i]->listOfAdjTerritories[j]);
-			}
-		}
-	}
-	if (attackList.size() == 0)
-		return attackList;
-	this->sortTerritoriesToAttack(attackList);
-	return attackList;
-}
-
-
-// Returns vector of Territories to defend.
-vector<Territory*> Player::toDefend()
-{
-	vector<Territory*> toDefend;
-	for (int i = 0; i < this->territories.size(); i++)
-	{
-		toDefend.push_back(this->territories.at(i));
-	}
-	this->sortTerritoriesToDefend(toDefend); // sort Territories by priority
-	return toDefend; // return the sorted vector
-}
-
 // Adds argument Order to the Player's Order vector attribute.
 void Player::issueOrder(Order* o)
 {
 	this->orders->add(o);
+}
+
+// Creates a list of all enemy Territories adjacent to all of this Player's Territories and passes it to its
+// PlayerStrategy subclass toDefend method.
+vector<Territory*> Player::toAttack()
+{
+	vector<Territory*> attack;
+	Territory* t = NULL; // for readability
+	for (int i = 0; i < this->territories.size(); i++) // for each of this Player's Territories
+	{
+		t = this->territories.at(i);
+		for (int j = 0; j < t->listOfAdjTerritories.size(); j++) // for each of that Territories asjacent Territories
+		{
+			if (t->listOfAdjTerritories.at(j)->getOwner() != this) // if this Player does not own that Territory
+			{
+				attack.push_back(t->listOfAdjTerritories.at(j));
+			}
+		}
+	}
+
+	return this->strategy->toAttack(attack);
+}
+
+// Creates a list of all this Player's Territories as a list of Territrories to defend and passes it to its
+// PlayerStrategy subclass toDefend method.
+vector<Territory*> Player::toDefend()
+{
+	vector<Territory*> defend;
+	for (int i = 0; i < this->territories.size(); i++)
+	{
+		defend.push_back(this->territories.at(i));
+	}
+
+	return (this->strategy)->toDefend(defend);
 }
 
 // Adds the input number to this Player's reinforcement pool
@@ -251,19 +255,6 @@ void Player::removeArmies(int toRemove)
 	this->numOfArmies -= toRemove;
 	if (this->numOfArmies < 0) // if it goes below 0 set it back to 0
 		this->numOfArmies = 0;
-}
-
-// Uses bubble sort to sort the Player's Territories in increasing order of number of armies
-void Player::sortTerritoriesToDefend(vector<Territory*>& toDefend)
-{
-	sort(toDefend.begin(), toDefend.end(), compareByNumArmies);
-}
-
-// Sort the input vector of Territories in increasing order of number of armies
-// Uses bubble sort
-void Player::sortTerritoriesToAttack(vector<Territory*>& toAttack)
-{
-	sort(toAttack.begin(), toAttack.end(), compareByNumArmies);
 }
 
 // Returns whether this Player is eliminated or not.
@@ -290,24 +281,6 @@ void Player::resetTotalPlayers()
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player& Player::operator =(const Player& player)
 {
-	/*
-	// perform deep copy of each attribute, same as copy constructor
-	for (int i = 0; i < p.hand.size(); i++) {
-		Cards c = *p.hand.at(i);
-		this.hand.push_back(new Cards(*c));
-	}
-
-	for (int i = 0; i < p.orders.size(); i++) {
-		Order o = *p.orders.at(i);
-		this.orders.push_back(new Order(*o));
-	}
-
-	for (int i = 0; i < p.territories.size(); i++) {
-		Territory t = *p.territories.at(i);
-		this.territories.push_back(new Territory(*t));
-	}
-	*/
-
 	// copy orders
 	this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
 
@@ -353,16 +326,6 @@ ostream& operator <<(ostream& strm, Player& player)
 		<< "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl;
 }
 
-/*
-// In stream operator, allows user to choose the Player's name.
-istream & operator >> (istream& strm,  Player& player)
-{
-    cout << "Enter Player number: ";
-    strm >> player.playerNumber;
-    return strm;
-}
-*/
-
 // Equality operator for two Player objects.
 // For now, considers two Players equal if they share the same number
 // this should only be true if the Player's copy constructor was used
@@ -374,12 +337,4 @@ bool operator ==(const Player& p1, const Player& p2)
 bool operator !=(const Player& p1, const Player& p2)
 {
 	return !(p1 == p2);
-}
-
-// Compares the two input Territories according to their number of armies.
-// returns true if t1 has more armies, returns false otherwise
-// used in sorting methods for toAttack() and toDefend()
-bool compareByNumArmies(Territory* t1, Territory* t2)
-{
-	return (t1->numberOfArmies > t2->numberOfArmies);
 }

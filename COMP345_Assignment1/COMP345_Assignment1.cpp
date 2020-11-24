@@ -12,6 +12,7 @@
 #include "Cards.h"
 #include "Order.h"
 #include "GameEngine.h"
+#include "PlayerStrategies.h"
 
 /*
 * We can keep this file to test out things here and there
@@ -25,7 +26,7 @@ void driverPart4(); // call for driver program for part 3
 
 int main()
 {
-	/*
+	/**/
 	//testing my toAttack bubble sort
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
@@ -43,6 +44,8 @@ int main()
 	cout << endl;
 
 	Player* temp = new Player();
+	PlayerStrategy* aggressive = new AggressivePlayerStrategy();
+	temp->setStrategy(aggressive);
 	temp->territories = map->listOfTerritories;
 	vector<Territory*> attack = temp->toAttack();
 	for (int i = 0; i < attack.size(); i++)
@@ -77,19 +80,19 @@ int main()
 
 	delete mapLoader;
 	//delete temp;
-	*/
+	
 
 	//driverPart1();
 	//driverPart2();
 	//driverPart3();
 	//driverPart4();
 	
-	/**/
+	/*
 	GameEngine g;
 	g.startGame();
 	g.startupPhase();
 	g.mainGameLoop();
-	
+	*/
 	
 
 	return 0;
