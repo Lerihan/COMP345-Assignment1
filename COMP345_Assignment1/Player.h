@@ -40,13 +40,14 @@ public:
 
 	// constructors and destructors
 	Player(); // default constructor
+	Player(string strategy);
 	Player(Player& p); // copy constructor
 	~Player(); // destructor
 
 	// other methods
 	void addTerritory(Territory* r); // add input Territory pointer to data member vector
 	void removeTerritory(Territory* toRemove); // removes Territory from the Player's list of Territories
-	void issueOrder(Order* o); // for now just adds default Deploy order
+	void issueOrder(); // calls issueOrder of the Player's strategy class
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 	void addArmies(int toAdd); // adds the input number of armies to the Player's reinforcement pool

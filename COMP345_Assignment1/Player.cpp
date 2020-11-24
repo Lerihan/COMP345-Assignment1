@@ -34,6 +34,18 @@ Player::Player()
 	this->territories = terr; // create empty vector of Territories
 }
 
+Player::Player(string strategy) : Player()
+{
+	if (strategy == "aggressive")
+		this->strategy = new AggressivePlayerStrategy();
+	else if (strategy == "human")
+		this->strategy = new HumanPlayerStrategy();
+	else if (strategy == "benevolent")
+		this->strategy = new BenevolentPlayerStrategy();
+	else if (strategy == "neutral")
+		this->strategy = new NeutralPlayerStrategy();
+}
+
 // Copy constructor, creates deep copy of each attribute.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player::Player(Player& p)
@@ -203,10 +215,10 @@ int Player::takeArmiesFromReinforcement(int numOfArmies) {
 	return taken;
 }
 
-// Adds argument Order to the Player's Order vector attribute.
-void Player::issueOrder(Order* o)
+// Adds argument Order to the Player's Order vector attribute. Calls issueOrder method of Player's strategy class.
+void Player::issueOrder()
 {
-	this->orders->add(o);
+	this->strategy->issueOrder(this);
 }
 
 // Creates a list of all enemy Territories adjacent to all of this Player's Territories and passes it to its
@@ -243,7 +255,7 @@ vector<Territory*> Player::toDefend()
 		defend.push_back(this->territories.at(i));
 	}
 
-	return (this->strategy)->toDefend(defend);
+	return this->strategy->toDefend(defend);
 }
 
 // Adds the input number to this Player's reinforcement pool

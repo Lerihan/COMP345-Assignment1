@@ -94,6 +94,7 @@ void GameEngine::selectMap()
 	delete mapLoader;
 }
 
+// for now sets alla Players to Aggressive strategy
 void GameEngine::createComponents()
 {
 	// how many players
@@ -115,7 +116,7 @@ void GameEngine::createComponents()
 
 	for (int i = 0; i < playernum; i++)
 	{
-		Player* p = new Player(); // deallocate memory later
+		Player* p = new Player("aggressive"); // deallocate memory later
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)
@@ -220,6 +221,11 @@ void GameEngine::mainGameLoop()
 	Player* winner = NULL;
 	while (winner == NULL)
 	{
+		if (rounds == 1000) { // end game if it reaches deadlock state
+			// after 100 rounds right now, change this if we find it takes more than 1000 rounds to actually end the game
+			cout << "A stalemate has been reached. The game will now exit." << endl;
+			return;
+		}
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
 		if (winner != NULL)
@@ -304,18 +310,22 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 }
 
 // Prompts user for Order to be issued and calls issueOrder()
-// Prompts user for Order to be issued and calls issueOrder()
+// TODO: generalize to call methodsof Player's strategy class; I think this method should pretty much be empty by the end
+// of the assignment
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	phase = "Issue Order Phase";
 
+	currPlayer->issueOrder();
+
+	// old method, kept commented just in case
+	/*
 	// issue Deploy orders
-	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool to the first Territory
-	// returned by toDefend()
+	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool
 	// based on the assignment instructions it seems as if the reiforcements should be removed from the pool here, instead
 	// of in the execution phase, so that's what I'm doing
 	int toDeploy = currPlayer->getReinforcementPool();
-	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend()[0], toDeploy));
+	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend().at(0), toDeploy));
 	currPlayer->removeReinforcements(toDeploy);
 	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
 	//cout << *currPlayer << endl;
@@ -378,7 +388,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	{
 		currPlayer->getHand()->play();
 	}
-	//cout << *currPlayer << endl;
+	*/
 }
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
