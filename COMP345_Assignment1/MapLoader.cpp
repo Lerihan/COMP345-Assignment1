@@ -178,3 +178,60 @@ void MapLoader::ValidateConnectedGraph(Map* map)
 		cout << "Map is not a connected graph.";
 	}
 }
+
+ConquestFileReader::ConquestFileReader()
+{
+	this->conquestFileName = NULL;
+}
+
+ConquestFileReader::ConquestFileReader(string conquestFileName)
+{
+	this->conquestFileName = new std::string(conquestFileName);;
+}
+
+ConquestFileReader::ConquestFileReader(ConquestFileReader& conquestFile)
+{
+	conquestFileName = conquestFile.conquestFileName;
+}
+
+ConquestFileReader::~ConquestFileReader()
+{
+	delete conquestFileName;
+}
+
+ConquestFileReaderAdapter::ConquestFileReaderAdapter()
+{
+	this->conquestReader = conquestReader;
+	this->mapLoader = mapLoader;
+}
+
+ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
+{
+	delete conquestReader;
+	delete mapLoader;
+}
+
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter)
+{
+	conquestReader = conquestAdapter.conquestReader;
+	mapLoader = conquestAdapter.mapLoader;
+}
+
+ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFileReaderAdapter& conquestAdapter)
+{
+	conquestReader = conquestAdapter.conquestReader;
+	mapLoader = conquestAdapter.mapLoader;
+	return *this;
+}
+
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(MapLoader* reader)
+{
+	mapLoader = reader;
+	conquestReader = NULL;
+}
+
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* reader)
+{
+	conquestReader = reader;
+	mapLoader = NULL;
+}
