@@ -33,6 +33,9 @@ class ConquestFileReader {
 		ConquestFileReader(string);
 		ConquestFileReader(ConquestFileReader& conquestFile);
 		ConquestFileReader& operator= (const ConquestFileReader& conquestFile);
+		Map* conquestReadMap(string fileName);
+		string FirstComponent(string s);
+		vector<string> SplitWords(string s);
 		~ConquestFileReader();
 };
 
@@ -40,6 +43,7 @@ class ConquestFileReaderAdapter: public MapLoader {
 	private:
 		ConquestFileReader* conquestReader;
 		MapLoader* mapLoader;
+		Map* finalMap;
 	public:
 		ConquestFileReaderAdapter();
 		~ConquestFileReaderAdapter();
@@ -48,5 +52,6 @@ class ConquestFileReaderAdapter: public MapLoader {
 		ConquestFileReaderAdapter(MapLoader* mapLoader);
 		ConquestFileReaderAdapter(ConquestFileReader* conquestReader);
 		
-		//virtual Map* ReadMap();
+		
+		Map* ReadMap(string fileName);
 };
