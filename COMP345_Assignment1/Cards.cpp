@@ -13,8 +13,8 @@ Card::Card() {
 }
 
 Card::~Card() {
-	this->cardHolder = NULL;
-	this->d = NULL;
+	this->cardHolder = nullptr;
+	this->d = nullptr;
 }
 
 //assignment constructor
@@ -53,7 +53,7 @@ Hand::Hand(Player* playerName, std::vector<Card*> playersCards) {
 // If we delete the Hand, it is because its Player has been eliminated.
 // Its Cards have thus been put back into the Deck so we do not delete them.
 Hand::~Hand() {
-	this->player = NULL;
+	this->player = nullptr;
 }
 
 //assignment constructor
@@ -135,7 +135,7 @@ Deck::~Deck()
 	for (int i = 0; i < this->cardsInDeck.size(); i++)
 	{
 		delete this->cardsInDeck[i];
-		this->cardsInDeck[i] = NULL;
+		this->cardsInDeck[i] = nullptr;
 	}
 	this->cardsInDeck.clear();
 }
@@ -163,7 +163,7 @@ void Deck::draw(Player* p) {
 	//getting player's hand
 	Hand* h = p->getHand();
 	//random number from 0 to size of current deck;
-	srand(time(NULL));
+	srand(time(nullptr));
 	int randomCardIndex = rand() % (this->cardsInDeck.size()-1) + 0; 
 	//simply add the card to the end of the player's hand
 	Card* c = this->cardsInDeck.at(randomCardIndex); // for readability
@@ -172,8 +172,8 @@ void Deck::draw(Player* p) {
 	//Removes the randomCard from the deck & reduces the deck's size
 	this->cardsInDeck.erase(this->cardsInDeck.begin()+randomCardIndex);
 
-	h = NULL;
-	c = NULL;
+	h = nullptr;
+	c = nullptr;
 	//cout << "Player " << p->getPlayerNumber() << " has added a card into their hand" << endl;
 }
 
@@ -186,7 +186,7 @@ void Deck::insertBackToDeck(Card* c) {
 // BombCard
 // ######################################
 BombCard::BombCard() {
-	this->target = NULL;
+	this->target = nullptr;
 }
 
 BombCard::BombCard(Territory* target) {
@@ -194,7 +194,7 @@ BombCard::BombCard(Territory* target) {
 }
 
 BombCard::~BombCard() {
-	this->target = NULL;
+	this->target = nullptr;
 }
 
 void BombCard::setTarget(Territory* target) {
@@ -216,9 +216,9 @@ void BombCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
 
-	bombOrder = NULL;
-	p = NULL;
-	this->cardHolder = NULL;
+	bombOrder = nullptr;
+	p = nullptr;
+	this->cardHolder = nullptr;
 }
 
 ostream& operator << (ostream& out, const BombCard& c) {
@@ -245,8 +245,8 @@ void ReinforcementCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Reinforcement Card has been added to the deck." << endl;
 
-	p = NULL;
-	this->cardHolder = NULL;
+	p = nullptr;
+	this->cardHolder = nullptr;
 }
 
 ostream& operator << (ostream& out, const ReinforcementCard& c) {
@@ -258,7 +258,7 @@ ostream& operator << (ostream& out, const ReinforcementCard& c) {
 // BlockadeCard
 // ######################################
 BlockadeCard::BlockadeCard() {
-	this->target = NULL;
+	this->target = nullptr;
 }
 
 BlockadeCard::BlockadeCard(Territory* target) {
@@ -266,7 +266,7 @@ BlockadeCard::BlockadeCard(Territory* target) {
 }
 
 BlockadeCard::~BlockadeCard() {
-	this->target = NULL;
+	this->target = nullptr;
 }
 
 void BlockadeCard::setTarget(Territory* target) {
@@ -289,9 +289,9 @@ void BlockadeCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Blockade Card has been added to the deck." << endl;
 
-	blockOrder = NULL;
-	p = NULL;
-	this->cardHolder = NULL;
+	blockOrder = nullptr;
+	p = nullptr;
+	this->cardHolder = nullptr;
 }
 
 ostream& operator << (ostream& out, const BlockadeCard& c) {
@@ -303,8 +303,8 @@ ostream& operator << (ostream& out, const BlockadeCard& c) {
 // AirliftCard
 // ######################################
 AirliftCard::AirliftCard() {
-	this->current = NULL;
-	this->target = NULL;
+	this->current = nullptr;
+	this->target = nullptr;
 	this->numArmies = 0;
 }
 
@@ -316,8 +316,8 @@ AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
 
 AirliftCard::~AirliftCard()
 {
-	this->current = NULL;
-	this->target = NULL;
+	this->current = nullptr;
+	this->target = nullptr;
 }
 
 void AirliftCard::setCurrent(Territory* current) {
@@ -360,9 +360,9 @@ void AirliftCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Airlift Card has been added to the deck." << endl;
 
-	airliftOrder = NULL;
-	p = NULL;
-	this->cardHolder = NULL;
+	airliftOrder = nullptr;
+	p = nullptr;
+	this->cardHolder = nullptr;
 }
 
 ostream& operator << (ostream& out, const AirliftCard& c) {
@@ -374,7 +374,7 @@ ostream& operator << (ostream& out, const AirliftCard& c) {
 // DiplomacyCard
 // ######################################
 DiplomacyCard::DiplomacyCard() {
-	this->enemy = NULL;
+	this->enemy = nullptr;
 }
 
 DiplomacyCard::DiplomacyCard(Player* enemy) {
@@ -382,7 +382,7 @@ DiplomacyCard::DiplomacyCard(Player* enemy) {
 }
 
 DiplomacyCard::~DiplomacyCard() {
-	this->enemy= NULL;
+	this->enemy= nullptr;
 }
 
 void DiplomacyCard::setEnemy(Player* enemy) {
@@ -409,9 +409,9 @@ void DiplomacyCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Diplomacy Card has been added to the deck." << endl;
 
-	diplomacyOrder = NULL;
-	p = NULL;
-	this->cardHolder = NULL;
+	diplomacyOrder = nullptr;
+	p = nullptr;
+	this->cardHolder = nullptr;
 }
 
 

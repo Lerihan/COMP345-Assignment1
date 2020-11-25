@@ -10,12 +10,12 @@ GameEngine::~GameEngine()
 {
 	delete this->map;
 	delete this->deck;
-	this->firstPlayer = NULL;
+	this->firstPlayer = nullptr;
 
 	for (int i = 0; i < this->players.size(); i++)
 	{
 		delete this->players[i];
-		this->players[i] = NULL;
+		this->players[i] = nullptr;
 	}
 	this->players.clear();
 }
@@ -82,14 +82,14 @@ void GameEngine::selectMap()
 		cin >> dominationMap;
 		map = mapLoader->GetMap(dominationMap);
 
-		if(map != NULL)
+		if(map != nullptr)
 			isValid = map->validate();
 
-		if (map == NULL || !isValid)
+		if (map == nullptr || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == NULL || !isValid);
+	} while (map == nullptr || !isValid);
 
 	delete mapLoader;
 }
@@ -218,17 +218,17 @@ void GameEngine::setRandomTerritory()
 void GameEngine::mainGameLoop()
 {
 	int rounds = 0; // number of rounds the game lasted
-	Player* winner = NULL;
-	while (winner == NULL)
+	Player* winner = nullptr;
+	while (winner == nullptr)
 	{
 		if (rounds == 1000) { // end game if it reaches deadlock state
-			// after 100 rounds right now, change this if we find it takes more than 1000 rounds to actually end the game
+			// change number if we find it takes more than 1000 rounds to actually end the game
 			cout << "A stalemate has been reached. The game will now exit." << endl;
 			return;
 		}
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
-		if (winner != NULL)
+		if (winner != nullptr)
 		{
 			break;
 		}
@@ -291,14 +291,14 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 
 	// check if Player owns whole Continent
 	int bonusArmies = 0; // if Player gets bonus reinforcements from owning whole Continent
-	Continent* currContinent = NULL; // for readability
+	Continent* currContinent = nullptr; // for readability
 	for (int i = 0; i < map->listOfContinents.size(); i++ )
 	{
 		currContinent = map->listOfContinents[i];
 		if (currContinent->controlsContinent(currPlayer))
 			bonusArmies += currContinent->armyvalue;
 	}
-	currContinent = NULL;
+	currContinent = nullptr;
 
 	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
 	if ((currPlayer->getTerritories().size() / 3) > newArmies)
@@ -334,8 +334,8 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	// issue Advance orders
 	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
 	// first issue an advance order to attack
-	Territory* target = NULL;
-	Territory* source = NULL;
+	Territory* target = nullptr;
+	Territory* source = nullptr;
 	if (currPlayer->toAttack().size() != 0) // only issue an attacking Advance order if there are adjacent enemy Territories
 	{
 		target = currPlayer->toAttack().at(0); // first Territory returned by toAttack() is the Territory to attack
@@ -358,7 +358,7 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	// now issue an advance order to defend
 	target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
-	source = NULL; // same as target unless a better choice is found in loop below
+	source = nullptr; // same as target unless a better choice is found in loop below
 	int maxArmies = 0;
 	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
 	{
@@ -373,15 +373,15 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 	}
 	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
 	// issue an advance order if there are adjacent enemy Territories
-	if (source != NULL)
+	if (source != nullptr)
 	{
 		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
 		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
 	}
 	//cout << *currPlayer << endl;
 
-	target = NULL;
-	source = NULL;
+	target = nullptr;
+	source = nullptr;
 
 	// play the first Card in the Player's Hand if they have one
 	if (currPlayer->getHand()->getCardsInHand().size() != 0)
@@ -456,7 +456,7 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 // a Player loses if he does not control any Territories
 void GameEngine::kickPlayers()
 {
-	Player* currPlayer = NULL; // for readability
+	Player* currPlayer = nullptr; // for readability
 	for (int i = 0; i < this->getPlayers().size(); i++)
 	{
 		currPlayer = this->players[i];
@@ -469,22 +469,22 @@ void GameEngine::kickPlayers()
 			for (int j = 0; j < hand->getCardsInHand().size(); j++)
 			{
 				this->deck->insertBackToDeck(hand->getCardsInHand()[j]); // put each Card back in the Deck
-				hand->getCardsInHand()[j] = NULL;
+				hand->getCardsInHand()[j] = nullptr;
 			}
 			hand->getCardsInHand().clear(); // Player's Hand size is now 0
-			hand = NULL;
+			hand = nullptr;
 			currPlayer->eliminatePlayer();
 		}
 	}
-	currPlayer = NULL;
+	currPlayer = nullptr;
 }
 
-// Checks if a Player has won the game; if so return that winning Player, else return NULL
+// Checks if a Player has won the game; if so return that winning Player, else return nullptr
 // a Player has won if they conrol all the Territories on the Map
 Player* GameEngine::checkWinner()
 {
 	int players = 0; // number of players still in the game
-	Player* winner = NULL;
+	Player* winner = nullptr;
 	for (int i = 0; i < this->getPlayers().size(); i++)
 	{
 		if (!this->getPlayers().at(i)->isEliminated())
@@ -497,7 +497,7 @@ Player* GameEngine::checkWinner()
 	if (players == 1) {
 		return winner;
 	}
-	return NULL;
+	return nullptr;
 }
 
 // Launches end of game winner message

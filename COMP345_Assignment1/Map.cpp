@@ -86,13 +86,13 @@ Map::~Map()
 	for (int i = 0; i < this->listOfContinents.size(); i++)
 	{
 		delete this->listOfContinents[i];
-		this->listOfContinents[i] = NULL;
+		this->listOfContinents[i] = nullptr;
 	}
 	this->listOfContinents.clear();
 
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 }
@@ -321,13 +321,13 @@ Continent::~Continent()
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
 		delete this->listOfTerritories[i];
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 
 	for (int i = 0; i < this->listOfAdjContinents.size(); i++)
 	{
-		this->listOfAdjContinents[i] = NULL;
+		this->listOfAdjContinents[i] = nullptr;
 	}
 	this->listOfAdjContinents.clear();
 }
@@ -430,7 +430,7 @@ Territory::Territory()
 	name = "";
 	continentIndex = 0;
 	numberOfArmies = 1;
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Constructor for Territory
@@ -442,7 +442,7 @@ Territory::Territory(int id, string n, int continentid)
 	continentIndex = continentid;
 	numberOfArmies = 1;
 
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Territory Copy Constructor
@@ -470,10 +470,10 @@ Territory& Territory::operator = (const Territory &t)
 // Destructor
 Territory::~Territory()
 {
-	this->owner = NULL;
+	this->owner = nullptr;
 	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
 	{
-		this->listOfAdjTerritories[i] = NULL;
+		this->listOfAdjTerritories[i] = nullptr;
 	}
 	this->listOfAdjTerritories.clear();
 }
@@ -503,7 +503,7 @@ Territory* Continent::getTerritory(int id)
 			return listOfTerritories[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /*
