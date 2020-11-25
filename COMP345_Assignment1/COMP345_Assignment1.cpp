@@ -26,7 +26,7 @@ void driverPart4(); // call for driver program for part 3
 
 int main()
 {
-	/**/
+	/*
 	//testing my toAttack bubble sort
 	MapLoader* mapLoader = new MapLoader();
 	Map* map = mapLoader->GetMap("europe.map");
@@ -55,7 +55,7 @@ int main()
 		//cout << *attack.at(i) << endl;
 	}
 
-	/**/
+	/*
 	cout << endl << "TO DEFEND" << endl
 		<< "===========================" << endl;
 	for (int i = 0; i < temp->getTerritories().size(); i++) 
@@ -82,19 +82,19 @@ int main()
 
 	delete mapLoader;
 	//delete temp;
-	
+	*/
 
 	//driverPart1();
 	//driverPart2();
 	//driverPart3();
 	//driverPart4();
 	
-	/*
+	/**/
 	GameEngine g;
 	g.startGame();
 	g.startupPhase();
 	g.mainGameLoop();
-	*/
+	
 	
 
 	return 0;

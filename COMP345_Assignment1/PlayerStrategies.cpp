@@ -40,7 +40,26 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
 	p->removeReinforcements(p->getReinforcementPool()); // empty Player's reinforcement pool
 
-	// advance orders
+	// advance to other Territories
+	// issue one order for each of the Player's Territories that
+	bool found = false; // need to break out of if statement adn inner for loop
+	for (int i = 0; i < defend.size(); i++)
+	{
+		found = false;
+		for (int j = 0; j < defend.at(i)->listOfAdjTerritories.size(); j++)
+		{
+			if (defend.at(i)->listOfAdjTerritories.at(j)->getOwner() != p)
+			{ // if this is enemy Territory then advance to it
+				p->getOrdersList()->add(new Advance( // add new Advance order to attack
+					p, defend.at(i), defend.at(i)->listOfAdjTerritories.at(j), defend.at(i)->numberOfArmies));
+				found = true; // also break out of inner for loop
+				found = true; // also break out of inner for loop
+			}
+			if (found)
+				break;
+		}
+	}
+	cout << p->getOrders().size() << endl;
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
