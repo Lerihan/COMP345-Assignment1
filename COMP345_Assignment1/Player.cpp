@@ -89,10 +89,10 @@ Player::~Player()
 		for (int i = 0; i < this->hand->getCardsInHand().size(); i++)
 		{
 			delete hand->getCardsInHand()[i];
-			hand->getCardsInHand()[i] = NULL;
+			hand->getCardsInHand()[i] = nullptr;
 		}
 		hand->getCardsInHand().clear(); // Player's Hand size is now 0
-		hand = NULL;
+		hand = nullptr;
 
 		delete this->hand; // delete Player's Hand pointer
 	}
@@ -100,7 +100,7 @@ Player::~Player()
 	for (int i = 0; i < this->territories.size(); i++)
 	{
 		//delete this->territories[i]; // delete pointer for each Territory
-		this->territories[i] = NULL; // avoid dangling pointers
+		this->territories[i] = nullptr; // avoid dangling pointers
 	}
 	this->territories.clear(); // remove placeholder memory locations
 
@@ -186,7 +186,7 @@ void Player::removeTerritory(Territory* toRemove)
 	for (int i = 0; i < this->territories.size(); i++) // loop through each of the Player's Territories
 	{
 		if (this->territories[i] == toRemove) // remove the one that is the input Territory
-			toRemove->setOwner(NULL); // this should be changed to a new Player when it is reassigned
+			toRemove->setOwner(nullptr); // this should be changed to a new Player when it is reassigned
 			this->territories.erase(this->territories.begin() + i);
 	}
 }
@@ -226,7 +226,7 @@ void Player::issueOrder()
 vector<Territory*> Player::toAttack()
 {
 	vector<Territory*> attack;
-	Territory* t = NULL; // for readability
+	Territory* t = nullptr; // for readability
 	for (int i = 0; i < this->territories.size(); i++) // for each of this Player's Territories
 	{
 		t = this->territories.at(i);
