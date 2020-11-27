@@ -84,10 +84,35 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy() { }
 
 void BenevolentPlayerStrategy::issueOrder(Player* p)
 {
+	//creates territory vector listing the player's weakest to strongest Territories
+	vector<Territory*> defend = p->toDefend();
 
+	//create a variable to count # of total armies, adding in reinforcement pool army
+	int totalNumOfArmies = p->getReinforcementPool();
+	//loop to add in # of armies for each territory of the player
+	for (int i = 0; i < defend.size(); i++) {
+		totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
+	}
+	//variable to know how much armies should be evenly spread
+	int idealNumOfArmy = totalNumOfArmies / defend.size();	
+	//for each territory, add in (from reinforcement pool) a number of army to match idealNumOfArmy
+	for (int i = 0; i < defend.size(); i++) {
+		//if territory's army has less than idealNumOfArmy, simply add in from reinforcement pool
+		if (idealNumOfArmy > defend.at(i)->numberOfArmies) {
+			int numOfArmyNeeded = idealNumOfArmy - defend.at(i)->numberOfArmies;		//calculate how much army does the player need to equaly distribute the reinforcement
+			p->getOrdersList()->add(new Deploy(p, defend.at(i), numOfArmyNeeded));		//deplys the needed amount of soldiers for the territory to reach the needed number
+			p->removeReinforcements(numOfArmyNeeded);									//remove that amount from the reinforcement pool
+		}
+		//if territory's army is greater than idealNumOfArmy
+		else if (idealNumOfArmy < defend.at(i)->numberOfArmies) {
+			int numOfExtraArmy =  defend.at(i)->numberOfArmies - idealNumOfArmy;		//calculate how much army does the player need to equaly distribute the reinforcement
+			p->addReinforcements(numOfExtraArmy);										//add that amount to the reinforcement pool
+		}
+	}
 }
 
-// Returns the input vector of Territories sorted in increeasing number of armies.
+//TODO: verify function's definition
+// Returns the input vector of Territories.
 vector<Territory*> BenevolentPlayerStrategy::toAttack(vector<Territory*> t)
 {
 	return t; // return the sorted vector
@@ -96,6 +121,7 @@ vector<Territory*> BenevolentPlayerStrategy::toAttack(vector<Territory*> t)
 // Returns the input vector of Territories sorted in increasing number of armies.
 vector<Territory*> BenevolentPlayerStrategy::toDefend(vector<Territory*> t)
 {
+	Territory::sortTerritoriesByArmies(t, 0); //sort Territories by priority 
 	return t; // return the sorted vector
 }
 
