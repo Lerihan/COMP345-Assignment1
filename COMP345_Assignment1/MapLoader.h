@@ -52,7 +52,8 @@ class ConquestFileReaderAdapter: public MapLoader {
 		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter);
 
 		ConquestFileReaderAdapter(MapLoader* mapLoader);
-		ConquestFileReaderAdapter(ConquestFileReader* conquestReader);
+
+		ConquestFileReaderAdapter(ConquestFileReader* reader);
 
 		Map* ReadMap(string& fileName);
 };

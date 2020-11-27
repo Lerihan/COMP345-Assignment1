@@ -227,20 +227,20 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 		bool hasCountries = false;
 		bool hasBorders = false;
 
-		map->name = FirstComponent(fileName);
+		//map->name = FirstComponent(fileName);
 
 		ifstream readFile;
 		readFile.open(fileName);
 
-		if (!readFile) {
+		/*if (!readFile) {
 			cout << "Can't read file" << endl;
 			return NULL;
 		}
-		else {
+		else {*/
 			while (getline(readFile, line))
 			{
 				//Reads continents
-				if (line.find("[continents]") == 0) {
+				if (line.find("[Continents]") == 0) {
 					getline(readFile, line);
 
 					int index = 1;
@@ -331,7 +331,7 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 				readFile.close();
 				return NULL;
 			}
-		}
+		//}
 	}
 	catch (const std::exception& e) {
 		return NULL;
@@ -378,7 +378,6 @@ ConquestFileReaderAdapter::ConquestFileReaderAdapter(MapLoader* reader)
 ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* reader)
 {
 	conquestReader = reader;
-	mapLoader = NULL;
 }
 
 
