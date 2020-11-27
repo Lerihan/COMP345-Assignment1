@@ -32,6 +32,7 @@ class ConquestFileReader {
 		ConquestFileReader();
 		ConquestFileReader(string);
 		ConquestFileReader(ConquestFileReader& conquestFile);
+		Map* GetMapConquest(string filePath);
 		ConquestFileReader& operator= (const ConquestFileReader& conquestFile);
 		Map* conquestReadMap(string fileName);
 		string FirstComponent(string s);
@@ -49,9 +50,9 @@ class ConquestFileReaderAdapter: public MapLoader {
 		~ConquestFileReaderAdapter();
 		ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter);
 		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter);
+
 		ConquestFileReaderAdapter(MapLoader* mapLoader);
 		ConquestFileReaderAdapter(ConquestFileReader* conquestReader);
-		
-		
-		Map* ReadMap(string fileName);
+
+		Map* ReadMap(string& fileName);
 };
