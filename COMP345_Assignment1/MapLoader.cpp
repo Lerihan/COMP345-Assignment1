@@ -226,6 +226,8 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 		bool hasContinent = false;
 		bool hasCountries = false;
 		bool hasBorders = false;
+		int continentId = 1;
+		int territoryId = 1;
 
 		//map->name = FirstComponent(fileName);
 
@@ -243,7 +245,6 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 				if (line.find("[Continents]") == 0) {
 					getline(readFile, line);
 
-					int index = 1;
 					while (line.find("[Territories]") != 0) {
 						if (line == "")
 							break;
@@ -251,9 +252,9 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 						//Split line to access different attributes of continents
 						string continentName = line.substr(0, line.find("="));
 						int armyValue = line[line.size() - 1];
-						newContinent = new Continent(index, continentName, armyValue); //stoi converts str to int
+						newContinent = new Continent(continentId, continentName, armyValue); //stoi converts str to int
 						map->addContinent(newContinent);
-						index++;
+						continentId++;
 						cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
@@ -262,16 +263,21 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 
 				if (line.find("[Territories]") == 0 && hasContinent) {
 					getline(readFile, line);
-					int index = 1;
+
 					while (!line.empty()) {
 						if (line == "")
 							break;
 
 						//Split line to access different attributes of territories
 						vector<string> attributes = SplitWords(line); //index name continent x y
-						newCountry = new Territory(stoi(attributes[0]), attributes[1], stoi(attributes[2])); //id name continentid
-						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
+						string territoryName = line.substr(0, line.find(","));
+
+						newCountry = new Territory(territoryId, territoryName, continentId); //id name continentid
+						//map->listOfContinents[double(continentId) - 1]->addTerritory(newCountry); //add territory to continent
+
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
+						territoryId++;
+						continentId++;
 						cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
