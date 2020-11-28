@@ -232,11 +232,11 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 		ifstream readFile;
 		readFile.open(fileName);
 
-		/*if (!readFile) {
+		if (!readFile) {
 			cout << "Can't read file" << endl;
 			return NULL;
 		}
-		else {*/
+		else {
 			while (getline(readFile, line))
 			{
 				//Reads continents
@@ -249,8 +249,9 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 							break;
 
 						//Split line to access different attributes of continents
-						vector<string> attributes = SplitWords(line);
-						newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
+						string continentName = line.substr(0, line.find("="));
+						int armyValue = line[line.size() - 1];
+						newContinent = new Continent(index, continentName, armyValue); //stoi converts str to int
 						map->addContinent(newContinent);
 						index++;
 						cout << "New Continent: " << line << endl;
@@ -261,6 +262,7 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 
 				if (line.find("[Territories]") == 0 && hasContinent) {
 					getline(readFile, line);
+					int index = 1;
 					while (!line.empty()) {
 						if (line == "")
 							break;
@@ -270,32 +272,12 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 						newCountry = new Territory(stoi(attributes[0]), attributes[1], stoi(attributes[2])); //id name continentid
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
-
 						cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
 
 					hasCountries = true;
 				}
-
-				//if (line.find("[borders]") == 0 && hasContinent && hasCountries) {
-				//	getline(readFile, line);
-				//	while (!line.empty()) {
-				//		if (line == "")
-				//			break;
-
-				//		vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
-				//		Territory* t0 = map->getTerritory(stoi(adjCountries[0]));
-				//		for (int i = 1; i < adjCountries.size(); i++)
-				//		{
-				//			Territory* t = map->getTerritory(stoi(adjCountries[i]));
-				//			map->addAdjTerritory(t0, t);
-				//		}
-				//		//cout << "New Border: " << line << endl;
-				//		getline(readFile, line);
-				//	}
-				//	hasBorders = true;
-				//}
 			}
 
 			readFile.close();
@@ -331,7 +313,7 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 				readFile.close();
 				return NULL;
 			}
-		//}
+		}
 	}
 	catch (const std::exception& e) {
 		return NULL;
