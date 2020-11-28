@@ -271,10 +271,10 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 						//Split line to access different attributes of territories
 						vector<string> attributes = SplitWords(line); //index name continent x y
 						string territoryName = line.substr(0, line.find(","));
-
+						int index = 0;
 						newCountry = new Territory(territoryId, territoryName, continentId); //id name continentid
-						//map->listOfContinents[double(continentId) - 1]->addTerritory(newCountry); //add territory to continent
-
+						map->listOfContinents[index]->addTerritory(newCountry); //add territory to continent
+						index++;
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
 						territoryId++;
 						continentId++;
