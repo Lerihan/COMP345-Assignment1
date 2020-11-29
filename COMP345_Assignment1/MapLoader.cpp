@@ -169,13 +169,14 @@ string ConquestFileReader::FirstComponent(string s)
 
 vector<string> ConquestFileReader::SplitWords(string s)
 {
-	istringstream iss(s);
-	vector<string> v;
-	while (iss >> s)
-	{
-		v.push_back(s);
+	istringstream ss(s);
+	vector<string> words =vector<string>();
+	string word;
+	while (ss.good()) {
+		getline(ss, word, ',');
+		words.push_back(word);
 	}
-	return v;
+	return words;
 }
 
 istream& operator>>(istream& in, string dominationMap)
@@ -269,15 +270,27 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 							break;
 
 						//Split line to access different attributes of territories
+						//vector<string> attributes = SplitWords(line); //index name continent x y
+						//string territoryName = line.substr(0, line.find(","));
+						//int index = 0;
+						//newCountry = new Territory(territoryId, territoryName, continentId); //id name continentid
+						//map->listOfContinents[index]->addTerritory(newCountry); //add territory to continent
+						//index++;
+						//map->addTerritory(newCountry); //add territory in full list of territories (in map)
+
 						vector<string> attributes = SplitWords(line); //index name continent x y
-						string territoryName = line.substr(0, line.find(","));
-						int index = 0;
-						newCountry = new Territory(territoryId, territoryName, continentId); //id name continentid
-						map->listOfContinents[index]->addTerritory(newCountry); //add territory to continent
-						index++;
+						newCountry = new Territory(stoi(attributes[2]), attributes[0], stoi(attributes[1])); //id name continentid
+						//map->listOfContinents[stoi(attributes[1]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
-						territoryId++;
-						continentId++;
+
+						//vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
+						//Territory* t0 = map->getTerritory(stoi(adjCountries[3]));
+						//for (int i = 4; i < adjCountries.size(); i++)
+						//{
+						//	Territory* t = map->getTerritory(stoi(adjCountries[i]));
+						//	map->addAdjTerritory(t0, t);
+						//}
+						//cout << "New Border: " << line << endl;
 						cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
@@ -287,23 +300,6 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 			}
 
 			readFile.close();
-
-			while (getline(readFile, line)) {
-				if (line.find("[Territories]") == 0) {
-					getline(readFile, line);
-					while (!line.empty()) {
-								vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
-								Territory* t0 = map->getTerritory(stoi(adjCountries[0]));
-								for (int i = 1; i < adjCountries.size(); i++)
-								{
-									Territory* t = map->getTerritory(stoi(adjCountries[i]));
-									map->addAdjTerritory(t0, t);
-								}
-								cout << "New Border: " << line << endl;
-						getline(readFile, line);
-					}
-				}
-			}
 
 			if (hasContinent && hasCountries) {
 				cout << "Map File is valid" << endl;
