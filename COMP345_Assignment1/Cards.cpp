@@ -186,10 +186,12 @@ void Deck::insertBackToDeck(Card* c) {
 // BombCard
 // ######################################
 BombCard::BombCard() {
+	this->name = "bomb";
 	this->target = NULL;
 }
 
 BombCard::BombCard(Territory* target) {
+	this->name = "bomb";
 	this->target = target;
 }
 
@@ -208,7 +210,7 @@ Territory* BombCard::getTarget() {
 void BombCard::play() {
 	Player* p = this->cardHolder;
 	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
-	Bomb* bombOrder = new Bomb(p,p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
+	Bomb* bombOrder = new Bomb(p, p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
 	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
@@ -231,6 +233,7 @@ ostream& operator << (ostream& out, const BombCard& c) {
 // ReinforcementCard
 // ######################################
 ReinforcementCard::ReinforcementCard() {
+	this->name = "reinforcement";
 }
 
 ReinforcementCard::~ReinforcementCard() {
@@ -258,10 +261,12 @@ ostream& operator << (ostream& out, const ReinforcementCard& c) {
 // BlockadeCard
 // ######################################
 BlockadeCard::BlockadeCard() {
+	this->name = "blockade";
 	this->target = NULL;
 }
 
 BlockadeCard::BlockadeCard(Territory* target) {
+	this->name = "blockade";
 	this->target = target;
 }
 
@@ -303,12 +308,14 @@ ostream& operator << (ostream& out, const BlockadeCard& c) {
 // AirliftCard
 // ######################################
 AirliftCard::AirliftCard() {
+	this->name = "airlift";
 	this->current = NULL;
 	this->target = NULL;
 	this->numArmies = 0;
 }
 
 AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
+	this->name = "airlift";
 	this->current = current;
 	this->target = target;
 	this->numArmies = numArmies;
@@ -374,10 +381,12 @@ ostream& operator << (ostream& out, const AirliftCard& c) {
 // DiplomacyCard
 // ######################################
 DiplomacyCard::DiplomacyCard() {
+	this->name = "diplomacy";
 	this->enemy = NULL;
 }
 
 DiplomacyCard::DiplomacyCard(Player* enemy) {
+	this->name = "diplomacy";
 	this->enemy = enemy;
 }
 

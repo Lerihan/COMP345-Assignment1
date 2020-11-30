@@ -123,6 +123,18 @@ void Player::setTerritories(vector<Territory*> t)
 	this->territories = t;
 }
 
+bool Player::ownsCard(string card)
+{
+	for (int i = 0; i < this->hand->cardsInHand.size(); i++)
+	{
+		if (this->hand->getCardsInHand().at(i)->name == card)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 // Returns the Hand object of this Player
 Hand* Player::getHand()
 {

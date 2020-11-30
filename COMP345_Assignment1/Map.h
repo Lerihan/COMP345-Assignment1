@@ -26,9 +26,15 @@ public:
 	~Territory(); // Destructor
 
 	void printAdjTerritory();
+	void printAdjTerritoryOwned();
+	void printAdjTerritoryNotOwned();
+	Territory* getAdjTerritoryByName(string name);
 	Player* getOwner(); // get owner of this Territory
-	void setOwner(Player* p); // set the owner of this Territory
+	void setOwner(Player* p);
+	Player * getOwnerOfAdjacent(string name);
+	// set the owner of this Territory
 	bool isAdjacent(int id);
+	bool isAdjacent(string name);
 	bool addTroops(int n);
 	bool removeTroops(int n);
 	bool containsTerritory(vector<Territory*> territories); // checks if this Territory is contained in the input vector

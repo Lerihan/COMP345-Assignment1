@@ -116,7 +116,7 @@ void GameEngine::createComponents()
 
 	for (int i = 0; i < playernum; i++)
 	{
-		Player* p = new Player("aggressive"); // deallocate memory later
+		Player* p = new Player("human"); // deallocate memory later
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)
@@ -248,7 +248,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
+		//cout << *(this->players[0]) << endl; TODO: removed by melina for testing
 
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
@@ -261,7 +261,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
+		//cout << *(this->players[0]) << endl;
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
@@ -274,7 +274,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
+		//cout << *(this->players[0]) << endl;
 
 		notify();
 	}

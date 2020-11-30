@@ -67,6 +67,7 @@ public:
 	int getReinforcementPool();
 	vector<Territory*> getTerritories();
 	void setTerritories(vector<Territory*> t); // sets the input vector to be the Player's territories; used in driver part 3
+	bool ownsCard(string card);
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player

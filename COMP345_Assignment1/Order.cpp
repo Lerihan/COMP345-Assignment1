@@ -78,7 +78,6 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 */
 Deploy::Deploy(): Order()
 {
-	//Territory(0, "current", 0);
 }
 
 /*Parametrized constructor for the Deploy class
@@ -134,11 +133,13 @@ bool Deploy::execute()
 	{ 
 		cout << "Deploy order executed." << endl;
 
+		/*
 		int taken = player->takeArmiesFromReinforcement(numOfArmies);
 
 		if (taken != numOfArmies)
 			numOfArmies = taken;
-
+		*/
+		player->removeReinforcements(numOfArmies);
 		territory->addTroops(numOfArmies);
 		cout << "DEPLOY ORDER: Deploying " << numOfArmies << " armies to " << territory->name << "." << endl;
 		return true;
@@ -163,8 +164,6 @@ Advance::Advance(): Order()
 {
 	this->current = NULL;
 	this->next = NULL;
-	//Territory(0, "current", 0);
-	//Territory(0, "Next", 0);
 }
 
 /*Parametrized constructor for the Advance class
@@ -281,15 +280,12 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 */
 Bomb::Bomb() : Order()
 {
-	//Territory(0, "source", 0);
-	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Bomb class
 */
-Bomb::Bomb(Player* player, Territory* source, Territory* target): Order(player)
+Bomb::Bomb(Player* player, Territory* target): Order(player)
 {
-	this->source = source;
 	this->target = target;
 }
 
@@ -297,13 +293,11 @@ Bomb::Bomb(Player* player, Territory* source, Territory* target): Order(player)
 */
 Bomb::Bomb(const Bomb& bomb) : Order(bomb) 
 {
-	this->source = bomb.source;
 	this->target = bomb.target;
 }
 
 Bomb::~Bomb()
 {
-	this->source = NULL;
 	this->target = NULL;
 }
 
@@ -312,7 +306,6 @@ Bomb::~Bomb()
 Bomb& Bomb::operator=(const Bomb& bomb) 
 {
 	Order::operator=(bomb);
-	source = bomb.source;
 	target = bomb.target;
 	return *this;
 }
@@ -321,7 +314,12 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 */
 bool Bomb::validate()
 {
-	if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
+	/*if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
+	{
+		cout << "Bomb order validated." << endl;
+		return true;
+	}*/
+	if (target->owner != this->player)
 	{
 		cout << "Bomb order validated." << endl;
 		return true;
@@ -443,8 +441,8 @@ ostream& operator << (std::ostream& o, const Blockade& b)
 */
 Airlift::Airlift() : Order()
 {
-	Territory(0, "current", 0);
-	Territory(0, "next", 0);
+	//Territory(0, "current", 0);
+	//Territory(0, "next", 0);
 }
 
 /*Parametrized constructor for the Airlift class
