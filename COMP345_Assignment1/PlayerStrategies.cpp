@@ -84,12 +84,22 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy() { }
 
 void BenevolentPlayerStrategy::issueOrder(Player* p)
 {
+	//benevolent player should not be able to play Bomb & Airlift cards
+	//searches through the player's hand and skips over the cards completely
+	for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {				//searching through the benevolent player's hand
+		if (p->getHand()->cardsInHand.at(i)->getType() == "BombCard" || p->getHand()->cardsInHand.at(i)->getType() == "AirliftCard")			//check their type to see if the card is a Bomb or Airlift
+			p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
+			p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
+	}
+
+	//TODO: search through orderlist and deletes all Advance, Bomb, Airlift orders
+
 	vector<Territory*> attack = p->toAttack();
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
 
 	//create a variable to count # of total armies, adding in reinforcement pool army
-	int totalNumOfArmies = p->getReinforcementPool();
+	int totalNumOfArmies = p->getReinforcementPool();		//using an INT for step-down rounding
 	//loop to add in # of armies for each territory of the player
 	for (int i = 0; i < defend.size(); i++) {
 		totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
@@ -136,6 +146,16 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() { }
 
 void NeutralPlayerStrategy::issueOrder(Player* p)
 {
+
+	//TODO: search through orderlist and deletes all of them
+
+	//neutral player should not be able to play any cards
+	//goes through the player's hand and skips over the cards completely
+	for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {	
+		p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
+		p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
+	}
+
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
 	//does nothing; does not issue orders
