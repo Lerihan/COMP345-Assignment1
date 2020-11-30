@@ -292,20 +292,39 @@ void Player::resetTotalPlayers()
 	this->totalPlayers = 1;
 }
 
-// = operator, performs deep copy.
+// Assignment operator, performs deep copy. Does not create deep copy of Territories, however.
+// NOTE: This assumes that this Player and the input Player DO NOT share pointers. Otherwise the self assignment check
+// will result in deleting the components to be copied.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player& Player::operator =(const Player& player)
 {
-	// copy orders
-	this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
-
-	// copy territories
-	for (int i = 0; i < player.territories.size(); i++)
+	if (&player != this)
 	{
-		this->territories.push_back(player.territories.at(i));
-	}
+		// delete old values
+		delete this->hand;
+		delete this->orders;
+		for (int i = 0; i < this->territories.size(); i++)
+		{
+			delete this->territories.at(i);
+		}
+		this->territories.clear();
 
-	this->hand = player.hand; // assumes Hand assignment operator is correctly implemented
+
+		// assign new values
+		this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
+
+		for (int i = 0; i < player.territories.size(); i++)
+		{
+			this->territories.push_back(player.territories.at(i));
+		}
+
+		this->hand = new Hand(*player.hand);
+		this->orders = new OrdersList(*player.orders);
+		this->playerNumber = player.playerNumber;
+		this->numOfArmies = player.numOfArmies;
+		this->reinforcementPool = player.reinforcementPool;
+		this->eliminated = player.eliminated;
+	}
 
 	return *this;
 }

@@ -21,15 +21,6 @@ Card::~Card() {
 Card& Card::operator = (const Card& c) {
 	return *this;
 }
-/*
-//stream insertion operators
-ostream& operator << (ostream& out, const Card& c) {
-	return out << "card ";
-}*/
-
-istream& operator >> (istream& in, const Card& c) {
-	return in;
-}
 
 //HAND
 //default constructor

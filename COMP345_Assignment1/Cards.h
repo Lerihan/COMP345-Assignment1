@@ -11,13 +11,6 @@
 #include "Order.h"
 
 class Player;
-
-// needed Order subclasses
-//class Airlift;
-//class Bomb;
-//class Blockade;
-//class Negotiate;
-
 class Deck;
 
 class Card {	
@@ -31,9 +24,7 @@ class Card {
 		virtual void play() = 0;
 		virtual string getType() = 0;
 
-		Card& operator = (const Card& c);
-		//friend ostream& operator << (ostream& out, const Card& c);
-		friend istream& operator >> (istream& in, const Card& c);
+		virtual Card& operator =(const Card& c) = 0;
 };
 
 class BombCard : public Card {
