@@ -6,6 +6,25 @@
 #include <chrono> 
 #include "GameEngine.h"
 
+// Copy constructor. Creates a deep copy of this GameEngine, and all of its components.
+// TODO: how to copy first player
+GameEngine::GameEngine(GameEngine& game)
+{
+	this->map = new Map(*game.map);
+	this->players;
+	for (int i = 0; i < game.players.size(); i++)
+	{
+		this->players.push_back(new Player(*game.players.at(i)));
+	}
+	//Player* firstPlayer;
+	this->deck = new Deck(*game.deck);
+	this->numOfPlayers = game.numOfPlayers;
+	this->observerOn = game.observerOn;
+	this->phase = game.phase;
+}
+
+// Destructor
+// This should be the only destructor called so it deletes all corresponding components (Map, Players, Deck, etc).
 GameEngine::~GameEngine()
 {
 	delete this->map;
@@ -508,4 +527,45 @@ void GameEngine::endGamePhase(Player* winner)
 	cout << "########################################" << endl;
 	cout << "Congratulations, Player " << winner->getPlayerNumber() << "! You won!" << endl;
 	cout << "Restart the program to play again." << endl;
+}
+
+// Assignment operator, creates a deep copy of input GameEngine and all its components.
+// NOTE: This assumes that this GameEngine and the input GameEngine DO NOT share pointers. Otherwise the self assignment check
+// will result in deleting the components to be copied.
+// TODO: how to copy first player
+GameEngine& GameEngine::operator =(const GameEngine& game)
+{
+	if (&game != this)
+	{
+		// delete current values
+		delete this->map;
+		for (int i = 0; i < this->players.size(); i++)
+		{
+			delete this->players.at(i);
+			this->players.at(i) = nullptr;
+		}
+		this->players.clear();
+		delete this->deck;
+
+		// assign new values
+		this->map = new Map(*game.map);
+		this->players;
+		for (int i = 0; i < game.players.size(); i++)
+		{
+			this->players.push_back(new Player(*game.players.at(i)));
+		}
+		//Player* firstPlayer;
+		this->deck = new Deck(*game.deck);
+		this->numOfPlayers = game.numOfPlayers;
+		this->observerOn = game.observerOn;
+		this->phase = game.phase;
+	}
+	return *this;
+}
+
+// Stream insertion operator returns map name and number of players
+ostream& operator <<(ostream& strm, GameEngine& game)
+{
+	strm << "This game was played with " << game.map->name << " and " << game.numOfPlayers << " players." << endl;
+	return strm;
 }

@@ -9,6 +9,7 @@ using namespace std;
 class GameEngine : public Subject
 {
 public:
+	GameEngine(GameEngine& game);
 	~GameEngine();
 	void startGame();
 	void startupPhase();
@@ -42,4 +43,8 @@ private:
 	void setRandomTerritory();
 	void kickPlayers(); // checks if a Player has lost the game
 	void endGamePhase(Player* winner); // launches end game winner message
+
+	GameEngine& operator =(const GameEngine& game);
+	friend ostream& operator <<(ostream& strm, GameEngine& game);
+
 };
