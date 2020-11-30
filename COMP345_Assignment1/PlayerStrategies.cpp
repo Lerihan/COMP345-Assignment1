@@ -142,14 +142,14 @@ void NeutralPlayerStrategy::issueOrder(Player* p)
 }
 
 // Returns the input vector of Territories sorted in increasing number of armies.
-vector<Territory*> BenevolentPlayerStrategy::toAttack(vector<Territory*> t)
+vector<Territory*> NeutralPlayerStrategy::toAttack(vector<Territory*> t)
 {
 	Territory::sortTerritoriesByArmies(t, 1);
 	return t; // return the vector
 }
 
 // Returns the input vector of Territories sorted in increasing number of armies.
-vector<Territory*> BenevolentPlayerStrategy::toDefend(vector<Territory*> t)
+vector<Territory*> NeutralPlayerStrategy::toDefend(vector<Territory*> t)
 {
 	Territory::sortTerritoriesByArmies(t, 1); //sort Territories by priority 
 	return t; // return the sorted vector
