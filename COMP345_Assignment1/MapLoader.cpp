@@ -227,7 +227,6 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 		bool hasCountries = false;
 		bool hasBorders = false;
 		int continentId = 1;
-		int territoryId = 1;
 
 		//map->name = FirstComponent(fileName);
 
@@ -276,13 +275,13 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 
 						//Add new border
 						//vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
-						//Territory* t0 = map->getTerritory(stoi(adjCountries[3]));
-						//for (int i = 4; i < adjCountries.size(); i++)
-						//{
-						//	Territory* t = map->getTerritory(stoi(adjCountries[i]));
-						//	map->addAdjTerritory(t0, t);
-						//}
-						//cout << "New Border: " << line << endl;
+						/*Territory* t0 = map->getTerritory(stoi(attributes[3]));
+						for (int i = 4; i < attributes.size(); i++)
+						{
+							Territory* t = map->getTerritory(stoi(attributes[i]));
+							map->addAdjTerritory(t0, t);
+						}
+						cout << "New Border: " << line << endl;*/
 						cout << "New Country: " << line << endl;
 						//cout << *map;
 						getline(readFile, line);
