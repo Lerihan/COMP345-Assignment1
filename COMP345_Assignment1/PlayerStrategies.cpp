@@ -105,10 +105,10 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
 
-	Territory* currTerritory = nullptr;						//for readability
+	Territory* currTerritory = nullptr;													//for readability
 
 	//create a variable to count # of total armies, adding in reinforcement pool army
-	int totalNumOfArmies = p->getReinforcementPool();		//for readability, using an INT for step-down rounding
+	int totalNumOfArmies = p->getReinforcementPool();									//for readability, using an INT for step-down rounding
 	//loop to add in # of armies for each territory of the player
 	for (int i = 0; i < defend.size(); i++) {
 		totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
@@ -135,19 +135,18 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 	}
 	currTerritory = nullptr;
 
-	//benevolent player should not be able to play Bomb & Airlift cards
-	//searches through the player's hand and skips over the cards completely
-	vector<Card*> v = p->getHand()->getCardsInHand();
+	//benevolent player should not be able to play Bomb & Airlift cards. If either type is found, skips the card
+	vector<Card*> v = p->getHand()->getCardsInHand();			//for readability
 	if (v.size() != 0) {
 		if (v.at(0)->getType() == "BombCard" || v.at(0)->getType() == "AirliftCard")			//check their type to see if the card is a Bomb or Airlift
-		{
-			v.erase(v.begin());							//erase the card from the player's Hand
-			v.at(0)->d->insertBackToDeck(v.at(0));		//insert the card back into its deck
+		{			
+			v.at(0)->d->insertBackToDeck(v.at(0));				//insert the card back into its deck
+			v.erase(v.begin());									//erase the card from the player's Hand
 		}			
 		else
 		{
-			v.at(0)->play();			//plays the first card of the player's hand
-			v.erase(v.begin());			//erase the first card from the player's Hand
+			v.at(0)->play();									//plays the first card of the player's hand
+			v.erase(v.begin());									//erase the first card from the player's Hand
 		}
 	}
 }
