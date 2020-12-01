@@ -101,40 +101,53 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy() { }
 
 void BenevolentPlayerStrategy::issueOrder(Player* p)
 {
-	//benevolent player should not be able to play Bomb & Airlift cards
-	//searches through the player's hand and skips over the cards completely
-	for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {				//searching through the benevolent player's hand
-		if (p->getHand()->cardsInHand.at(i)->getType() == "BombCard" || p->getHand()->cardsInHand.at(i)->getType() == "AirliftCard")			//check their type to see if the card is a Bomb or Airlift
-			p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
-			p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
-	}
-
 	vector<Territory*> attack = p->toAttack();
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
 
+	Territory* currTerritory = nullptr;						//for readability
+
 	//create a variable to count # of total armies, adding in reinforcement pool army
-	int totalNumOfArmies = p->getReinforcementPool();		//using an INT for step-down rounding
+	int totalNumOfArmies = p->getReinforcementPool();		//for readability, using an INT for step-down rounding
 	//loop to add in # of armies for each territory of the player
 	for (int i = 0; i < defend.size(); i++) {
 		totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
 	}
 	//variable to know how much armies should be evenly spread
 	int idealNumOfArmy = totalNumOfArmies / defend.size();	
+	
 	//for each territory, add in (from reinforcement pool) a number of army to match idealNumOfArmy
 	for (int i = 0; i < defend.size(); i++) {
+		currTerritory = defend.at(i);
 		//if territory's army has less than idealNumOfArmy, simply add in from reinforcement pool
-		if (idealNumOfArmy > defend.at(i)->numberOfArmies) {
-			int numOfArmyNeeded = idealNumOfArmy - defend.at(i)->numberOfArmies;		//calculate how much army does the player need to equaly distribute the reinforcement
-			p->getOrdersList()->add(new Deploy(p, defend.at(i), numOfArmyNeeded));		//deploys the needed amount of soldiers for the territory to reach the needed number
+		if (idealNumOfArmy > currTerritory->numberOfArmies) {
+			int numOfArmyNeeded = idealNumOfArmy - currTerritory->numberOfArmies;		//calculate how much army does the player need to equaly distribute the reinforcement
+			p->getOrdersList()->add(new Deploy(p, currTerritory, numOfArmyNeeded));		//deploys the needed amount of soldiers for the territory to reach the needed number
 			p->removeReinforcements(numOfArmyNeeded);									//remove that amount from the reinforcement pool
 		}
 		//if territory's army is greater than idealNumOfArmy, remove excess and add to reinforcement pool
-		else if (idealNumOfArmy < defend.at(i)->numberOfArmies) {
-			int numOfExtraArmy =  defend.at(i)->numberOfArmies - idealNumOfArmy;		//calculate how much army does the player need to equaly distribute the reinforcement
+		else if (idealNumOfArmy < currTerritory->numberOfArmies) {
+			int numOfExtraArmy = currTerritory->numberOfArmies - idealNumOfArmy;		//calculate how much army does the player need to equaly distribute the reinforcement
 			defend.at(i)->removeTroops(numOfExtraArmy);									//removes troops from the Territory
-			p->getOrdersList()->add(new Deploy(p, defend.at(i), 0));					//makes a deploy order with 0 reinforcements
+			p->getOrdersList()->add(new Deploy(p, currTerritory, 0));					//makes a deploy order with 0 reinforcements
 			p->addReinforcements(numOfExtraArmy);										//add that amount to the reinforcement pool
+		}
+	}
+	currTerritory = nullptr;
+
+	//benevolent player should not be able to play Bomb & Airlift cards
+	//searches through the player's hand and skips over the cards completely
+	vector<Card*> v = p->getHand()->getCardsInHand();
+	if (v.size() != 0) {
+		if (v.at(0)->getType() == "BombCard" || v.at(0)->getType() == "AirliftCard")			//check their type to see if the card is a Bomb or Airlift
+		{
+			v.erase(v.begin());							//erase the card from the player's Hand
+			v.at(0)->d->insertBackToDeck(v.at(0));		//insert the card back into its deck
+		}			
+		else
+		{
+			v.at(0)->play();			//plays the first card of the player's hand
+			v.erase(v.begin());			//erase the first card from the player's Hand
 		}
 	}
 }
