@@ -92,8 +92,6 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 			p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
 	}
 
-	//TODO: search through orderlist and deletes all Advance, Bomb, Airlift orders
-
 	vector<Territory*> attack = p->toAttack();
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
@@ -147,17 +145,15 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() { }
 void NeutralPlayerStrategy::issueOrder(Player* p)
 {
 
-	//TODO: search through orderlist and deletes all of them
-
 	//neutral player should not be able to play any cards
 	//goes through the player's hand and skips over the cards completely
-	for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {	
-		p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
-		p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
-	}
+	//for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {	
+	//	p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
+	//	p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
+	//}
 
-	vector<Territory*> attack = p->toAttack();
-	vector<Territory*> defend = p->toDefend();
+	//vector<Territory*> attack = p->toAttack();
+	//vector<Territory*> defend = p->toDefend();
 	//does nothing; does not issue orders
 }
 
