@@ -186,12 +186,10 @@ void Deck::insertBackToDeck(Card* c) {
 // BombCard
 // ######################################
 BombCard::BombCard() {
-	this->name = "bomb";
 	this->target = NULL;
 }
 
 BombCard::BombCard(Territory* target) {
-	this->name = "bomb";
 	this->target = target;
 }
 
@@ -233,7 +231,6 @@ ostream& operator << (ostream& out, const BombCard& c) {
 // ReinforcementCard
 // ######################################
 ReinforcementCard::ReinforcementCard() {
-	this->name = "reinforcement";
 }
 
 ReinforcementCard::~ReinforcementCard() {
@@ -261,12 +258,10 @@ ostream& operator << (ostream& out, const ReinforcementCard& c) {
 // BlockadeCard
 // ######################################
 BlockadeCard::BlockadeCard() {
-	this->name = "blockade";
 	this->target = NULL;
 }
 
 BlockadeCard::BlockadeCard(Territory* target) {
-	this->name = "blockade";
 	this->target = target;
 }
 
@@ -308,14 +303,12 @@ ostream& operator << (ostream& out, const BlockadeCard& c) {
 // AirliftCard
 // ######################################
 AirliftCard::AirliftCard() {
-	this->name = "airlift";
 	this->current = NULL;
 	this->target = NULL;
 	this->numArmies = 0;
 }
 
 AirliftCard::AirliftCard(Territory* current, Territory* target, int numArmies) {
-	this->name = "airlift";
 	this->current = current;
 	this->target = target;
 	this->numArmies = numArmies;
@@ -381,12 +374,10 @@ ostream& operator << (ostream& out, const AirliftCard& c) {
 // DiplomacyCard
 // ######################################
 DiplomacyCard::DiplomacyCard() {
-	this->name = "diplomacy";
 	this->enemy = NULL;
 }
 
 DiplomacyCard::DiplomacyCard(Player* enemy) {
-	this->name = "diplomacy";
 	this->enemy = enemy;
 }
 

@@ -213,147 +213,55 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 	}
 
 	// Use one card
-	int card;
-	string cardName;
-	numToMove = 0;
-	source = "";
-	target = "";
-	Territory* srcTerritory = defend.at(0);
-	Territory* targetTerritory = defend.at(0);
-	found = false;
+	Card* card = NULL;
+	int cardInput;
+	string cardType;
 	cout << endl << *p << endl;
-	cout << "Which card would you like to play? (Airlift (1), Bomb (2), Blockade (3), Diplomacy (4), Reinforcement (5)): ";
-	cin >> card;
 
-	switch (card)
+	do
 	{
-	case 1:
-		cardName = "airlift";
-		break;
-	case 2:
-		cardName = "bomb";
-		break;
-	case 3:
-		cardName = "blockade";
-		break;
-	case 4:
-		cardName = "diplomacy";
-		break;
-	case 5:
-		cardName = "reinforcement";
-		break;
-	}
-
-	if (p->ownsCard(cardName))
-	{
-		switch (card)
+		do
+		{
+			cout << "Which card would you like to play? (Airlift (1), Bomb (2), Blockade (3), Diplomacy (4), Reinforcement (5)): ";
+			cin >> cardInput;
+		} while (cardInput < 1 || cardInput > 5);
+	
+		switch (cardInput)
 		{
 		case 1:
-		{
-			cout << "Which Territory would you like to take armies from? (Case-Sensitive): ";
-			cin >> source;
-
-			do
-			{
-				for (int i = 0; i < defend.size(); i++)
-				{
-					if (defend.at(i)->name == source) // found source
-					{
-						srcTerritory = defend.at(i);
-						if (srcTerritory->getOwner() == p) // src owned by issuer
-						{
-							srcTerritory->printAdjTerritory();
-							do
-							{
-								cout << "Which Territory would you like to Attack/Defend? (Case-Sensitive): ";
-								cin >> target;
-
-								if (!srcTerritory->isAdjacent(target))
-									cout << "Territory " << target << " is not adjacent to " << source << "." << endl;
-								else
-								{
-									do
-									{
-										cout << "Territory " << source << " has " << srcToAttack->numberOfArmies << " armies." << endl;
-										cout << "How many Armies would you like to move?: ";
-										cin >> numToMove;
-
-										if (numToMove <= 0 || numToMove > srcToAttack->numberOfArmies)
-											cout << "Number of Armies is below zero or higher than what's available." << endl;
-									} while (numToMove <= 0 || numToMove > targetToAttack->numberOfArmies);
-								}
-							} while (!srcTerritory->isAdjacent(target));
-
-							targetTerritory = srcTerritory->getAdjTerritoryByName(target);
-							p->getOrdersList()->add(new Airlift(p, srcTerritory, targetTerritory, numToMove)); //p current next numOfArmies
-							found = true;
-						}
-						else
-						{
-							cout << "This territory does not belong to you." << endl;
-							break;
-						}
-					}
-				}
-				if (!found)
-					cout << "Could not find the territory." << endl;
-			} while (!found);
-
-			cout << "Card Airlift will be played from " << source << " to " << target << "." << endl;
+			cardType = "AirliftCard";
 			break;
-		}
-
 		case 2:
-		{
-			cout << "List of Territories:" << endl;
-			for (int i = 0; i < attack.size(); i++)
-			{
-				cout << attack.at(i)->name << " ";
-			}
-			cout << endl << "Which Territory would you like to Bomb? (Case-Sensitive): ";
-			cin >> target;
-
-			do
-			{
-				for (int i = 0; i < attack.size(); i++)
-				{
-					if (attack.at(i)->name == target) // territory exists
-					{
-						found = true;
-						targetTerritory = attack.at(i);
-					}
-				}
-			} while (!found);
-			p->getOrdersList()->add(new Bomb(p, targetTerritory)); //p current next numOfArmies
-			
-			cout << "Card Bomb will be played on " << target << "." << endl;
+			cardType = "BombCard";
 			break;
-		}
-
 		case 3:
-		{
-
+			cardType = "BlockadeCard";
 			break;
-		}
-
 		case 4:
-		{
+			cardType = "DiplomacyCard";
+			break;
+		case 5:
+			cardType = "ReinforcementCard";
 			break;
 		}
-		}
-	}
-	
+		card = p->getCard(cardType);
+
+		if (card != NULL)
+			card->play();
+	} while (card == NULL);
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
 vector<Territory*> HumanPlayerStrategy::toAttack(vector<Territory*> t)
 {
+	Territory::sortTerritoriesByArmies(t, 1); // sort Territories by priority
 	return t; // return the sorted vector
 }
 
 // Returns the input vector of Territories sorted in increasing number of armies.
 vector<Territory*> HumanPlayerStrategy::toDefend(vector<Territory*> t)
 {
+	Territory::sortTerritoriesByArmies(t, 0); // sort Territories by priority
 	return t; // return the sorted vector
 }
 

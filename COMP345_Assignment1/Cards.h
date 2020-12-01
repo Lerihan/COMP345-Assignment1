@@ -22,7 +22,6 @@ class Deck;
 
 class Card {	
 	public:
-		string name;
 		Player* cardHolder;
 		Deck* d;
 

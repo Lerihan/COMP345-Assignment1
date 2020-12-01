@@ -183,6 +183,7 @@ bool Map::validate()
 	}
 
 	// deallocate memory
+	// TODO: loop through arrays to delete everything
 	delete[] visitedTerritories; 
 	delete[] visitedContinents;
 
