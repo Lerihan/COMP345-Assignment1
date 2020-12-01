@@ -50,6 +50,10 @@ MapLoader* SelectMapFormat(string mapFormat) {
          cout << "Map details: " << endl;
          MapLoader* mapLoader = SelectMapFormat(mapFormat);
          map = mapLoader->GetMap(mapName);
+		 cout << *map;
+		 map->printAdjTerritory(map->getTerritory(1));
+		 map->printAdjTerritory(map->getTerritory(2));
+		 map->printAdjTerritory(map->getTerritory(3));
          exit(0);
          
      }
