@@ -7,8 +7,6 @@ class MapLoader {
 
 private:
 	string* dominationFileName;
-	Map* finalMap;
-  
 public:
 	MapLoader(); //default constructor
 	MapLoader(MapLoader& map); //copy constructor
@@ -29,14 +27,15 @@ class ConquestFileReader {
 	private:
 		string* conquestFileName;
 	public:	
-		ConquestFileReader();
-		ConquestFileReader(string);
-		ConquestFileReader(ConquestFileReader& conquestFile);
-		ConquestFileReader& operator= (const ConquestFileReader& conquestFile);
-		Map* conquestReadMap(string fileName);
+		ConquestFileReader(); //default constructor
+		ConquestFileReader(string); //parametrized constructor
+		ConquestFileReader(ConquestFileReader& conquestFile); //copy constructor
+		ConquestFileReader& operator= (const ConquestFileReader& conquestFile); //assignment operator
+		Map* conquestReadMap(string fileName); 
 		string FirstComponent(string s);
 		vector<string> SplitWords(string s);
-		~ConquestFileReader();
+		friend istream& operator >> (istream& in, string conquestFileName);
+		~ConquestFileReader(); //destructor
 };
 
 class ConquestFileReaderAdapter: public MapLoader {
@@ -46,8 +45,8 @@ class ConquestFileReaderAdapter: public MapLoader {
 		Map* finalMap;
 	public:
 		virtual Map* GetMap(string filePath);
-		ConquestFileReaderAdapter();
-		~ConquestFileReaderAdapter();
-		ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter);
-		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter);
+		ConquestFileReaderAdapter(); //deault constructor
+		~ConquestFileReaderAdapter(); //destructor
+		ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter); //copy constructor
+		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter); //assignment operator
 };

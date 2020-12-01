@@ -70,28 +70,48 @@ Deck* GameEngine::getDeck()
 	return this->deck;
 }
 
+MapLoader* SelectMapFormat(string mapFormat) {
+	if (mapFormat == "conquest") {
+		ConquestFileReaderAdapter* conquestAdapter = new ConquestFileReaderAdapter();
+		return conquestAdapter;
+	}
+	if (mapFormat == "domination") {
+		MapLoader* mapLoader = new MapLoader();
+		return mapLoader;
+	}
+	else return nullptr;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;
-	MapLoader* mapLoader = new MapLoader();
+	string mapFormat;
 	bool isValid = false;
+	MapLoader* mapLoader = new ConquestFileReaderAdapter();
 
 	do
 	{
+		cout << "Select conquest or domination map format: ";
+		cin >> mapFormat;
+		mapLoader = SelectMapFormat(mapFormat);
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
-		map = mapLoader->GetMap(dominationMap);
+		if (mapLoader == nullptr) {
+			continue;
+		}
+		else {
+			map = mapLoader->GetMap(dominationMap);
+		}
 
 		if(map != NULL)
 			isValid = map->validate();
-
 		if (map == NULL || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == NULL || !isValid);
+	} while (map == NULL /*|| isValid*/);
 
-	delete mapLoader;
+	//delete mapLoader;
 }
 
 void GameEngine::createComponents()

@@ -120,7 +120,6 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 			if (hasContinent && hasCountries && hasBorders) {
 				cout << "Map File is valid" << endl;
-				//this->finalMap = map;
 				readFile.close();
 				return map;
 				delete newCountry; //deallocate memory (not sure if it does it correctly)
@@ -210,6 +209,12 @@ ConquestFileReader::ConquestFileReader(string conquestFileName)
 ConquestFileReader::ConquestFileReader(ConquestFileReader& conquestFile)
 {
 	conquestFileName = conquestFile.conquestFileName;
+}
+
+ConquestFileReader& ConquestFileReader::operator=(const ConquestFileReader& conquestFile)
+{
+	conquestFileName = conquestFile.conquestFileName;
+	return *this;
 }
 
 Map* ConquestFileReaderAdapter::GetMap(string filePath) {
@@ -305,11 +310,8 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 				}
 			}
 
-			readFile.close();
-
 			if (hasContinent && hasCountries) {
 				cout << "Map File is valid" << endl;
-				//this->finalMap = map;
 				readFile.close();
 				return map;
 				delete newCountry; //deallocate memory (not sure if it does it correctly)

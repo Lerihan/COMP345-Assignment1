@@ -16,7 +16,6 @@ MapLoader* SelectMapFormat(string mapFormat) {
     else return nullptr;
 }
 
-
  int main() {
 
      string mapFormat;
@@ -28,23 +27,6 @@ MapLoader* SelectMapFormat(string mapFormat) {
 
          cout << "Select conquest or domination map: " << endl;
          cin >> mapFormat;
-         /*if (mapFormat == "conquest") {
-             MapLoader* mapLoader = new ConquestFileReaderAdapter();
-             cout << "Select the map to play with: ";
-             cin >> mapName;
-             cout << "Map details: " << endl;
-             map = mapLoader->GetMap(mapName);
-             exit(0);
-         }
-         if (mapFormat == "domination") {
-             MapLoader* mapLoader = new MapLoader();
-             cout << "Select the map to play with: ";
-             cin >> mapName;
-             cout << "Map details: " << endl;
-             map = mapLoader->GetMap(mapName);
-             exit(0);
-         }*/
-
          cout << "Select the map to play with: ";
          cin >> mapName;
          cout << "Map details: " << endl;
