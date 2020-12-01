@@ -7,7 +7,9 @@
 #include "Order.h"
 using namespace std;
 
-//CARDS
+// ######################################
+// Card
+// ######################################
 //default constructor
 Card::Card() {
 }
@@ -17,14 +19,29 @@ Card::~Card() {
 	this->d = nullptr;
 }
 
-//assignment constructor
+// Assignment operator, performs shallow copy only.
 Card& Card::operator = (const Card& c) {
+	if (&c != this)
+	{
+		this->cardHolder = c.cardHolder;
+		this->d = c.d;
+	}
+
 	return *this;
 }
 
-//HAND
+// ######################################
+// Hand
+// ######################################
 //default constructor
 Hand::Hand() {
+	std::vector<Card*> cardsInHand;
+}
+
+Hand::Hand(Player* player)
+{
+	std::vector<Card*> cardsInHand;
+	this->player = player;
 }
 
 //copy constructor
@@ -47,20 +64,29 @@ Hand::~Hand() {
 	this->player = nullptr;
 }
 
-//assignment constructor
+// Assignment operator, performs shallow copy only.
 Hand& Hand::operator = (const Hand& h) {
-	player = h.player;
-	cardsInHand = h.cardsInHand;
+	if (&h != this)
+	{
+		this->player = h.player;
+		for (Card* c : h.cardsInHand)
+		{
+			this->cardsInHand.push_back(c);
+		}
+		//this->cardsInHand = h.cardsInHand;
+	}
 	return *this;
 }
 
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
+	/*
 	vector<Card*> h;
 	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
-	return h;
+	*/
+	return this->cardsInHand;
 }
 
 //stream insertion operators
@@ -131,9 +157,12 @@ Deck::~Deck()
 	this->cardsInDeck.clear();
 }
 
-//assignment constructor
+// Assignment operator, performs shallow copy only.
 Deck& Deck::operator = (const Deck& d) {
-	cardsInDeck = d.cardsInDeck;
+	if (&d != this)
+	{
+		this->cardsInDeck = d.cardsInDeck;
+	}
 	return *this;
 }
 
@@ -199,7 +228,7 @@ Territory* BombCard::getTarget() {
 void BombCard::play() {
 	Player* p = this->cardHolder;
 	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
-	Bomb* bombOrder = new Bomb(p,p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
+	Bomb* bombOrder = new Bomb(p, p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
 	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
@@ -215,6 +244,17 @@ void BombCard::play() {
 ostream& operator << (ostream& out, const BombCard& c) {
 	out << "BombCard";
 	return out;
+}
+
+// Assignment operator, performs shallow copy only.
+BombCard& BombCard::operator =(const BombCard& c)
+{
+	if (&c != this)
+	{
+		Card::operator=(c);
+		this->target = c.target;
+	}
+	return *this;
 }
 
 
@@ -245,6 +285,17 @@ ostream& operator << (ostream& out, const ReinforcementCard& c) {
 	return out;
 }
 
+// Assignment operator, performs shallow copy only.
+ReinforcementCard& ReinforcementCard::operator =(const ReinforcementCard& c)
+{
+	if (&c != this)
+	{
+		Card::operator=(c);
+	}
+	return *this;
+}
+
+
 // ######################################
 // BlockadeCard
 // ######################################
@@ -271,7 +322,7 @@ Territory* BlockadeCard::getTarget() {
 void BlockadeCard::play() {
 	Player* p = this->cardHolder;
 	//creates new block order where player's territory becomes neutral and the number of armies on that territory is multiplied
-	Blockade* blockOrder = new Blockade(p,p->toDefend().at(0));
+	Blockade* blockOrder = new Blockade(p, p->toDefend().at(0));
 	//adds new block order to the player's orderlist
 	p->getOrdersList()->add(blockOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Blockade Card from their hand.\n" << endl;
@@ -289,6 +340,18 @@ ostream& operator << (ostream& out, const BlockadeCard& c) {
 	out << "BlockadeCard";
 	return out;
 }
+
+// Assignment operator, performs shallow copy only.
+BlockadeCard& BlockadeCard::operator =(const BlockadeCard& c)
+{
+	if (&c != this)
+	{
+		Card::operator=(c);
+		this->target = c.target;
+	}
+	return *this;
+}
+
 
 // ######################################
 // AirliftCard
@@ -361,6 +424,19 @@ ostream& operator << (ostream& out, const AirliftCard& c) {
 	return out;
 }
 
+// Assignment operator, performs shallow copy only.
+AirliftCard& AirliftCard::operator =(const AirliftCard& c)
+{
+	if (&c != this)
+	{
+		Card::operator=(c);
+		this->current = c.current;
+		this->target = c.target;
+		this->numArmies = c.numArmies;
+	}
+	return *this;
+}
+
 // ######################################
 // DiplomacyCard
 // ######################################
@@ -409,6 +485,18 @@ void DiplomacyCard::play() {
 ostream& operator << (ostream& out, DiplomacyCard& c) {
 	 return out << "DiplomacyCard";
 }
+
+// Assignment operator, performs shallow copy only.
+DiplomacyCard& DiplomacyCard::operator =(const DiplomacyCard& c)
+{
+	if (&c != this)
+	{
+		Card::operator=(c);
+		this->enemy = c.enemy;
+	}
+	return *this;
+}
+
 
 string BombCard::getType() { return "BombCard"; }
 string ReinforcementCard::getType() { return "ReinforcementCard"; }

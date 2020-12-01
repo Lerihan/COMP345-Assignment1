@@ -23,7 +23,7 @@ int Player::totalPlayers = 1; // start at 0 so playerNumber matches the index of
 Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->hand = new Hand();
+	this->hand = new Hand(this);
 	this->orders = new OrdersList();
 
 	this->numOfArmies = 0;
@@ -46,30 +46,17 @@ Player::Player(string strategy) : Player()
 		this->strategy = new NeutralPlayerStrategy();
 }
 
-// Copy constructor, creates deep copy of each attribute.
+// Copy constructor, creates shallow copy of each attribute.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player::Player(Player& p)
 {
 	this->playerNumber = p.playerNumber;
-	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
-	// copy orders
-	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
-
-	// copy territories
-	this->territories = p.territories; // assumes Territory = operator is correctly implemented
-
+	this->hand = p.hand;
+	this->orders = p.orders;
+	this->territories = p.territories;
 	this->numOfArmies = p.numOfArmies;
 	this->eliminated = p.eliminated;
-
-	/*
-	// copy territories
-	for (int i = 0; i < p.territories.size(); i++)
-	{
-		this->territories.push_back(p.territories.at(i));
-	}
-	*/
-
-
+	this->reinforcementPool = p.reinforcementPool;
 }
 
 // Destructor deletes thiss Player object.
@@ -292,34 +279,17 @@ void Player::resetTotalPlayers()
 	this->totalPlayers = 1;
 }
 
-// Assignment operator, performs deep copy. Does not create deep copy of Territories, however.
-// NOTE: This assumes that this Player and the input Player DO NOT share pointers. Otherwise the self assignment check
-// will result in deleting the components to be copied.
+// Assignment operator, performs shallow copy only.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player& Player::operator =(const Player& player)
 {
 	if (&player != this)
 	{
-		// delete old values
-		delete this->hand;
-		delete this->orders;
-		for (int i = 0; i < this->territories.size(); i++)
-		{
-			delete this->territories.at(i);
-		}
-		this->territories.clear();
-
-
 		// assign new values
-		this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
-
-		for (int i = 0; i < player.territories.size(); i++)
-		{
-			this->territories.push_back(player.territories.at(i));
-		}
-
-		this->hand = new Hand(*player.hand);
-		this->orders = new OrdersList(*player.orders);
+		this->hand = player.hand;
+		this->territories = player.territories;
+		this->hand = player.hand;
+		this->orders = player.orders;
 		this->playerNumber = player.playerNumber;
 		this->numOfArmies = player.numOfArmies;
 		this->reinforcementPool = player.reinforcementPool;

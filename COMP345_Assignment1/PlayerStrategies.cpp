@@ -36,7 +36,7 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
 
-	if (p->getReinforcementPool() != 0) // only issue deploy orer is reinforcement pool is not empty
+	if (p->getReinforcementPool() != 0) // only issue deploy order is reinforcement pool is not empty
 	{
 		// deploy all reinforcements to the input Player's strongest Territory
 		p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
@@ -67,7 +67,16 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	currTerritory = nullptr;
 	adjTerritory = nullptr;
 
-	p->getHand()->getCardsInHand().at(0)->play(); // Player plays first Card in their Hand
+	/*
+	vector<Card*> v = p->getHand()->getCardsInHand();
+	if (v.size() != 0)
+	{
+		//cout << *p << endl;
+		v.at(0)->play(); // Player plays first Card in their Hand
+		//cout << *p << endl;
+		v.erase(v.begin()); // remove card from player's hand
+	}
+	*/
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
