@@ -90,10 +90,14 @@ int main()
 	//driverPart4();
 	
 	/**/
-	GameEngine g;
-	g.startGame();
-	g.startupPhase();
-	g.mainGameLoop();
+	GameEngine* g = new GameEngine();
+	g->startGame();
+	g->startupPhase();
+
+	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
+	g->mainGameLoop();
+
+	//cout << g << endl;
 	
 	
 

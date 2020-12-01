@@ -133,7 +133,8 @@ void GameStatisticsObserver::update() {
 
 	for (int i = 0; i < gameEngine->getPlayers().size(); i++) {
 		int playerOwnedTerritory = gameEngine->getPlayers()[i]->getTerritories().size();
-		cout << "Player " << gameEngine->getPlayers()[i]->getPlayerNumber() << " owns "<< 100.0*playerOwnedTerritory/totalTerritories << "% of the map."<< endl;
+		cout << "Player " << gameEngine->getPlayers()[i]->getPlayerNumber() << " owns "
+			<< 100.0*playerOwnedTerritory/totalTerritories << "% of the map."<< endl;
 		if (playerOwnedTerritory == 0) {
 			cout << gameEngine->getPlayers()[i]->getPlayerNumber() << " has been eliminated from the game." << endl;
 		}

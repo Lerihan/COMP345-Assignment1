@@ -9,6 +9,7 @@ using namespace std;
 class GameEngine : public Subject
 {
 public:
+	GameEngine();
 	GameEngine(GameEngine& game);
 	~GameEngine();
 	void startGame();

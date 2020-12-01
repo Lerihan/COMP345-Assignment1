@@ -68,14 +68,15 @@ Map::Map(const Map &m)
 	listOfContinents = m.listOfContinents;
 }
 
-/*
-* Assignment Operator override of map
-*/
+// Assignment operator, performs shallow copy only.
 Map& Map::operator = (const Map &m)
 {
-	name = m.name;
-	listOfContinents = m.listOfContinents;
-	listOfTerritories = m.listOfTerritories;
+	if (&m != this)
+	{
+		name = m.name;
+		listOfContinents = m.listOfContinents;
+		listOfTerritories = m.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -302,15 +303,17 @@ Continent::Continent(const Continent &c)
 	listOfTerritories = c.listOfTerritories;
 }
 
-// Continent Assignment Operator
+// Assignment operator, performs shallow copy only.
 Continent& Continent::operator = (const Continent &c)
 {
-	index = c.index;
-	name = c.name;
-	armyvalue = c.armyvalue;
-	listOfAdjContinents = c.listOfAdjContinents;
-	listOfTerritories = c.listOfTerritories;
-
+	if (&c != this)
+	{
+		index = c.index;
+		name = c.name;
+		armyvalue = c.armyvalue;
+		listOfAdjContinents = c.listOfAdjContinents;
+		listOfTerritories = c.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -457,13 +460,16 @@ Territory::Territory(const Territory &t)
 	this->owner = t.owner;
 }
 
-// Territory Assignment Operator
+// Assignment operator, performs shallow copy only.
 Territory& Territory::operator = (const Territory &t)
 {
-	index = t.index;
-	name = t.name;
-	listOfAdjTerritories = t.listOfAdjTerritories;
-	numberOfArmies = t.numberOfArmies;
+	if (&t != this)
+	{
+		index = t.index;
+		name = t.name;
+		listOfAdjTerritories = t.listOfAdjTerritories;
+		numberOfArmies = t.numberOfArmies;
+	}
 	return *this;
 }
 

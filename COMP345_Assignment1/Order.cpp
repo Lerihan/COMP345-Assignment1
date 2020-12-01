@@ -654,7 +654,10 @@ OrdersList::OrdersList(const OrdersList& oL)
 */
 OrdersList& OrdersList::operator=(const OrdersList& oL) 
 {
-	ordersList = oL.ordersList;
+	if (&oL != this)
+	{
+		this->ordersList = oL.ordersList;
+	}
 	return *this;
 }
 
