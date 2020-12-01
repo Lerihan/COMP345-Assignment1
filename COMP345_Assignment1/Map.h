@@ -94,7 +94,9 @@ public:
 	bool isAdjacent(int id1, int id2);
 	void printContinents();
 	Continent* getContinent(int id);
+	Continent* getContinentByName(string name);
 	Territory* getTerritory(int id);
+	Territory* getTerritoryByName(string name);
 
 	//TODO: Might delete. Implemented in Continent and Territory class already
 	void printAdjContinents(Continent* c);

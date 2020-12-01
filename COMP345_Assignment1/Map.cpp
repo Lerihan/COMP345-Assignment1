@@ -401,6 +401,16 @@ Continent* Map::getContinent(int id)
 	return listOfContinents[id - 1]; //indices start at 1
 }
 
+Continent * Map::getContinentByName(string name)
+{
+	for (int i = 0; i < listOfContinents.size(); i++)
+	{
+		if (listOfContinents.at(i)->name == name)
+			return listOfContinents.at(i);
+	}
+	return NULL;
+}
+
 /*
 * Returns a territory object
 * id is index of that territory (assigned in maploader from file) and NOT the vector id
@@ -408,6 +418,16 @@ Continent* Map::getContinent(int id)
 Territory* Map::getTerritory(int id)
 {
 	return listOfTerritories[id - 1];
+}
+
+Territory * Map::getTerritoryByName(string name)
+{
+	for (int i = 0; i < listOfTerritories.size(); i++)
+	{
+		if (listOfTerritories.at(i)->name == name)
+			return listOfTerritories.at(i);
+	}
+	return NULL;
 }
 
 // Checks if the input Player owns all Territories of this Continent. Returns true if yes, otherwise returns false.
