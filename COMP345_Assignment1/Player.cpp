@@ -29,6 +29,7 @@ Player::Player()
 	this->numOfArmies = 0;
 	this->reinforcementPool = 0;
 	this->eliminated = false;
+	this->attacked = false;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -56,6 +57,7 @@ Player::Player(Player& p)
 	this->territories = p.territories;
 	this->numOfArmies = p.numOfArmies;
 	this->eliminated = p.eliminated;
+	this->attacked = p.attacked;
 	this->reinforcementPool = p.reinforcementPool;
 }
 
@@ -271,6 +273,14 @@ void Player::eliminatePlayer()
 	this->eliminated = true;
 }
 
+bool Player::hasAttacked() {
+	return this->attacked;
+}
+
+void Player::setAttacked(bool b) {
+	this->attacked = b;
+}
+
 // Resets the total number of Players to 0.
 // needed if creating 2 GameEngines in one mian()
 // used for part 3 driver only
@@ -294,6 +304,7 @@ Player& Player::operator =(const Player& player)
 		this->numOfArmies = player.numOfArmies;
 		this->reinforcementPool = player.reinforcementPool;
 		this->eliminated = player.eliminated;
+		this->attacked = player.attacked;
 	}
 
 	return *this;

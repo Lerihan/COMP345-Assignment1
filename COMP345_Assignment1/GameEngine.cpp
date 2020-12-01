@@ -369,6 +369,10 @@ void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	phase = "Issue Order Phase";
 	currPlayer->issueOrder();
+	for (int i = 0; i < currPlayer->getOrders().size(); i++) {
+		if (currPlayer->getOrders().at(i)->getType() == "Advance" || currPlayer->getOrders().at(i)->getType() == "Airlift")
+			currPlayer->setAttacked(true);
+	}
 }
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
@@ -429,6 +433,13 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			currPlayer->getOrders().at(i)->execute();
 		}
 	}
+
+	if (currPlayer->hasAttacked()) {
+		this->deck->draw(currPlayer);
+		currPlayer->setAttacked(false);
+	}		
+
+
 	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 
