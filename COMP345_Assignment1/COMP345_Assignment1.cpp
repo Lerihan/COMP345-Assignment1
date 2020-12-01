@@ -12,6 +12,7 @@
 #include "Cards.h"
 #include "Order.h"
 #include "GameEngine.h"
+#include "PlayerStrategies.h"
 
 /*
 * We can keep this file to test out things here and there
@@ -32,8 +33,8 @@ int main()
 
 	cout << "TO ATTACK" << endl
 		<< "===========================" << endl;
-	Territory* t = NULL;
-	srand(time(NULL));  // Initialize random number generator.
+	Territory* t = nullptr;
+	srand(time(nullptr));  // Initialize random number generator.
 	for (int i = 0; i < map->listOfTerritories.size(); i++)
 	{
 		t = map->listOfTerritories.at(i);
@@ -43,15 +44,19 @@ int main()
 	cout << endl;
 
 	Player* temp = new Player();
+	PlayerStrategy* aggressive = new AggressivePlayerStrategy();
+	temp->setStrategy(aggressive);
 	temp->territories = map->listOfTerritories;
 	vector<Territory*> attack = temp->toAttack();
 	for (int i = 0; i < attack.size(); i++)
 	{
-		t = attack.at(i);
+		t = attack[i];
 		cout << t->name << " = " << t->numberOfArmies << endl;
+		//cout << *attack.at(i) << endl;
 	}
 
-	cout << endl <<  "TO DEFEND" << endl
+	/*
+	cout << endl << "TO DEFEND" << endl
 		<< "===========================" << endl;
 	for (int i = 0; i < temp->getTerritories().size(); i++) 
 	{
@@ -73,7 +78,7 @@ int main()
 		t = defend.at(i);
 		cout << t->name << " = " << t->numberOfArmies << endl;
 	}
-
+	
 
 	delete mapLoader;
 	//delete temp;
@@ -85,10 +90,14 @@ int main()
 	//driverPart4();
 	
 	/**/
-	GameEngine g;
-	g.startGame();
-	g.startupPhase();
-	g.mainGameLoop();
+	GameEngine* g = new GameEngine();
+	g->startGame();
+	g->startupPhase();
+
+	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
+	g->mainGameLoop();
+
+	//cout << g << endl;
 	
 	
 
@@ -175,8 +184,8 @@ void driverPart3()
 	// test bonus reinforcements
 	cout << "Give the player all territories of a continent to show they get the bonus army value of reinforcements:" << endl
 		<< "------------------------------------------------------------------------------------------------------" << endl;
-	Player* pTemp = NULL;
-	Territory* tTemp = NULL;
+	Player* pTemp = nullptr;
+	Territory* tTemp = nullptr;
 	for (int i = 0; i < g->getPlayers().size(); i++)
 	{
 		pTemp = g->getPlayers()[i];
@@ -190,8 +199,8 @@ void driverPart3()
 			}
 		}
 	}
-	pTemp = NULL;
-	tTemp = NULL;
+	pTemp = nullptr;
+	tTemp = nullptr;
 	
 	g->reinforcementPhase(p);
 	cout << *p << endl;
@@ -220,7 +229,7 @@ void driverPart3()
 
 	// (7) the game ends when a single player controls all the territories
 	// give our Player all Territories so he can win the game
-	Territory* t = NULL; // for readability
+	Territory* t = nullptr; // for readability
 	for (int i = 0; i < g->getMap()->listOfTerritories.size(); i++)
 	{
 		t = g->getMap()->listOfTerritories.at(i);
@@ -230,7 +239,7 @@ void driverPart3()
 			p->addTerritory(t);
 		}
 	}
-	t = NULL;
+	t = nullptr;
 
 	cout << "Print Players to show their Territories, and call the mainGameLoop() to kick the eliminated Player and declare the winner:" << endl
 		<< "--------------------------------------------------------------------------------------------------------------------------" << endl;

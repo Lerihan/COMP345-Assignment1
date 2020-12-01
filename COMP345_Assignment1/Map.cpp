@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <string>
+#include <algorithm>
 
 /*
 * Function that connects continent 2 to continent 1 (adjacency) by adding it to a listOfAdjContinents vector
@@ -67,14 +68,15 @@ Map::Map(const Map &m)
 	listOfContinents = m.listOfContinents;
 }
 
-/*
-* Assignment Operator override of map
-*/
+// Assignment operator, performs shallow copy only.
 Map& Map::operator = (const Map &m)
 {
-	name = m.name;
-	listOfContinents = m.listOfContinents;
-	listOfTerritories = m.listOfTerritories;
+	if (&m != this)
+	{
+		name = m.name;
+		listOfContinents = m.listOfContinents;
+		listOfTerritories = m.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -85,13 +87,13 @@ Map::~Map()
 	for (int i = 0; i < this->listOfContinents.size(); i++)
 	{
 		delete this->listOfContinents[i];
-		this->listOfContinents[i] = NULL;
+		this->listOfContinents[i] = nullptr;
 	}
 	this->listOfContinents.clear();
 
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 }
@@ -301,15 +303,17 @@ Continent::Continent(const Continent &c)
 	listOfTerritories = c.listOfTerritories;
 }
 
-// Continent Assignment Operator
+// Assignment operator, performs shallow copy only.
 Continent& Continent::operator = (const Continent &c)
 {
-	index = c.index;
-	name = c.name;
-	armyvalue = c.armyvalue;
-	listOfAdjContinents = c.listOfAdjContinents;
-	listOfTerritories = c.listOfTerritories;
-
+	if (&c != this)
+	{
+		index = c.index;
+		name = c.name;
+		armyvalue = c.armyvalue;
+		listOfAdjContinents = c.listOfAdjContinents;
+		listOfTerritories = c.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -320,13 +324,13 @@ Continent::~Continent()
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
 		delete this->listOfTerritories[i];
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 
 	for (int i = 0; i < this->listOfAdjContinents.size(); i++)
 	{
-		this->listOfAdjContinents[i] = NULL;
+		this->listOfAdjContinents[i] = nullptr;
 	}
 	this->listOfAdjContinents.clear();
 }
@@ -449,7 +453,7 @@ Territory::Territory()
 	name = "";
 	continentIndex = 0;
 	numberOfArmies = 1;
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Constructor for Territory
@@ -461,7 +465,7 @@ Territory::Territory(int id, string n, int continentid)
 	continentIndex = continentid;
 	numberOfArmies = 1;
 
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Territory Copy Constructor
@@ -476,23 +480,26 @@ Territory::Territory(const Territory &t)
 	this->owner = t.owner;
 }
 
-// Territory Assignment Operator
+// Assignment operator, performs shallow copy only.
 Territory& Territory::operator = (const Territory &t)
 {
-	index = t.index;
-	name = t.name;
-	listOfAdjTerritories = t.listOfAdjTerritories;
-	numberOfArmies = t.numberOfArmies;
+	if (&t != this)
+	{
+		index = t.index;
+		name = t.name;
+		listOfAdjTerritories = t.listOfAdjTerritories;
+		numberOfArmies = t.numberOfArmies;
+	}
 	return *this;
 }
 
 // Destructor
 Territory::~Territory()
 {
-	this->owner = NULL;
+	this->owner = nullptr;
 	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
 	{
-		this->listOfAdjTerritories[i] = NULL;
+		this->listOfAdjTerritories[i] = nullptr;
 	}
 	this->listOfAdjTerritories.clear();
 }
@@ -522,7 +529,7 @@ Territory* Continent::getTerritory(int id)
 			return listOfTerritories[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /*
@@ -581,13 +588,40 @@ bool Territory::containsTerritory(vector<Territory*> territories)
 	{
 		for (int i = 0; i < territories.size(); i++)
 		{
-			if (territories[i] == this)
+			if (territories.at(i) == this)
 				return true;
 		}
 	}
 	return false;
 }
-	
+
+// Compares the two input Territories according to their number of armies.
+// returns true if t1 has less armies, returns false otherwise
+// used in sorting methods for toAttack() and toDefend()
+bool Territory::compareNumArmiesLessThan(Territory* t1, Territory* t2)
+{
+	return (t1->numberOfArmies < t2->numberOfArmies);
+}
+
+// Compares the two input Territories according to their number of armies.
+// returns true if t1 has mroe armies, returns false otherwise
+// used in sorting methods for toAttack() and toDefend()
+bool Territory::compareNumArmiesGreaterThan(Territory* t1, Territory* t2)
+{
+	return (t1->numberOfArmies > t2->numberOfArmies);
+}
+
+// Sort the input vector of Territories by number of armies
+// set increasing parameter = 1 for increasing (least armies to most armies); = 0 for decreasing (least armies to most)
+// Uses bubble sort
+void Territory::sortTerritoriesByArmies(vector<Territory*>& toAttack, int increasing)
+{
+	if (increasing == 1)
+		sort(toAttack.begin(), toAttack.end(), compareNumArmiesLessThan);
+	else
+		sort(toAttack.begin(), toAttack.end(), compareNumArmiesGreaterThan);
+}
+
 
 // Stream Override for territory
 // cout << TerritoryOBJ will print the following
@@ -603,8 +637,9 @@ ostream& operator << (ostream &out, const Territory &t)
 	{
 		cout << t.listOfAdjTerritories.at(i)->name << " -> ";
 	}
-
 	cout << endl;
+
+	cout << "continent " << t.continentIndex << " territory " << t.index << endl;
 	out << "--------------------------------------" << endl;
 
 	return out;

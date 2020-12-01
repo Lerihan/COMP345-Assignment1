@@ -10,7 +10,7 @@ using namespace std;
 
 //Default Constructor
 MapLoader::MapLoader() {
-	this->dominationFileName = NULL;
+	this->dominationFileName = nullptr;
 }
 
 //Copy Constructor
@@ -54,7 +54,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 		if (!readFile) {
 			cout << "Can't read file" << endl;
-			return NULL;
+			return nullptr;
 		}
 		else {
 			while (getline(readFile, line))
@@ -129,12 +129,12 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 			else {
 				cout << "Map File is invalid" << endl;
 				readFile.close();
-				return NULL;
+				return nullptr;
 			}
 		}
 	}
 	catch (const std::exception& e) {
-		return NULL;
+		return nullptr;
 		cout << e.what() << endl;
 	}
 }

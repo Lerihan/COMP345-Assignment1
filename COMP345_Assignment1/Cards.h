@@ -11,13 +11,6 @@
 #include "Order.h"
 
 class Player;
-
-// needed Order subclasses
-//class Airlift;
-//class Bomb;
-//class Blockade;
-//class Negotiate;
-
 class Deck;
 
 class Card {	
@@ -31,9 +24,7 @@ class Card {
 		virtual void play() = 0;
 		virtual string getType() = 0;
 
-		Card& operator = (const Card& c);
-		//friend ostream& operator << (ostream& out, const Card& c);
-		friend istream& operator >> (istream& in, const Card& c);
+		virtual Card& operator =(const Card& c);
 };
 
 class BombCard : public Card {
@@ -50,6 +41,7 @@ class BombCard : public Card {
 		void setTarget(Territory* target);
 		Territory* getTarget();
 		friend ostream& operator << (ostream& out, const BombCard& c);
+		BombCard& operator =(const BombCard& c);
 
 };
 
@@ -64,6 +56,7 @@ class ReinforcementCard : public Card {
 		string getType();
 
 		friend ostream& operator << (ostream& out, const ReinforcementCard& c);
+		ReinforcementCard& operator =(const ReinforcementCard& c);
 };
 
 class BlockadeCard : public Card {
@@ -81,6 +74,7 @@ public:
 	void setTarget(Territory* target);
 	Territory* getTarget();
 	friend ostream& operator << (ostream& out, const BlockadeCard& c);
+	BlockadeCard& operator =(const BlockadeCard& c);
 };
 
 class AirliftCard : public Card {
@@ -104,6 +98,8 @@ public:
 	void setNumArmies();
 	int getNumArmies(int numArmies);
 	friend ostream& operator << (ostream& out, const AirliftCard& c);
+	AirliftCard& operator =(const AirliftCard& c);
+
 };
 
 class DiplomacyCard : public Card {
@@ -121,6 +117,8 @@ public:
 	void setEnemy(Player* enemy);
 	Player* getEnemy();
 	friend ostream& operator << (ostream& out, const DiplomacyCard& c);
+	DiplomacyCard& operator =(const DiplomacyCard& c);
+
 };
 
 class Hand {
@@ -130,10 +128,11 @@ protected:
 public:
 	std::vector<Card*> cardsInHand;
 	Hand();
+	Hand(Player* player);
 	Hand(Hand& player);
 	Hand(Player* playerName, std::vector<Card*> playersCards);
 	~Hand();
-	Hand& operator = (const Hand &h);
+	Hand& operator =(const Hand &h);
 	std::vector<Card*> getCardsInHand();
 	void play();
 	friend ostream& operator << (ostream& out, const Hand& h);

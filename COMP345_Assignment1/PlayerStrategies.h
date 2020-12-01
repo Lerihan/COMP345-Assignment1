@@ -1,31 +1,59 @@
 #pragma once
 
 #include "Player.h"
+#include "Map.h"
 
-class PlayerStratgy
+class Order;
+class Territory;
+class Player;
+
+class PlayerStrategy
 {
 	public:
-		virtual void issueOrder(Order* o) = 0;
-		virtual vector<Territory*> toDefend() = 0; // returns vector of arbitrary Territories
-		virtual vector<Territory*> toAttack() = 0; // returns vector of arbitrary Territories
+		virtual void issueOrder(Player* p) = 0;
+		virtual vector<Territory*> toDefend(vector<Territory*> t) = 0;
+		virtual vector<Territory*> toAttack(vector<Territory*> t) = 0;
 };
 
-class HumanPlayerStrategy : PlayerStratgy
+class HumanPlayerStrategy : public PlayerStrategy
 {
+	public:
+		HumanPlayerStrategy();
 
-};
-
-class AggressivePlayerStrategy : PlayerStratgy
-{
-
-};
-
-class BenevolentPlayerStrategy : PlayerStratgy
-{
+		void issueOrder(Player* p);
+		vector<Territory*> toDefend(vector<Territory*> t);
+		vector<Territory*> toAttack(vector<Territory*> t);
 
 };
 
-class NeutralPlayerStrategy : PlayerStratgy
+class AggressivePlayerStrategy : public PlayerStrategy
 {
+	public:
+		AggressivePlayerStrategy();
+
+		void issueOrder(Player* p);
+		vector<Territory*> toDefend(vector<Territory*> t);
+		vector<Territory*> toAttack(vector<Territory*> t);
+};
+
+class BenevolentPlayerStrategy : public PlayerStrategy
+{
+	public:
+		BenevolentPlayerStrategy();
+
+		void issueOrder(Player* p);
+		vector<Territory*> toDefend(vector<Territory*> t);
+		vector<Territory*> toAttack(vector<Territory*> t);
+
+};
+
+class NeutralPlayerStrategy :public  PlayerStrategy
+{
+	public:
+		NeutralPlayerStrategy();
+
+		void issueOrder(Player* p);
+		vector<Territory*> toDefend(vector<Territory*> t);
+		vector<Territory*> toAttack(vector<Territory*> t);
 
 };
