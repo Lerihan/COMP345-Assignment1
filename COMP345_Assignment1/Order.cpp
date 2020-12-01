@@ -244,7 +244,6 @@ bool Advance::execute()
 
 				else if (rand() % 10 < 7)
 					current->removeTroops(1);
-					numOfArmies--;
 			}
 
 			if (next->numberOfArmies == 0) // if next owner (enemy) loses
@@ -252,7 +251,7 @@ bool Advance::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				player->addTerritory(next); // add Territory to winning Player
 				next->addTroops(numOfArmies);
-				cout << "ADVANCE ORDER (to attack): Player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 			 
 			else if (current->numberOfArmies == 0) //if player loses
@@ -522,7 +521,6 @@ bool Airlift::execute()
 
 				else if (rand() % 10 < 7)
 					current->removeTroops(1);
-				numOfArmies--;
 			}
 
 			if (next->numberOfArmies == 0)

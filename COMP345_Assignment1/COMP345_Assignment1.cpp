@@ -270,6 +270,8 @@ void driverPart4()
 	Territory* t6 = new Territory(6, "Phillipines", 1);
 
 	t3->addTroops(100);
+	t1->addTroops(50);
+	t2->addTroops(20);
 
 	t1->listOfAdjTerritories.push_back(t2);
 	t2->listOfAdjTerritories.push_back(t1);
