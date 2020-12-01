@@ -128,7 +128,7 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 		//if territory's army is greater than idealNumOfArmy, remove excess and add to reinforcement pool
 		else if (idealNumOfArmy < currTerritory->numberOfArmies) {
 			int numOfExtraArmy = currTerritory->numberOfArmies - idealNumOfArmy;		//calculate how much army does the player need to equaly distribute the reinforcement
-			defend.at(i)->removeTroops(numOfExtraArmy);									//removes troops from the Territory
+			currTerritory->removeTroops(numOfExtraArmy);									//removes troops from the Territory
 			p->getOrdersList()->add(new Deploy(p, currTerritory, 0));					//makes a deploy order with 0 reinforcements
 			p->addReinforcements(numOfExtraArmy);										//add that amount to the reinforcement pool
 		}
