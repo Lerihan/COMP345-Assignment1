@@ -521,7 +521,6 @@ bool Airlift::execute()
 
 				else if (rand() % 10 < 7)
 					current->removeTroops(1);
-				numOfArmies--;
 			}
 
 			if (next->numberOfArmies == 0)
