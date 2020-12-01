@@ -68,14 +68,15 @@ Map::Map(const Map &m)
 	listOfContinents = m.listOfContinents;
 }
 
-/*
-* Assignment Operator override of map
-*/
+// Assignment operator, performs shallow copy only.
 Map& Map::operator = (const Map &m)
 {
-	name = m.name;
-	listOfContinents = m.listOfContinents;
-	listOfTerritories = m.listOfTerritories;
+	if (&m != this)
+	{
+		name = m.name;
+		listOfContinents = m.listOfContinents;
+		listOfTerritories = m.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -86,13 +87,13 @@ Map::~Map()
 	for (int i = 0; i < this->listOfContinents.size(); i++)
 	{
 		delete this->listOfContinents[i];
-		this->listOfContinents[i] = NULL;
+		this->listOfContinents[i] = nullptr;
 	}
 	this->listOfContinents.clear();
 
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 }
@@ -302,15 +303,17 @@ Continent::Continent(const Continent &c)
 	listOfTerritories = c.listOfTerritories;
 }
 
-// Continent Assignment Operator
+// Assignment operator, performs shallow copy only.
 Continent& Continent::operator = (const Continent &c)
 {
-	index = c.index;
-	name = c.name;
-	armyvalue = c.armyvalue;
-	listOfAdjContinents = c.listOfAdjContinents;
-	listOfTerritories = c.listOfTerritories;
-
+	if (&c != this)
+	{
+		index = c.index;
+		name = c.name;
+		armyvalue = c.armyvalue;
+		listOfAdjContinents = c.listOfAdjContinents;
+		listOfTerritories = c.listOfTerritories;
+	}
 	return *this;
 }
 
@@ -321,13 +324,13 @@ Continent::~Continent()
 	for (int i = 0; i < this->listOfTerritories.size(); i++)
 	{
 		delete this->listOfTerritories[i];
-		this->listOfTerritories[i] = NULL;
+		this->listOfTerritories[i] = nullptr;
 	}
 	this->listOfTerritories.clear();
 
 	for (int i = 0; i < this->listOfAdjContinents.size(); i++)
 	{
-		this->listOfAdjContinents[i] = NULL;
+		this->listOfAdjContinents[i] = nullptr;
 	}
 	this->listOfAdjContinents.clear();
 }
@@ -430,7 +433,7 @@ Territory::Territory()
 	name = "";
 	continentIndex = 0;
 	numberOfArmies = 1;
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Constructor for Territory
@@ -442,7 +445,7 @@ Territory::Territory(int id, string n, int continentid)
 	continentIndex = continentid;
 	numberOfArmies = 1;
 
-	this->owner = NULL;
+	this->owner = nullptr;
 }
 
 // Territory Copy Constructor
@@ -457,23 +460,26 @@ Territory::Territory(const Territory &t)
 	this->owner = t.owner;
 }
 
-// Territory Assignment Operator
+// Assignment operator, performs shallow copy only.
 Territory& Territory::operator = (const Territory &t)
 {
-	index = t.index;
-	name = t.name;
-	listOfAdjTerritories = t.listOfAdjTerritories;
-	numberOfArmies = t.numberOfArmies;
+	if (&t != this)
+	{
+		index = t.index;
+		name = t.name;
+		listOfAdjTerritories = t.listOfAdjTerritories;
+		numberOfArmies = t.numberOfArmies;
+	}
 	return *this;
 }
 
 // Destructor
 Territory::~Territory()
 {
-	this->owner = NULL;
+	this->owner = nullptr;
 	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
 	{
-		this->listOfAdjTerritories[i] = NULL;
+		this->listOfAdjTerritories[i] = nullptr;
 	}
 	this->listOfAdjTerritories.clear();
 }
@@ -503,7 +509,7 @@ Territory* Continent::getTerritory(int id)
 			return listOfTerritories[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /*

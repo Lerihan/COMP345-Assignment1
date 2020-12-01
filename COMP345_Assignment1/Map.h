@@ -22,7 +22,6 @@ public:
 	Territory(); // Default Constructor
 	Territory(int id, string n, int continentid); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
 	Territory(const Territory &t); // Copy Constructor
-	Territory& operator = (const Territory &t); // Assignment operator
 	~Territory(); // Destructor
 
 	void printAdjTerritory();
@@ -38,6 +37,7 @@ public:
 
 	friend bool operator ==(const Territory& t1, const Territory& t2);
 	friend ostream & operator << (ostream &out, const Territory &c);
+	Territory& operator = (const Territory& t); // Assignment operator
 
 	int index;
 	int continentIndex;
@@ -57,7 +57,6 @@ public:
 	Continent(); // Default Constructor
 	Continent(int id, string n, int av);
 	Continent(const Continent &c); // Copy Constructor
-	Continent& operator = (const Continent &c); // Assignment operator
 	~Continent(); // Destructor
 
 	void addTerritory(Territory* t);
@@ -68,6 +67,7 @@ public:
 	bool controlsContinent(Player* player); // checks if the input Player owns the entire Continent
 
 	friend ostream & operator << (ostream &out, const Continent &c);
+	Continent& operator = (const Continent& c); // Assignment operator
 
 	int index;
 	string name;
@@ -84,7 +84,6 @@ public:
 	Map(); // Default Constructor
 	Map(string n);
 	Map(const Map &m); // Copy Constructor
-	Map& operator = (const Map &m); // Assignment operator
 	~Map(); // Destructor
 
 
@@ -102,7 +101,7 @@ public:
 	void printAdjTerritory(Territory* t);
 
 	friend ostream & operator << (ostream &out, const Map &m);
-	//friend istream & operator >> (istream &in, Map &c);
+	Map& operator = (const Map& m); // Assignment operator
 
 	string name;
 	vector<Continent*> listOfContinents;

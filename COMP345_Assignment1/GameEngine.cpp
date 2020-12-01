@@ -6,16 +6,47 @@
 #include <chrono> 
 #include "GameEngine.h"
 
+// Default constructor, sets all attributes to default values. They are initialiazed according to game rules in the startGame() method.
+GameEngine::GameEngine()
+{
+	this->map = nullptr;
+	vector<Player*> players;
+	this->firstPlayer = nullptr;
+	this->deck = nullptr;;
+	this->numOfPlayers = 0;
+	this->observerOn = false;
+	this->phase = "empty";
+}
+
+// Copy constructor. Creates a deep copy of this GameEngine, and all of its components.
+// TODO: how to copy first player
+GameEngine::GameEngine(GameEngine& game)
+{
+	this->map = new Map(*game.map);
+	this->players;
+	for (int i = 0; i < game.players.size(); i++)
+	{
+		this->players.push_back(new Player(*game.players.at(i)));
+	}
+	this->firstPlayer = game.firstPlayer;
+	this->deck = new Deck(*game.deck);
+	this->numOfPlayers = game.numOfPlayers;
+	this->observerOn = game.observerOn;
+	this->phase = game.phase;
+}
+
+// Destructor
+// This should be the only destructor called so it deletes all corresponding components (Map, Players, Deck, etc).
 GameEngine::~GameEngine()
 {
 	delete this->map;
 	delete this->deck;
-	this->firstPlayer = NULL;
+	this->firstPlayer = nullptr;
 
 	for (int i = 0; i < this->players.size(); i++)
 	{
 		delete this->players[i];
-		this->players[i] = NULL;
+		this->players[i] = nullptr;
 	}
 	this->players.clear();
 }
@@ -80,21 +111,21 @@ void GameEngine::selectMap()
 	{
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
-		map = mapLoader->GetMap(dominationMap);
+		this->map = mapLoader->GetMap(dominationMap);
 
-		if(map != NULL)
+		if(map != nullptr)
 			isValid = map->validate();
 
-		if (map == NULL || !isValid)
+		if (map == nullptr || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == NULL || !isValid);
+	} while (map == nullptr || !isValid);
 
 	delete mapLoader;
 }
 
-// for now sets alla Players to Aggressive strategy
+// for now sets all Players to Aggressive strategy
 void GameEngine::createComponents()
 {
 	// how many players
@@ -112,20 +143,21 @@ void GameEngine::createComponents()
 	numOfPlayers = playernum; // set number of players
 
 	// create deck and players with set hand
-	deck = new Deck();
+	this->deck = new Deck();
 
-	for (int i = 0; i < playernum; i++)
+	Player* p = nullptr; // for readability
+	for (int i = 0; i < numOfPlayers; i++)
 	{
-		Player* p = new Player("aggressive"); // deallocate memory later
+		p = new Player("aggressive"); // deallocate memory later
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)
 		{
-			deck->draw(p);
+			this->deck->draw(p);
 		}
-
-		players.push_back(p);
+		this->players.push_back(p);
 	}
+	p = nullptr;
 }
 
 void GameEngine::setObservers()
@@ -218,17 +250,17 @@ void GameEngine::setRandomTerritory()
 void GameEngine::mainGameLoop()
 {
 	int rounds = 0; // number of rounds the game lasted
-	Player* winner = NULL;
-	while (winner == NULL)
+	Player* winner = nullptr;
+	while (winner == nullptr)
 	{
-		if (rounds == 1000) { // end game if it reaches deadlock state
-			// after 100 rounds right now, change this if we find it takes more than 1000 rounds to actually end the game
+		if (rounds == 100) { // end game if it reaches deadlock state
+			// change number if we find it takes more rounds to actually end the game
 			cout << "A stalemate has been reached. The game will now exit." << endl;
 			return;
 		}
 		kickPlayers(); // check if a Player owns no Territories; if yes, kick them from the game
 		winner = checkWinner(); // check if a Player has won the game
-		if (winner != NULL)
+		if (winner != nullptr)
 		{
 			break;
 		}
@@ -242,9 +274,9 @@ void GameEngine::mainGameLoop()
 		cout << "--------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players.at(i)->isEliminated())
 			{
-				reinforcementPhase(players[i]);
+				reinforcementPhase(players.at(i));
 			}
 		}
 		cout << endl;
@@ -274,9 +306,10 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
+		cout << *(this->players.at(0)) << endl;
+		cout << *(this->players.at(1)) << endl;
 
-		notify();
+		//notify();
 	}
 	endGamePhase(winner);
 }
@@ -291,14 +324,14 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 
 	// check if Player owns whole Continent
 	int bonusArmies = 0; // if Player gets bonus reinforcements from owning whole Continent
-	Continent* currContinent = NULL; // for readability
+	Continent* currContinent = nullptr; // for readability
 	for (int i = 0; i < map->listOfContinents.size(); i++ )
 	{
 		currContinent = map->listOfContinents[i];
 		if (currContinent->controlsContinent(currPlayer))
 			bonusArmies += currContinent->armyvalue;
 	}
-	currContinent = NULL;
+	currContinent = nullptr;
 
 	// Player gets number of armies equal to their number of Territories / 3, unless this number is less than 3
 	if ((currPlayer->getTerritories().size() / 3) > newArmies)
@@ -315,80 +348,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	phase = "Issue Order Phase";
-
 	currPlayer->issueOrder();
-
-	// old method, kept commented just in case
-	/*
-	// issue Deploy orders
-	// for simplicity, each Deploy order will deploy all of the Player's reinforcement pool
-	// based on the assignment instructions it seems as if the reiforcements should be removed from the pool here, instead
-	// of in the execution phase, so that's what I'm doing
-	int toDeploy = currPlayer->getReinforcementPool();
-	currPlayer->issueOrder(new Deploy(currPlayer, currPlayer->toDefend().at(0), toDeploy));
-	currPlayer->removeReinforcements(toDeploy);
-	cout << "Player " << currPlayer->getPlayerNumber() << " issued a Deploy order." << endl;
-	//cout << *currPlayer << endl;
-
-	// TODO: if toAttack() vector is empty, do an Advance order to defend instead
-	// issue Advance orders
-	// for simplicity, each Advance order will move half the armies from the source Territory to the target Territory
-	// first issue an advance order to attack
-	Territory* target = NULL;
-	Territory* source = NULL;
-	if (currPlayer->toAttack().size() != 0) // only issue an attacking Advance order if there are adjacent enemy Territories
-	{
-		target = currPlayer->toAttack().at(0); // first Territory returned by toAttack() is the Territory to attack
-		source = target; // Territory to move armies from
-		for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
-		{
-			// find the first adjacent Territory of toAttack that the Player owns to take armies from
-			if (target->listOfAdjTerritories[i]->owner == currPlayer)
-			{
-				source = target->listOfAdjTerritories[i];
-				break;
-			}
-		}
-
-		// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
-		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
-		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-	}
-	//cout << *currPlayer << endl;
-
-	// now issue an advance order to defend
-	target = currPlayer->toDefend().at(0); // first Territory returned by toDefend() is the Territory to defend
-	source = NULL; // same as target unless a better choice is found in loop below
-	int maxArmies = 0;
-	for (int i = 0; i < target->listOfAdjTerritories.size(); i++)
-	{
-		if (target->listOfAdjTerritories[i]->owner == currPlayer)  // if player owns the adjacent territory
-		{
-			if (target->listOfAdjTerritories[i]->numberOfArmies > maxArmies) // if adjacent territory has more armies, use this one as source
-			{
-				source = target->listOfAdjTerritories[i];
-				maxArmies = target->listOfAdjTerritories[i]->numberOfArmies;
-			}
-		}
-	}
-	// note: order will still be issued if 0 armies are to be moved (e.g. if numberOfArmies = 1, then numberOfArmies / 2 = 0)
-	// issue an advance order if there are adjacent enemy Territories
-	if (source != NULL)
-	{
-		currPlayer->issueOrder(new Advance(currPlayer, source, target, source->numberOfArmies / 2));
-		cout << "Player " << currPlayer->getPlayerNumber() << " issued an Advance order." << endl;
-	}
-	//cout << *currPlayer << endl;
-
-	target = NULL;
-	source = NULL;
-
-	// play the first Card in the Player's Hand if they have one
-	if (currPlayer->getHand()->getCardsInHand().size() != 0)
-	{
-		currPlayer->getHand()->play();
-	}
-	*/
 }
 
 void GameEngine::executeOrdersPhase(Player* currPlayer)
@@ -456,7 +416,7 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 // a Player loses if he does not control any Territories
 void GameEngine::kickPlayers()
 {
-	Player* currPlayer = NULL; // for readability
+	Player* currPlayer = nullptr; // for readability
 	for (int i = 0; i < this->getPlayers().size(); i++)
 	{
 		currPlayer = this->players[i];
@@ -469,22 +429,22 @@ void GameEngine::kickPlayers()
 			for (int j = 0; j < hand->getCardsInHand().size(); j++)
 			{
 				this->deck->insertBackToDeck(hand->getCardsInHand()[j]); // put each Card back in the Deck
-				hand->getCardsInHand()[j] = NULL;
+				hand->getCardsInHand()[j] = nullptr;
 			}
 			hand->getCardsInHand().clear(); // Player's Hand size is now 0
-			hand = NULL;
-			currPlayer->eliminatePlayer();
+			hand = nullptr;
+			currPlayer->eliminatePlayer(); // sets isEliminated to true
 		}
 	}
-	currPlayer = NULL;
+	currPlayer = nullptr;
 }
 
-// Checks if a Player has won the game; if so return that winning Player, else return NULL
+// Checks if a Player has won the game; if so return that winning Player, else return nullptr
 // a Player has won if they conrol all the Territories on the Map
 Player* GameEngine::checkWinner()
 {
 	int players = 0; // number of players still in the game
-	Player* winner = NULL;
+	Player* winner = nullptr;
 	for (int i = 0; i < this->getPlayers().size(); i++)
 	{
 		if (!this->getPlayers().at(i)->isEliminated())
@@ -497,7 +457,7 @@ Player* GameEngine::checkWinner()
 	if (players == 1) {
 		return winner;
 	}
-	return NULL;
+	return nullptr;
 }
 
 // Launches end of game winner message
@@ -508,4 +468,33 @@ void GameEngine::endGamePhase(Player* winner)
 	cout << "########################################" << endl;
 	cout << "Congratulations, Player " << winner->getPlayerNumber() << "! You won!" << endl;
 	cout << "Restart the program to play again." << endl;
+}
+
+// Assignment operator, performs shallow copy only.
+// TODO: how to copy first player
+GameEngine& GameEngine::operator =(const GameEngine& game)
+{
+	if (&game != this)
+	{
+		// assign new values
+		this->map = game.map;
+		this->players;
+		for (Player* p : game.players)
+		{
+			this->players.push_back(p);
+		}
+		this->firstPlayer = game.firstPlayer;
+		this->deck = game.deck;
+		this->numOfPlayers = game.numOfPlayers;
+		this->observerOn = game.observerOn;
+		this->phase = game.phase;
+	}
+	return *this;
+}
+
+// Stream insertion operator returns map name and number of players
+ostream& operator <<(ostream& strm, GameEngine& game)
+{
+	strm << "This game was played with " << game.map->name << ".map and " << game.numOfPlayers << " players." << endl;
+	return strm;
 }

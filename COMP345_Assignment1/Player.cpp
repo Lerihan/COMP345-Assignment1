@@ -23,7 +23,7 @@ int Player::totalPlayers = 1; // start at 0 so playerNumber matches the index of
 Player::Player()
 {
 	this->playerNumber = totalPlayers++;
-	this->hand = new Hand();
+	this->hand = new Hand(this);
 	this->orders = new OrdersList();
 
 	this->numOfArmies = 0;
@@ -46,30 +46,17 @@ Player::Player(string strategy) : Player()
 		this->strategy = new NeutralPlayerStrategy();
 }
 
-// Copy constructor, creates deep copy of each attribute.
+// Copy constructor, creates shallow copy of each attribute.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player::Player(Player& p)
 {
 	this->playerNumber = p.playerNumber;
-	this->hand = p.hand; // assumes Hand class assignment operator is correctly implemented
-	// copy orders
-	this->orders = p.orders; // assumes OrdersList = operator is correctly implemented
-
-	// copy territories
-	this->territories = p.territories; // assumes Territory = operator is correctly implemented
-
+	this->hand = p.hand;
+	this->orders = p.orders;
+	this->territories = p.territories;
 	this->numOfArmies = p.numOfArmies;
 	this->eliminated = p.eliminated;
-
-	/*
-	// copy territories
-	for (int i = 0; i < p.territories.size(); i++)
-	{
-		this->territories.push_back(p.territories.at(i));
-	}
-	*/
-
-
+	this->reinforcementPool = p.reinforcementPool;
 }
 
 // Destructor deletes thiss Player object.
@@ -89,10 +76,10 @@ Player::~Player()
 		for (int i = 0; i < this->hand->getCardsInHand().size(); i++)
 		{
 			delete hand->getCardsInHand()[i];
-			hand->getCardsInHand()[i] = NULL;
+			hand->getCardsInHand()[i] = nullptr;
 		}
 		hand->getCardsInHand().clear(); // Player's Hand size is now 0
-		hand = NULL;
+		hand = nullptr;
 
 		delete this->hand; // delete Player's Hand pointer
 	}
@@ -100,7 +87,7 @@ Player::~Player()
 	for (int i = 0; i < this->territories.size(); i++)
 	{
 		//delete this->territories[i]; // delete pointer for each Territory
-		this->territories[i] = NULL; // avoid dangling pointers
+		this->territories[i] = nullptr; // avoid dangling pointers
 	}
 	this->territories.clear(); // remove placeholder memory locations
 
@@ -186,7 +173,7 @@ void Player::removeTerritory(Territory* toRemove)
 	for (int i = 0; i < this->territories.size(); i++) // loop through each of the Player's Territories
 	{
 		if (this->territories[i] == toRemove) // remove the one that is the input Territory
-			toRemove->setOwner(NULL); // this should be changed to a new Player when it is reassigned
+			toRemove->setOwner(nullptr); // this should be changed to a new Player when it is reassigned
 			this->territories.erase(this->territories.begin() + i);
 	}
 }
@@ -226,7 +213,7 @@ void Player::issueOrder()
 vector<Territory*> Player::toAttack()
 {
 	vector<Territory*> attack;
-	Territory* t = NULL; // for readability
+	Territory* t = nullptr; // for readability
 	for (int i = 0; i < this->territories.size(); i++) // for each of this Player's Territories
 	{
 		t = this->territories.at(i);
@@ -292,20 +279,22 @@ void Player::resetTotalPlayers()
 	this->totalPlayers = 1;
 }
 
-// = operator, performs deep copy.
+// Assignment operator, performs shallow copy only.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
 Player& Player::operator =(const Player& player)
 {
-	// copy orders
-	this->hand = player.hand; // assumes Hand class assignment operator is correctly implemented
-
-	// copy territories
-	for (int i = 0; i < player.territories.size(); i++)
+	if (&player != this)
 	{
-		this->territories.push_back(player.territories.at(i));
+		// assign new values
+		this->hand = player.hand;
+		this->territories = player.territories;
+		this->hand = player.hand;
+		this->orders = player.orders;
+		this->playerNumber = player.playerNumber;
+		this->numOfArmies = player.numOfArmies;
+		this->reinforcementPool = player.reinforcementPool;
+		this->eliminated = player.eliminated;
 	}
-
-	this->hand = player.hand; // assumes Hand assignment operator is correctly implemented
 
 	return *this;
 }

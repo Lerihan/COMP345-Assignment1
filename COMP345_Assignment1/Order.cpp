@@ -31,7 +31,7 @@ Order::Order(const Order& order) {
 
 Order::~Order()
 {
-	this->player = NULL;
+	this->player = nullptr;
 }
 
 /*Assignment operator for the Order base class
@@ -99,7 +99,7 @@ Deploy::Deploy(const Deploy& deploy): Order(deploy)
 
 Deploy::~Deploy()
 {
-	this->territory = NULL;
+	this->territory = nullptr;
 }
 
 /*Assignment operator for the Deploy class
@@ -161,8 +161,8 @@ ostream& operator << (std::ostream& o, const Deploy& deploy)
 */
 Advance::Advance(): Order()
 {
-	this->current = NULL;
-	this->next = NULL;
+	this->current = nullptr;
+	this->next = nullptr;
 	//Territory(0, "current", 0);
 	//Territory(0, "Next", 0);
 }
@@ -186,8 +186,8 @@ Advance::Advance(const Advance& advance) : Order(advance)
 
 Advance::~Advance()
 {
-	this->current = NULL;
-	this->next = NULL;
+	this->current = nullptr;
+	this->next = nullptr;
 }
 
 /*Assignment operator for the Advance class
@@ -237,7 +237,7 @@ bool Advance::execute()
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
 			{
-				srand(time(NULL));
+				srand(time(nullptr));
 
 				if (rand() % 10 < 6)
 					next->removeTroops(1);
@@ -303,8 +303,8 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 
 Bomb::~Bomb()
 {
-	this->source = NULL;
-	this->target = NULL;
+	this->source = nullptr;
+	this->target = nullptr;
 }
 
 /*Assignment operator for the Bomb class
@@ -383,7 +383,7 @@ Blockade::Blockade(const Blockade& blockade) : Order(blockade)
 
 Blockade::~Blockade()
 {
-	this->target = NULL;
+	this->target = nullptr;
 }
 
 /*Assignment operator for the Blockade class
@@ -466,8 +466,8 @@ Airlift::Airlift(const Airlift& airlift) : Order(airlift)
 
 Airlift::~Airlift()
 {
-	this->current = NULL;
-	this->next = NULL;
+	this->current = nullptr;
+	this->next = nullptr;
 }
 
 /*Assignment operator for the Airlift class
@@ -515,7 +515,7 @@ bool Airlift::execute()
 		{
 			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
 			{
-				srand(time(NULL));
+				srand(time(nullptr));
 
 				if (rand() % 10 < 6)
 					next->removeTroops(1);
@@ -578,7 +578,7 @@ Negotiate::Negotiate(const Negotiate& negotiate) : Order(negotiate)
 
 Negotiate::~Negotiate()
 {
-	this->enemy = NULL;
+	this->enemy = nullptr;
 }
 
 /*Assignment operator for the Negotiate class
@@ -654,7 +654,10 @@ OrdersList::OrdersList(const OrdersList& oL)
 */
 OrdersList& OrdersList::operator=(const OrdersList& oL) 
 {
-	ordersList = oL.ordersList;
+	if (&oL != this)
+	{
+		this->ordersList = oL.ordersList;
+	}
 	return *this;
 }
 
@@ -706,7 +709,7 @@ OrdersList::~OrdersList()
 	for (int i = 0; i < this->ordersList.size(); i++)
 	{
 		delete this->ordersList[i];
-		this->ordersList[i] = NULL;
+		this->ordersList[i] = nullptr;
 	}
 	this->ordersList.clear(); // remove placeholder memory locations
 }

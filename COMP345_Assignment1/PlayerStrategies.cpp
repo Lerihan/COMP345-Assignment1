@@ -36,30 +36,47 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
 
-	// deploy all reinforcements to the input Player's stronges Territory
-	p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
-	p->removeReinforcements(p->getReinforcementPool()); // empty Player's reinforcement pool
+	if (p->getReinforcementPool() != 0) // only issue deploy order is reinforcement pool is not empty
+	{
+		// deploy all reinforcements to the input Player's strongest Territory
+		p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
+		p->removeReinforcements(p->getReinforcementPool()); // empty Player's reinforcement pool
+	}
 
 	// advance to other Territories
-	// issue one order for each of the Player's Territories that
-	bool found = false; // need to break out of if statement adn inner for loop
+	// issue one order for each of the Player's Territories that has an adjacent enemey Territory
+	bool found = false; // needed to break out of if statement and inner for loop
+	Territory* currTerritory = nullptr; // for readability
+	Territory* adjTerritory = nullptr; // for readability
 	for (int i = 0; i < defend.size(); i++)
 	{
 		found = false;
-		for (int j = 0; j < defend.at(i)->listOfAdjTerritories.size(); j++)
+		currTerritory = defend.at(i); // for readability
+		for (int j = 0; j < currTerritory->listOfAdjTerritories.size(); j++)
 		{
-			if (defend.at(i)->listOfAdjTerritories.at(j)->getOwner() != p)
-			{ // if this is enemy Territory then advance to it
-				p->getOrdersList()->add(new Advance( // add new Advance order to attack
-					p, defend.at(i), defend.at(i)->listOfAdjTerritories.at(j), defend.at(i)->numberOfArmies));
-				found = true; // also break out of inner for loop
+			adjTerritory = currTerritory->listOfAdjTerritories.at(j); // for readability
+			if (adjTerritory->getOwner() != p)
+			{ // if this is an enemy Territory then advance to it
+				p->getOrdersList()->add(new Advance(p, currTerritory, adjTerritory, currTerritory->numberOfArmies)); // add new Advance order to attack
 				found = true; // also break out of inner for loop
 			}
 			if (found)
-				break;
+				break; // break out of inner for loop
 		}
 	}
-	cout << p->getOrders().size() << endl;
+	currTerritory = nullptr;
+	adjTerritory = nullptr;
+
+	/*
+	vector<Card*> v = p->getHand()->getCardsInHand();
+	if (v.size() != 0)
+	{
+		//cout << *p << endl;
+		v.at(0)->play(); // Player plays first Card in their Hand
+		//cout << *p << endl;
+		v.erase(v.begin()); // remove card from player's hand
+	}
+	*/
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
