@@ -33,8 +33,8 @@ int main()
 
 	cout << "TO ATTACK" << endl
 		<< "===========================" << endl;
-	Territory* t = NULL;
-	srand(time(NULL));  // Initialize random number generator.
+	Territory* t = nullptr;
+	srand(time(nullptr));  // Initialize random number generator.
 	for (int i = 0; i < map->listOfTerritories.size(); i++)
 	{
 		t = map->listOfTerritories.at(i);
@@ -90,10 +90,14 @@ int main()
 	//driverPart4();
 	
 	/**/
-	GameEngine g;
-	g.startGame();
-	//g.startupPhase(); // already called in startGame
-	g.mainGameLoop();
+	GameEngine* g = new GameEngine();
+	g->startGame();
+	g->startupPhase();
+
+	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
+	g->mainGameLoop();
+
+	//cout << g << endl;
 	
 	
 
@@ -180,8 +184,8 @@ void driverPart3()
 	// test bonus reinforcements
 	cout << "Give the player all territories of a continent to show they get the bonus army value of reinforcements:" << endl
 		<< "------------------------------------------------------------------------------------------------------" << endl;
-	Player* pTemp = NULL;
-	Territory* tTemp = NULL;
+	Player* pTemp = nullptr;
+	Territory* tTemp = nullptr;
 	for (int i = 0; i < g->getPlayers().size(); i++)
 	{
 		pTemp = g->getPlayers()[i];
@@ -195,8 +199,8 @@ void driverPart3()
 			}
 		}
 	}
-	pTemp = NULL;
-	tTemp = NULL;
+	pTemp = nullptr;
+	tTemp = nullptr;
 	
 	g->reinforcementPhase(p);
 	cout << *p << endl;
@@ -225,7 +229,7 @@ void driverPart3()
 
 	// (7) the game ends when a single player controls all the territories
 	// give our Player all Territories so he can win the game
-	Territory* t = NULL; // for readability
+	Territory* t = nullptr; // for readability
 	for (int i = 0; i < g->getMap()->listOfTerritories.size(); i++)
 	{
 		t = g->getMap()->listOfTerritories.at(i);
@@ -235,7 +239,7 @@ void driverPart3()
 			p->addTerritory(t);
 		}
 	}
-	t = NULL;
+	t = nullptr;
 
 	cout << "Print Players to show their Territories, and call the mainGameLoop() to kick the eliminated Player and declare the winner:" << endl
 		<< "--------------------------------------------------------------------------------------------------------------------------" << endl;
@@ -266,6 +270,8 @@ void driverPart4()
 	Territory* t6 = new Territory(6, "Phillipines", 1);
 
 	t3->addTroops(100);
+	t1->addTroops(50);
+	t2->addTroops(20);
 
 	t1->listOfAdjTerritories.push_back(t2);
 	t2->listOfAdjTerritories.push_back(t1);
