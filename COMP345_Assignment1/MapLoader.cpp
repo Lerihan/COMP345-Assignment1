@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 #include <cctype>
-
 using namespace std;
 
 //Default Constructor
@@ -74,7 +73,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						newContinent = new Continent(index, attributes[0], stoi(attributes[1])); //stoi converts str to int
 						map->addContinent(newContinent);
 						index++;
-						//cout << "New Continent: " << line << endl;
+						cout << "New Continent: " << line << endl;
 						getline(readFile, line);
 					}
 					hasContinent = true;
@@ -92,7 +91,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 						map->listOfContinents[stoi(attributes[2]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
 
-						//cout << "New Country: " << line << endl;
+						cout << "New Country: " << line << endl;
 						getline(readFile, line);
 					}
 
@@ -112,7 +111,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 							Territory* t = map->getTerritory(stoi(adjCountries[i]));
 							map->addAdjTerritory(t0, t);
 						}
-						//cout << "New Border: " << line << endl;
+						cout << "New Border: " << line << endl;
 						getline(readFile, line);
 					}
 					hasBorders = true;
@@ -121,7 +120,7 @@ Map* MapLoader::ReadMap(string dominationFileName) {
 
 			if (hasContinent && hasCountries && hasBorders) {
 				cout << "Map File is valid" << endl;
-				this->finalMap = map;
+				//this->finalMap = map;
 				readFile.close();
 				return map;
 				delete newCountry; //deallocate memory (not sure if it does it correctly)
@@ -213,8 +212,8 @@ ConquestFileReader::ConquestFileReader(ConquestFileReader& conquestFile)
 	conquestFileName = conquestFile.conquestFileName;
 }
 
-Map* ConquestFileReader::GetMapConquest(string filePath) {
-	return conquestReadMap(filePath);
+Map* ConquestFileReaderAdapter::GetMap(string filePath) {
+	return conquestReader->conquestReadMap(filePath);
 }
 
 Map* ConquestFileReader::conquestReadMap(string fileName)
@@ -269,20 +268,13 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 						if (line == "")
 							break;
 
-						//Split line to access different attributes of territories
-						//vector<string> attributes = SplitWords(line); //index name continent x y
-						//string territoryName = line.substr(0, line.find(","));
-						//int index = 0;
-						//newCountry = new Territory(territoryId, territoryName, continentId); //id name continentid
-						//map->listOfContinents[index]->addTerritory(newCountry); //add territory to continent
-						//index++;
-						//map->addTerritory(newCountry); //add territory in full list of territories (in map)
-
+						//Add new country 
 						vector<string> attributes = SplitWords(line); //index name continent x y
 						newCountry = new Territory(stoi(attributes[2]), attributes[0], stoi(attributes[1])); //id name continentid
 						//map->listOfContinents[stoi(attributes[1]) - 1]->addTerritory(newCountry); //add territory to continent
 						map->addTerritory(newCountry); //add territory in full list of territories (in map)
 
+						//Add new border
 						//vector<string> adjCountries = SplitWords(line); //countryid adj1 adj2 adj3 ...
 						//Territory* t0 = map->getTerritory(stoi(adjCountries[3]));
 						//for (int i = 4; i < adjCountries.size(); i++)
@@ -292,6 +284,7 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 						//}
 						//cout << "New Border: " << line << endl;
 						cout << "New Country: " << line << endl;
+						//cout << *map;
 						getline(readFile, line);
 					}
 
@@ -331,7 +324,6 @@ ConquestFileReader::~ConquestFileReader()
 ConquestFileReaderAdapter::ConquestFileReaderAdapter()
 {
 	this->conquestReader = conquestReader;
-	this->mapLoader = mapLoader;
 }
 
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
@@ -351,21 +343,4 @@ ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFi
 	conquestReader = conquestAdapter.conquestReader;
 	mapLoader = conquestAdapter.mapLoader;
 	return *this;
-}
-
-ConquestFileReaderAdapter::ConquestFileReaderAdapter(MapLoader* reader)
-{
-	mapLoader = reader;
-	conquestReader = NULL;
-}
-
-ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* reader)
-{
-	conquestReader = reader;
-}
-
-
-Map* ConquestFileReaderAdapter::ReadMap(string& fileName)
-{
-	return conquestReader->conquestReadMap(fileName);
 }
