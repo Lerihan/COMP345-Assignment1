@@ -80,7 +80,7 @@ void GameEngine::startupPhase()
 	cout << endl;
 }
 
-Map * GameEngine::getMap()
+Map* GameEngine::getMap()
 {
 	return map;
 }
@@ -101,26 +101,46 @@ Deck* GameEngine::getDeck()
 	return this->deck;
 }
 
+MapLoader* SelectMapFormat(string mapFormat) {
+	if (mapFormat == "conquest") {
+		ConquestFileReaderAdapter* conquestAdapter = new ConquestFileReaderAdapter();
+		return conquestAdapter;
+	}
+	if (mapFormat == "domination") {
+		MapLoader* mapLoader = new MapLoader();
+		return mapLoader;
+	}
+	else return nullptr;
+}
+
 void GameEngine::selectMap()
 {
 	string dominationMap;
-	MapLoader* mapLoader = new MapLoader();
+	string mapFormat;
 	bool isValid = false;
+	MapLoader* mapLoader = new ConquestFileReaderAdapter();
 
 	do
 	{
+		cout << "Select conquest or domination map format: ";
+		cin >> mapFormat;
+		mapLoader = SelectMapFormat(mapFormat);
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
-		this->map = mapLoader->GetMap(dominationMap);
+		if (mapLoader == nullptr) {
+			continue;
+		}
+		else {
+			map = mapLoader->GetMap(dominationMap);
+		}
 
-		if(map != nullptr)
+		if (map != NULL)
 			isValid = map->validate();
-
-		if (map == nullptr || !isValid)
+		if (map == NULL || !isValid)
 		{
 			cout << "Map is invalid." << endl;
 		}
-	} while (map == nullptr || !isValid);
+	} while (map == NULL /*|| isValid*/);
 
 	delete mapLoader;
 }
@@ -157,34 +177,33 @@ void GameEngine::createComponents()
 		}
 		this->players.push_back(p);
 	}
-
-p = nullptr;
+	p = nullptr;
 }
 
 void GameEngine::setObservers()
 {
 	char answer;
 
-  do
-  {
-    cout << "Would you like to turn on the observers ? (y/n): ";
-    cin >> answer;
+	do
+	{
+		cout << "Would you like to turn on the observers ? (y/n): ";
+		cin >> answer;
 
-    if (answer == 'y')
-    {
-      observerOn = true;
-      new PhaseObserver(this);
-      new GameStatisticsObserver(this);
-      cout << "Observers will be on." << endl;
-      break;
-    }
-    else if (answer == 'n')
-    {
-      observerOn = false;
-      cout << "Observers will be off." << endl;
-      break;
-    }
-  } while (answer != 'y' || answer != 'n');
+		if (answer == 'y')
+		{
+			observerOn = true;
+			new PhaseObserver(this);
+			new GameStatisticsObserver(this);
+			cout << "Observers will be on." << endl;
+			break;
+		}
+		else if (answer == 'n')
+		{
+			observerOn = false;
+			cout << "Observers will be off." << endl;
+			break;
+		}
+	} while (answer != 'y' || answer != 'n');
 }
 
 void GameEngine::setInitialArmies()
@@ -281,7 +300,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		//cout << *(this->players.at(0)) << endl;
+		//cout << *(this->players[0]) << endl; TODO: removed by melina for testing
 
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
@@ -295,7 +314,6 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		//cout << *(this->players.at(0)) << endl;
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
@@ -308,8 +326,6 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		//cout << *(this->players.at(0)) << endl;
-		//cout << *(this->players.at(1)) << endl;
 
 		//notify();
 	}
@@ -327,7 +343,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 	// check if Player owns whole Continent
 	int bonusArmies = 0; // if Player gets bonus reinforcements from owning whole Continent
 	Continent* currContinent = nullptr; // for readability
-	for (int i = 0; i < map->listOfContinents.size(); i++ )
+	for (int i = 0; i < map->listOfContinents.size(); i++)
 	{
 		currContinent = map->listOfContinents[i];
 		if (currContinent->controlsContinent(currPlayer))
@@ -339,7 +355,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 	if ((currPlayer->getTerritories().size() / 3) > newArmies)
 		newArmies = currPlayer->getTerritories().size() / 3;
 
-	cout << "Player " << currPlayer->getPlayerNumber() << " will receive " << newArmies << " new reinforcements " 
+	cout << "Player " << currPlayer->getPlayerNumber() << " will receive " << newArmies << " new reinforcements "
 		<< "and " << bonusArmies << " bonus reinforcements." << endl;
 	currPlayer->addReinforcements(newArmies + bonusArmies); // add armies
 }
@@ -411,6 +427,14 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			currPlayer->getOrders().at(i)->execute();
 		}
 	}
+
+	//if a player has issued an attack and won, they get to draw a card
+	if (currPlayer->hasWonAttack() ) {
+		this->deck->draw(currPlayer);
+		currPlayer->setWonAttack(false);
+	}		
+
+
 	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 
@@ -425,7 +449,7 @@ void GameEngine::kickPlayers()
 		if (currPlayer->getTerritories().size() <= 0) // if Player has no Territories kick them from the game
 		{
 			cout << "Player " << currPlayer->getPlayerNumber() << " controls no more Territories. They are removed from the game." << endl;
-			
+
 			// put the losing Player's Cards back in the Deck
 			Hand* hand = currPlayer->getHand(); // for readability
 			for (int j = 0; j < hand->getCardsInHand().size(); j++)

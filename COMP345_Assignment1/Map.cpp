@@ -139,7 +139,7 @@ void Map::printAdjContinents(Continent* c)
 	{
 		cout << c->listOfAdjContinents.at(i)->name << " -> ";
 	}
-	cout << endl << endl;
+	cout << endl;
 }
 
 /*
@@ -184,6 +184,7 @@ bool Map::validate()
 	}
 
 	// deallocate memory
+	// TODO: loop through arrays to delete everything
 	delete[] visitedTerritories; 
 	delete[] visitedContinents;
 
@@ -401,6 +402,16 @@ Continent* Map::getContinent(int id)
 	return listOfContinents[id - 1]; //indices start at 1
 }
 
+Continent * Map::getContinentByName(string name)
+{
+	for (int i = 0; i < listOfContinents.size(); i++)
+	{
+		if (listOfContinents.at(i)->name == name)
+			return listOfContinents.at(i);
+	}
+	return NULL;
+}
+
 /*
 * Returns a territory object
 * id is index of that territory (assigned in maploader from file) and NOT the vector id
@@ -408,6 +419,16 @@ Continent* Map::getContinent(int id)
 Territory* Map::getTerritory(int id)
 {
 	return listOfTerritories[id - 1];
+}
+
+Territory * Map::getTerritoryByName(string name)
+{
+	for (int i = 0; i < listOfTerritories.size(); i++)
+	{
+		if (listOfTerritories.at(i)->name == name)
+			return listOfTerritories.at(i);
+	}
+	return NULL;
 }
 
 // Checks if the input Player owns all Territories of this Continent. Returns true if yes, otherwise returns false.
@@ -497,6 +518,40 @@ void Territory::printAdjTerritory()
 	cout << endl << endl;
 }
 
+// Similar to printAdjTerritory() but will only print territories that belong to this->owner
+void Territory::printAdjTerritoryOwned()
+{
+	cout << "Adjacent Territories of '" << this->name << "' owned by Player " << owner->getPlayerNumber() << endl;
+	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
+	{
+		if(this->listOfAdjTerritories.at(i)->owner == owner)
+			cout << this->listOfAdjTerritories.at(i)->name << " -> ";
+	}
+	cout << endl << endl;
+}
+
+// Similar to printAdjTerritoryOfOwner() but will print territories that DO NOT belong to this->owner
+void Territory::printAdjTerritoryNotOwned()
+{
+	cout << "Adjacent Territories of '" << this->name << "' NOT owned by Player " << owner->getPlayerNumber() << endl;
+	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
+	{
+		if (this->listOfAdjTerritories.at(i)->owner != owner)
+			cout << this->listOfAdjTerritories.at(i)->name << " -> ";
+	}
+	cout << endl << endl;
+}
+
+// Get adjacent territory by name
+Territory* Territory::getAdjTerritoryByName(string name)
+{
+	for (int i = 0; i < this->listOfAdjTerritories.size(); i++)
+	{
+		if (this->listOfAdjTerritories.at(i)->name == name)
+			return this->listOfAdjTerritories.at(i);
+	}
+}
+
 /*
 * Get territory by id
 * Id is the index of that territory and NOT the id of the vector
@@ -527,12 +582,34 @@ void Territory::setOwner(Player* p)
 {
 	this->owner = p;
 }
+/*
+* Returns owner of an adjacent territory (by name)
+*/
+Player* Territory::getOwnerOfAdjacent(string name)
+{
+	for (int i = 0; i < listOfAdjTerritories.size(); i++)
+	{
+		if (listOfAdjTerritories.at(i)->name == name)
+			return listOfAdjTerritories.at(i)->owner;
+	}
+}
 
 bool Territory::isAdjacent(int id)
 {
 	for (int i = 0; i < listOfAdjTerritories.size(); i++)
 	{
 		if (listOfAdjTerritories.at(i)->index == id)
+			return true;
+	}
+
+	return false;
+}
+
+bool Territory::isAdjacent(string name)
+{
+	for (int i = 0; i < listOfAdjTerritories.size(); i++)
+	{
+		if (listOfAdjTerritories.at(i)->name == name)
 			return true;
 	}
 

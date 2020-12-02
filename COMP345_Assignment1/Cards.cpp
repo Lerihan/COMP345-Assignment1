@@ -80,12 +80,10 @@ Hand& Hand::operator = (const Hand& h) {
 
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
-	/**/
 	vector<Card*> h;
 	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
-	
 	return h;
 }
 
@@ -228,7 +226,7 @@ Territory* BombCard::getTarget() {
 void BombCard::play() {
 	Player* p = this->cardHolder;
 	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
-	Bomb* bombOrder = new Bomb(p, p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
+	Bomb* bombOrder = new Bomb(p, p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
 	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
