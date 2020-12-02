@@ -71,6 +71,7 @@ public:
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
 	void setStrategy(PlayerStrategy* strategy); // to change Player strategy during game
+	bool hasNegotiation(Player* enemy);
 
 	// operators
 	Player& operator =(const Player& player);
