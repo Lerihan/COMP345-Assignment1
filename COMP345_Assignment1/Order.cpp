@@ -251,6 +251,7 @@ bool Advance::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				player->addTerritory(next); // add Territory to winning Player
 				next->addTroops(numOfArmies);
+				player->setWonAttack(true);
 				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 			 
@@ -528,7 +529,7 @@ bool Airlift::execute()
 				next->getOwner()->removeTerritory(next); // remove Territory from losing player
 				player->addTerritory(next); 
 				next->addTroops(numOfArmies);
-
+				player->setWonAttack(true);
 				cout << "AIRLIFT ORDER: Player" << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
 			}
 
@@ -630,14 +631,6 @@ ostream& operator << (std::ostream& o, const Negotiate& negotiate)
 // Create a new vector of the Orders in this OrdersList and return it
 vector<Order*> OrdersList::getOrdersList()
 {
-	/*
-	vector<Order*> o;
-	for (int i = 0; i < ordersList.size(); i++)
-	{
-		o.push_back(ordersList.at(i));
-	}
-	return o;
-	*/
 	return this->ordersList;
 }
 

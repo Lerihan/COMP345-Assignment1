@@ -32,7 +32,7 @@ private:
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	bool eliminated; // will store whether the Player has been eliminated from the game or not
-
+	bool wonAttack; //will store whether the Player has attacked and won the attack this turn
 	PlayerStrategy* strategy;
 
 public:
@@ -57,6 +57,8 @@ public:
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
+	bool hasWonAttack();		//return whether the Player has attacked at least once or not
+	void setWonAttack(bool b);			//sets the Player's attacked data member to b
 	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver
 
 	// accessors and mutators

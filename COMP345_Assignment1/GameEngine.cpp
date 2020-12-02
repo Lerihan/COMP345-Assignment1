@@ -429,6 +429,14 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			currPlayer->getOrders().at(i)->execute();
 		}
 	}
+
+	//if a player has issued an attack and won, they get to draw a card
+	if (currPlayer->hasWonAttack() ) {
+		this->deck->draw(currPlayer);
+		currPlayer->setWonAttack(false);
+	}		
+
+
 	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 
