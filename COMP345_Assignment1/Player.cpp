@@ -162,6 +162,16 @@ void Player::setStrategy(PlayerStrategy* strategy)
 	this->strategy = strategy;
 }
 
+bool Player::hasNegotiationWith(Player * enemy)
+{
+	for (int i = 0; i < orders->getOrdersList().size(); i++)
+	{
+		if (orders->getOrdersList().at(i)->getPlayer()->playerNumber == enemy->playerNumber && this != enemy)
+			return true;
+	}
+	return false;
+}
+
 // Adds the input Territory pointer this Player's Territories vector.
 void Player::addTerritory(Territory* t)
 {

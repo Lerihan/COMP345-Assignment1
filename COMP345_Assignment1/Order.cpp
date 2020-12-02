@@ -218,50 +218,56 @@ bool Advance::validate()
 */
 bool Advance::execute()
 {
-	executed = true;
-	if (validate())
+	if (player->HasNegotiationWith(next->getOwner()))
 	{
-		cout << "Advance order executed." << endl;
-
-		if (next->getOwner() == getPlayer()) // if defending
+		executed = true;
+		if (validate())
 		{
-			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
-			if (armiesToMove != numOfArmies)
-				numOfArmies = armiesToMove;
-			current->removeTroops(numOfArmies);
-			next->addTroops(numOfArmies);
+			cout << "Advance order executed." << endl;
 
-			cout << "ADVANCE ORDER (to defend): Player "<< player->getPlayerNumber() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
-		}
-		else // if attacking
-		{
-			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			if (next->getOwner() == getPlayer()) // if defending
 			{
-				srand(time(nullptr));
-
-				if (rand() % 10 < 6)
-					next->removeTroops(1);
-
-				else if (rand() % 10 < 7)
-					current->removeTroops(1);
-			}
-
-			if (next->numberOfArmies == 0) // if next owner (enemy) loses
-			{
-				next->getOwner()->removeTerritory(next); // remove Territory from losing player
-				player->addTerritory(next); // add Territory to winning Player
+				int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+				if (armiesToMove != numOfArmies)
+					numOfArmies = armiesToMove;
+				current->removeTroops(numOfArmies);
 				next->addTroops(numOfArmies);
-				player->setWonAttack(true);
-				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
-			}
-			 
-			else if (current->numberOfArmies == 0) //if player loses
-			{
-				cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
-			}
-		}
 
-		return true;
+				cout << "ADVANCE ORDER (to defend): Player "<< player->getPlayerNumber() << " advancing..\n" <<"Advancing " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";
+			}
+			else // if attacking
+			{
+				while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+				{
+					srand(time(nullptr));
+
+					if (rand() % 10 < 6)
+						next->removeTroops(1);
+
+					else if (rand() % 10 < 7)
+						current->removeTroops(1);
+				}
+
+				if (next->numberOfArmies == 0) // if next owner (enemy) loses
+				{
+					next->getOwner()->removeTerritory(next); // remove Territory from losing player
+					player->addTerritory(next); // add Territory to winning Player
+					next->addTroops(numOfArmies);
+					player->setWonAttack(true);
+					cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " won.\n" << "Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				}
+			 
+				else if (current->numberOfArmies == 0) //if player loses
+				{
+					cout << "ADVANCE ORDER (to attack): Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				}
+			}
+			return true;
+		}
+	}
+	else
+	{
+		cout << "Cannot execute ADVANCE ORDER because of a negotiation.";
 	}
 
 	cout << "Advance order invalid: execute() method fails to execute." << endl;
@@ -281,8 +287,6 @@ ostream& operator << (std::ostream& o, const Advance& advance)
 */
 Bomb::Bomb() : Order()
 {
-	//Territory(0, "source", 0);
-	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Bomb class
@@ -334,17 +338,24 @@ bool Bomb::validate()
 */
 bool Bomb::execute()
 {
-	executed = true;
-	if (validate())
+	if (player->HasNegotiationWith(target->getOwner()))
 	{
-		cout << "Bomb order executed." << endl;
+		executed = true;
+		if (validate())
+		{
+			cout << "Bomb order executed." << endl;
 
-		int numDestroyed = (int)(target->numberOfArmies / 2.0);
+			int numDestroyed = (int)(target->numberOfArmies / 2.0);
 
-		target->removeTroops(numDestroyed);
+			target->removeTroops(numDestroyed);
 
-		cout << "BOMB ORDER: Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
-		return true;
+			cout << "BOMB ORDER: Bombing " << target->name << " territory, reducing 1/2 of its forces.\n";
+			return true;
+		}
+	}
+	else
+	{
+		cout << "Cannot execute BOMB ORDER because of a negotiation.";
 	}
 
 	cout << "Bomb order invalid: execute() method fails to execute." << endl;
@@ -497,51 +508,56 @@ bool Airlift::validate()
 */
 bool Airlift::execute()
 {
-	executed = true;
-	if (validate())
+	if (player->HasNegotiationWith(next->getOwner()))
 	{
-		cout << "Airlift order executed." << endl;
-
-		if (next->getOwner() == getPlayer())
+		executed = true;
+		if (validate())
 		{
-			int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
-			if (armiesToMove != numOfArmies)
-				numOfArmies = armiesToMove;
-			current->removeTroops(numOfArmies);
-			next->addTroops(numOfArmies);
+			cout << "Airlift order executed." << endl;
 
-			cout << "AIRLIFT ORDER: Player " << player->getPlayerNumber() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
-		else
-		{
-			while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			if (next->getOwner() == getPlayer())
 			{
-				srand(time(nullptr));
-
-				if (rand() % 10 < 6)
-					next->removeTroops(1);
-
-				else if (rand() % 10 < 7)
-					current->removeTroops(1);
-			}
-
-			if (next->numberOfArmies == 0)
-			{
-				next->getOwner()->removeTerritory(next); // remove Territory from losing player
-				player->addTerritory(next); 
+				int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+				if (armiesToMove != numOfArmies)
+					numOfArmies = armiesToMove;
+				current->removeTroops(numOfArmies);
 				next->addTroops(numOfArmies);
-				player->setWonAttack(true);
-				cout << "AIRLIFT ORDER: Player" << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
-			}
 
-			else if (current->numberOfArmies == 0) //if player loses
+				cout << "AIRLIFT ORDER: Player " << player->getPlayerNumber() << " airlifting..\n" << "Airlifting " << numOfArmies << " armies from " << current->name << " to " << next->name << ".\n";		}
+			else
 			{
-				cout << "AIRLIFT ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+				{
+					srand(time(nullptr));
+
+					if (rand() % 10 < 6)
+						next->removeTroops(1);
+
+					else if (rand() % 10 < 7)
+						current->removeTroops(1);
+				}
+
+				if (next->numberOfArmies == 0)
+				{
+					next->getOwner()->removeTerritory(next); // remove Territory from losing player
+					player->addTerritory(next); 
+					next->addTroops(numOfArmies);
+					player->setWonAttack(true);
+					cout << "AIRLIFT ORDER: Player" << player->getPlayerNumber() << " won.\n" << " Won " << next->name << " territory, " << " and won " << numOfArmies << " armies." << endl;
+				}
+
+				else if (current->numberOfArmies == 0) //if player loses
+				{
+					cout << "AIRLIFT ORDER: Attacking player " << player->getPlayerNumber() << " lost; has 0 armies on " << current->name << " territory. Attack ended." << endl;
+				}
 			}
+			return true;
 		}
-
-		return true;
 	}
-
+	else
+	{
+		cout << "Cannot execute AIRLIFT ORDER because of a Negotiation";
+	}
 	cout << "Airlift order invalid: execute() method fails to execute." << endl;
 	return false;
 }
