@@ -431,9 +431,9 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 	}
 
 	//if a player has issued an attack and won, they get to draw a card
-	if (currPlayer->hasAttacked() ) {
+	if (currPlayer->hasWonAttack() ) {
 		this->deck->draw(currPlayer);
-		currPlayer->setAttacked(false);
+		currPlayer->setWonAttack(false);
 	}		
 
 

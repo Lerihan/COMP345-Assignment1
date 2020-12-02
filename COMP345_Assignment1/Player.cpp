@@ -29,7 +29,7 @@ Player::Player()
 	this->numOfArmies = 0;
 	this->reinforcementPool = 0;
 	this->eliminated = false;
-	this->attacked = false;
+	this->wonAttack = false;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -57,7 +57,7 @@ Player::Player(Player& p)
 	this->territories = p.territories;
 	this->numOfArmies = p.numOfArmies;
 	this->eliminated = p.eliminated;
-	this->attacked = p.attacked;
+	this->wonAttack = p.wonAttack;
 	this->reinforcementPool = p.reinforcementPool;
 }
 
@@ -273,12 +273,12 @@ void Player::eliminatePlayer()
 	this->eliminated = true;
 }
 
-bool Player::hasAttacked() {
-	return this->attacked;
+bool Player::hasWonAttack() {
+	return this->wonAttack;
 }
 
-void Player::setAttacked(bool b) {
-	this->attacked = b;
+void Player::setWonAttack(bool b) {
+	this->wonAttack = b;
 }
 
 // Resets the total number of Players to 0.
@@ -304,7 +304,7 @@ Player& Player::operator =(const Player& player)
 		this->numOfArmies = player.numOfArmies;
 		this->reinforcementPool = player.reinforcementPool;
 		this->eliminated = player.eliminated;
-		this->attacked = player.attacked;
+		this->wonAttack = player.wonAttack;
 	}
 
 	return *this;
