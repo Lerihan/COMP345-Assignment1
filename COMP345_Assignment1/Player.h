@@ -9,14 +9,12 @@
 #pragma once
 
 #include <iostream>
-//#include <vector>
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
 #include "PlayerStrategies.h"
 
 class Order;
-class Cards;
 class OrdersList;
 class Hand;
 class PlayerStrategy;

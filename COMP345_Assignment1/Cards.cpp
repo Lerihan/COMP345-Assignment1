@@ -80,13 +80,13 @@ Hand& Hand::operator = (const Hand& h) {
 
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
-	/*
+	/**/
 	vector<Card*> h;
 	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
-	*/
-	return this->cardsInHand;
+	
+	return h;
 }
 
 //stream insertion operators
@@ -251,7 +251,7 @@ BombCard& BombCard::operator =(const BombCard& c)
 {
 	if (&c != this)
 	{
-		Card::operator=(c);
+		this->Card::operator=(c);
 		this->target = c.target;
 	}
 	return *this;
@@ -290,7 +290,7 @@ ReinforcementCard& ReinforcementCard::operator =(const ReinforcementCard& c)
 {
 	if (&c != this)
 	{
-		Card::operator=(c);
+		this->Card::operator=(c);
 	}
 	return *this;
 }
@@ -346,7 +346,7 @@ BlockadeCard& BlockadeCard::operator =(const BlockadeCard& c)
 {
 	if (&c != this)
 	{
-		Card::operator=(c);
+		this->Card::operator=(c);
 		this->target = c.target;
 	}
 	return *this;
@@ -429,7 +429,7 @@ AirliftCard& AirliftCard::operator =(const AirliftCard& c)
 {
 	if (&c != this)
 	{
-		Card::operator=(c);
+		this->Card::operator=(c);
 		this->current = c.current;
 		this->target = c.target;
 		this->numArmies = c.numArmies;
@@ -491,7 +491,7 @@ DiplomacyCard& DiplomacyCard::operator =(const DiplomacyCard& c)
 {
 	if (&c != this)
 	{
-		Card::operator=(c);
+		this->Card::operator=(c);
 		this->enemy = c.enemy;
 	}
 	return *this;
