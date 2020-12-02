@@ -228,7 +228,7 @@ Territory* BombCard::getTarget() {
 void BombCard::play() {
 	Player* p = this->cardHolder;
 	//creates new bomb order where player bombs the highest priority territory toAttack from the player's territory that has the largest army
-	Bomb* bombOrder = new Bomb(p, p->toDefend().at(p->toDefend().size()-1), p->toAttack().at(0));
+	Bomb* bombOrder = new Bomb(p, p->toAttack().at(0));
 	//adds new bomb order to the player's orderlist
 	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;

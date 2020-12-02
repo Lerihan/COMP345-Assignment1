@@ -286,7 +286,7 @@ void driverPart4()
 
 	Deploy* d1 = new Deploy(p1, t1, 10);
 	Advance* a1 = new Advance(p2, t2, t1, 20);
-	Bomb* b1 = new Bomb(p3, t3, t2);
+	Bomb* b1 = new Bomb(p3, t2);
 	Blockade* blck1 = new Blockade(p2, t5);
 	Airlift* air1 = new Airlift(p3, t3, t4, 15);
 	Negotiate* n1 = new Negotiate(p2, p3);

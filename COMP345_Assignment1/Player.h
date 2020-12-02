@@ -16,7 +16,7 @@
 #include "PlayerStrategies.h"
 
 class Order;
-class Cards;
+class Card;
 class OrdersList;
 class Hand;
 class PlayerStrategy;
@@ -72,6 +72,7 @@ public:
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
+	Card* getCard(string type);
 	void setStrategy(PlayerStrategy* strategy); // to change Player strategy during game
 
 	// operators

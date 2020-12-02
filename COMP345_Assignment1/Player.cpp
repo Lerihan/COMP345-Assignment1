@@ -112,6 +112,18 @@ void Player::setTerritories(vector<Territory*> t)
 	this->territories = t;
 }
 
+Card * Player::getCard(string type)
+{
+	for (int i = 0; i < this->hand->cardsInHand.size(); i++)
+	{
+		if (this->hand->getCardsInHand().at(i)->getType() == type)
+		{
+			return this->hand->getCardsInHand().at(i);
+		}
+	}
+	return NULL;
+}
+
 // Returns the Hand object of this Player
 Hand* Player::getHand()
 {
