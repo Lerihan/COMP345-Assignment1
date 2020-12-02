@@ -78,7 +78,6 @@ std::ostream& operator<<(std::ostream& o, const Order& order)
 */
 Deploy::Deploy(): Order()
 {
-	//Territory(0, "current", 0);
 }
 
 /*Parametrized constructor for the Deploy class
@@ -163,8 +162,6 @@ Advance::Advance(): Order()
 {
 	this->current = nullptr;
 	this->next = nullptr;
-	//Territory(0, "current", 0);
-	//Territory(0, "Next", 0);
 }
 
 /*Parametrized constructor for the Advance class
@@ -375,7 +372,6 @@ ostream& operator << (std::ostream& o, const Bomb& bomb)
 */
 Blockade::Blockade() : Order()
 {
-	//Territory(0, "target", 0);
 }
 
 /*Parametrized constructor for the Blockade class
