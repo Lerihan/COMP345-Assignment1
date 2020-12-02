@@ -307,27 +307,25 @@ void GameEngine::mainGameLoop()
 		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			cout << *this->players.at(i) << endl;
+			if (!this->players.at(i)->isEliminated())
 			{
-				issueOrdersPhase(players[i]);
+				issueOrdersPhase(this->players.at(i));
 			}
 		}
 		cout << endl;
-		//cout << *(this->players[0]) << endl;
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
 		cout << "-----------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players.at(i)->isEliminated())
 			{
-				executeOrdersPhase(players[i]);
+				executeOrdersPhase(players.at(i));
 			}
 		}
 		cout << endl;
-		cout << *(this->players.at(0)) << endl;
-		cout << *(this->players.at(1)) << endl;
 
 		//notify();
 	}

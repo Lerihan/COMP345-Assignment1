@@ -1,6 +1,8 @@
 #include "PlayerStrategies.h"
 #include "Order.h"
 
+PlayerStrategy::~PlayerStrategy() { };
+
 // ###############################
 // HumanPlayerStrategy
 // ###############################
@@ -270,6 +272,7 @@ vector<Territory*> HumanPlayerStrategy::toDefend(vector<Territory*> t)
 // AggressivePlayerStrategy
 // ###############################
 AggressivePlayerStrategy::AggressivePlayerStrategy() { }
+AggressivePlayerStrategy::~AggressivePlayerStrategy() { };
 
 // Issues Orders for this strategy type
 //
@@ -314,6 +317,13 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	if (v.size() != 0)
 	{
 		//cout << *p << endl;
+		cout << "start play" << endl;
+		p->getHand()->getCardsInHand().at(0)->play(); // Player plays first Card in their Hand
+		cout << "end play" << endl;
+		//cout << *p << endl;
+		cout << "start begin" << endl;
+		p->getHand()->getCardsInHand().erase(p->getHand()->getCardsInHand().begin()); // remove card from player's hand
+		cout << "end begin" << endl;
 		v.at(0)->play(); // Player plays first Card in their Hand
 		//cout << *p << endl;
 		v.erase(v.begin()); // remove card from player's hand
