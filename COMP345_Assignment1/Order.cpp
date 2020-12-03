@@ -217,7 +217,7 @@ bool Advance::validate()
 */
 bool Advance::execute()
 {
-	if (player->HasNegotiationWith(next->getOwner()))
+	if (player->hasNegotiationWith(next->getOwner()))
 	{
 		executed = true;
 		if (validate())
@@ -310,7 +310,6 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 
 Bomb::~Bomb()
 {
-	this->source = nullptr;
 	this->target = nullptr;
 }
 
@@ -345,7 +344,7 @@ bool Bomb::validate()
 */
 bool Bomb::execute()
 {
-	if (player->HasNegotiationWith(target->getOwner()))
+	if (player->hasNegotiationWith(target->getOwner()))
 	{
 		executed = true;
 		if (validate())
@@ -514,7 +513,7 @@ bool Airlift::validate()
 */
 bool Airlift::execute()
 {
-	if (player->HasNegotiationWith(next->getOwner()))
+	if (player->hasNegotiationWith(next->getOwner()))
 	{
 		executed = true;
 		if (validate())

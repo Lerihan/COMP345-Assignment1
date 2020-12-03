@@ -80,11 +80,14 @@ Hand& Hand::operator = (const Hand& h) {
 
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
+	/*
 	vector<Card*> h;
 	for (int i = 0; i < this->cardsInHand.size(); i++) {
 		h.push_back(this->cardsInHand.at(i));
 	}
 	return h;
+	*/
+	return this->cardsInHand;
 }
 
 //stream insertion operators

@@ -312,23 +312,15 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	currTerritory = nullptr;
 	adjTerritory = nullptr;
 
-	/*
+	// This code allows the player to play the first card in their hand. As of now this gives an error, so it is left here, but
+	// commented out.
+	/**/
 	vector<Card*> v = p->getHand()->getCardsInHand();
-	if (v.size() != 0)
+	if (p->getHand()->getCardsInHand().size() != 0)
 	{
-		//cout << *p << endl;
-		cout << "start play" << endl;
 		p->getHand()->getCardsInHand().at(0)->play(); // Player plays first Card in their Hand
-		cout << "end play" << endl;
-		//cout << *p << endl;
-		cout << "start begin" << endl;
 		p->getHand()->getCardsInHand().erase(p->getHand()->getCardsInHand().begin()); // remove card from player's hand
-		cout << "end begin" << endl;
-		v.at(0)->play(); // Player plays first Card in their Hand
-		//cout << *p << endl;
-		v.erase(v.begin()); // remove card from player's hand
 	}
-	*/
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
