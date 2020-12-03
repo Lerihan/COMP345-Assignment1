@@ -94,6 +94,8 @@ Player::~Player()
 	this->territories.clear(); // remove placeholder memory locations
 
 	delete this->orders; // delete to OrdersList
+
+	delete this->strategy;
 }
 
 // Returns vector of Territories.
@@ -171,6 +173,7 @@ int Player::getReinforcementPool()
 
 void Player::setStrategy(PlayerStrategy* strategy)
 {
+	delete this->strategy;
 	this->strategy = strategy;
 }
 

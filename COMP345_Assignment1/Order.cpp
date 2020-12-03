@@ -226,7 +226,13 @@ bool Advance::execute()
 
 			if (next->getOwner() == getPlayer()) // if defending
 			{
-				int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+/*------------------------ CONFLICT
+        srand(time(nullptr));
+
+				if (rand() % 10 < 6)
+					next->removeTroops(1);
+*/
+        int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
 				if (armiesToMove != numOfArmies)
 					numOfArmies = armiesToMove;
 				current->removeTroops(numOfArmies);
@@ -304,6 +310,7 @@ Bomb::Bomb(const Bomb& bomb) : Order(bomb)
 
 Bomb::~Bomb()
 {
+	this->source = nullptr;
 	this->target = nullptr;
 }
 
@@ -512,7 +519,20 @@ bool Airlift::execute()
 		executed = true;
 		if (validate())
 		{
-			cout << "Airlift order executed." << endl;
+/* ----------------------- CONFLICT
+      while (next->numberOfArmies > 0 || current->numberOfArmies > 0)
+			{
+				srand(time(nullptr));
+
+				if (rand() % 10 < 6)
+					next->removeTroops(1);
+
+				else if (rand() % 10 < 7)
+					current->removeTroops(1);
+				numOfArmies--;
+			}
+*/
+      cout << "Airlift order executed." << endl;
 
 			if (next->getOwner() == getPlayer())
 			{

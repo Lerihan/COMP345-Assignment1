@@ -10,6 +10,8 @@ class Player;
 class PlayerStrategy
 {
 	public:
+		virtual ~PlayerStrategy();
+
 		virtual void issueOrder(Player* p) = 0;
 		virtual vector<Territory*> toDefend(vector<Territory*> t) = 0;
 		virtual vector<Territory*> toAttack(vector<Territory*> t) = 0;
@@ -30,6 +32,7 @@ class AggressivePlayerStrategy : public PlayerStrategy
 {
 	public:
 		AggressivePlayerStrategy();
+		~AggressivePlayerStrategy();
 
 		void issueOrder(Player* p);
 		vector<Territory*> toDefend(vector<Territory*> t);
