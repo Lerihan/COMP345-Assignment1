@@ -112,5 +112,17 @@
     <None Include="Simpsons.map">
       <Filter>Source Files\Maps</Filter>
     </None>
+    <None Include="Alabama.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="Alberta.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="Aden.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
+    <None Include="Africa.map">
+      <Filter>Source Files\Maps</Filter>
+    </None>
   </ItemGroup>
 </Project>
