@@ -20,7 +20,7 @@ class Territory
 {
 public:
 	Territory(); // Default Constructor
-	Territory(int id, string n, int continentid); //TODO: ADD CONTINENT INDEX TO CONSTRUCTOR
+	Territory(int id, string n, int continentid);
 	Territory(const Territory &t); // Copy Constructor
 	~Territory(); // Destructor
 
