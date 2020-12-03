@@ -171,7 +171,7 @@ void GameEngine::createComponents()
 	Player* p = nullptr; // for readability
 	for (int i = 0; i < numOfPlayers; i++)
 	{
-		p = new Player("aggressive"); // deallocate memory later
+		p = new Player("human"); // deallocate memory later
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)

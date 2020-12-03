@@ -12,7 +12,7 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 {
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
-
+	
 	// Add (Deploy) armies to Owned Territories From Reinforcement Pool (Until Empty)
 	int pool = p->getReinforcementPool();
 	string territoryName;
@@ -213,9 +213,9 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 			}
 		} while (!found);
 	}
-
+	
 	// Use one card
-	Card* card = NULL;
+	int cardIndex = -1;
 	int cardInput;
 	string cardType;
 	cout << endl << *p << endl;
@@ -246,14 +246,13 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 			cardType = "ReinforcementCard";
 			break;
 		}
-		card = p->getCard(cardType);
-
-		if (card != NULL)
+		cardIndex = p->getCardIndex(cardType);
+		if (cardIndex != -1)
 		{
-			card->play();
+			p->getHand()->play(cardIndex);
 		}
 		cout << *p;
-	} while (card == NULL);
+	} while (cardIndex == -1);
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.

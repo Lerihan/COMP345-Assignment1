@@ -23,7 +23,7 @@
     <ProjectGuid>{8DB25713-EFB7-4CC6-BE5C-23F0E4E164B5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>COMP345Assignment1</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -189,6 +189,10 @@
     <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Aden.map" />
+    <None Include="Africa.map" />
+    <None Include="Alabama.map" />
+    <None Include="Alberta.map" />
     <None Include="dortmund.map" />
     <None Include="eire.map" />
     <None Include="europe.map" />
