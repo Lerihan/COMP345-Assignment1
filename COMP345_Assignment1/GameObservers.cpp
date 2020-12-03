@@ -4,10 +4,12 @@
 
 using namespace std;
 
+//implement a method that attaches a new observer to the list of observers in Subject class
 void Subject::attach(Observer* observer) {
 	observers.push_back(observer);
 }
 
+//detach an observer if it is a valid one in the observer list.
 void Subject::detach(Observer* detach_observer) {
 	int count = observers.size();
 	int i;
@@ -20,21 +22,25 @@ void Subject::detach(Observer* detach_observer) {
 		observers.erase(observers.begin() + i);
 }
 
+//print information about the player and the phase currently being played
 void Subject::notify() {
 	for (Observer* observer : observers) {
 		observer->update();
 	}
 }
 
+//default constructor of PhaseObserver
 PhaseObserver::PhaseObserver(){
 }
 
+//copy constructor that creates a deep copy from the attributes of copied PhaseObserver object
 PhaseObserver::PhaseObserver(const PhaseObserver& po)
 {
 	gameEngine = po.gameEngine;
 	currentPlayerNum = po.currentPlayerNum;
 }
 
+//assignment operator
 PhaseObserver& PhaseObserver::operator=(const PhaseObserver& po)
 {
 	gameEngine = po.gameEngine;
@@ -43,17 +49,20 @@ PhaseObserver& PhaseObserver::operator=(const PhaseObserver& po)
 	return *this;
 }
 
+//attach the gameEngine to the current gameEngine
 PhaseObserver::PhaseObserver(GameEngine* gameEngine)
 {
 	gameEngine->attach(this);
 	this->gameEngine = gameEngine;
 }
 
+//deletion operator
 PhaseObserver::~PhaseObserver()
 {
 	delete this->gameEngine;
 }
 
+//update method that prints out the current phase being played
 void PhaseObserver::update() {
 	string currentPhase = gameEngine->getPhase();
 
@@ -99,31 +108,36 @@ void PhaseObserver::update() {
 	}
 }
 
+//default operator for GameStatisticsObserver class
 GameStatisticsObserver::GameStatisticsObserver(){}
 
+//its copy constructor that creates a deep copy
 GameStatisticsObserver::GameStatisticsObserver(const GameStatisticsObserver& gso)
 {
 	gameEngine = gso.gameEngine;
 }
 
+//assignment operator
 GameStatisticsObserver& GameStatisticsObserver::operator=(const GameStatisticsObserver& gso)
 {
 	gameEngine = gso.gameEngine;
 	return *this;
 }
 
-
+//similarly, attach the gameEngine to the current gameEngine
 GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
 {
 	gameEngine->attach(this);
 	this->gameEngine = gameEngine;
 }
 
+//deletion operator
 GameStatisticsObserver::~GameStatisticsObserver()
 {
 	delete this->gameEngine;
 }
 
+//update method that also prints the game statistics, about players, territories percentage owned, and who own the game.
 void GameStatisticsObserver::update() {
 
 	int totalTerritories = gameEngine->getMap()->listOfTerritories.size();
@@ -145,12 +159,14 @@ void GameStatisticsObserver::update() {
 	}
 }
 
+//stream insertion operator for PhaseObserver class
 ostream& operator<<(ostream& out, const PhaseObserver& po)
 {
 	out << "" <<endl;
 	return out;
 }
 
+//stream insertion operator for GameStatisticsObserver class
 ostream& operator<<(ostream& out, const GameStatisticsObserver& gso)
 {
 	out << "" << endl;
