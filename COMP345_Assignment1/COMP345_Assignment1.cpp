@@ -92,10 +92,9 @@ int main()
 	/**/
 	GameEngine* g = new GameEngine();
 	g->startGame();
-	g->startupPhase();
 
 	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
-	g->mainGameLoop();
+	//g->mainGameLoop();
 
 	//cout << g << endl;
 	
