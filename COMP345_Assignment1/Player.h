@@ -73,7 +73,7 @@ public:
 	Hand* getHand(); // returns Hand of this Player
 	Card* getCard(string type);
 	void setStrategy(PlayerStrategy* strategy); // to change Player strategy during game
-	bool HasNegotiationWith(Player* enemy);
+	bool hasNegotiationWith(Player* enemy);
 
 	// operators
 	Player& operator =(const Player& player);

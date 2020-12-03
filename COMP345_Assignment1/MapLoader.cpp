@@ -177,13 +177,13 @@ vector<string> ConquestFileReader::SplitWords(string s)
 	return words;
 }
 
-istream& operator>>(istream& in, string dominationMap)
-{	
-	cout << "Enter map name: ";
-	in >> dominationMap;
-	cout << "Map details";
-	return in;
-}
+//istream& operator>>(istream& in, string dominationMap)
+//{	
+//	/*cout << "Enter map name: ";
+//	in >> dominationMap;
+//	cout << "Map details";*/
+//	return in;
+//}
 
 //Validate map is a connected graph
 void MapLoader::ValidateConnectedGraph(Map* map)

@@ -16,7 +16,7 @@ public:
 	MapLoader(string dominationFileName);
 	Map* ReadMap(string dominationFileName);
 	virtual Map* GetMap(std::string filePath);
-	friend istream& operator >> (istream& in, string dominationMap);
+	//friend istream& operator >> (istream& in, string dominationMap);
 	void ValidateConnectedGraph(Map* map);
 
 	vector<string> SplitWords(string s);

@@ -127,20 +127,18 @@ void GameEngine::selectMap()
 		mapLoader = SelectMapFormat(mapFormat);
 		cout << "Select the map to play with: ";
 		cin >> dominationMap;
-		if (mapLoader == nullptr) {
-			continue;
-		}
-		else {
+		if (mapLoader != nullptr) {
 			map = mapLoader->GetMap(dominationMap);
 		}
 
 		if (map != NULL)
-			isValid = map->validate();
-		if (map == NULL || !isValid)
 		{
-			cout << "Map is invalid." << endl;
+			isValid = map->validate();
+			break;
 		}
-	} while (map == NULL /*|| isValid*/);
+		if (map == NULL || !isValid)
+			cout << "Map is invalid." << endl;
+	} while (map == NULL);
 
 	delete mapLoader;
 }
