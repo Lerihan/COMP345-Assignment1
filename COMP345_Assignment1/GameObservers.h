@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//Observer parent class
 class Observer {
 	public:
 		virtual void update() = 0;
@@ -20,6 +21,7 @@ class Subject {
 
 class GameEngine;
 
+//inherit from Observer parent class
 class PhaseObserver : public Observer {
 	public:
 		PhaseObserver();
@@ -35,6 +37,7 @@ class PhaseObserver : public Observer {
 		GameEngine* gameEngine;
 };
 
+//inherit from Observer parent class
 class GameStatisticsObserver : public Observer {
 	public:
 		GameStatisticsObserver();
