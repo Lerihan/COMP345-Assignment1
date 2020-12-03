@@ -26,22 +26,18 @@ void driverPart4(); // call for driver program for part 3
 
 int main()
 {
-
+	// ASSIGNMENT 2
+	// ============
 	//driverPart1();
 	//driverPart2();
 	//driverPart3();
 	//driverPart4();
 	
-	/**/
+	// ASSIGNMENT 3
+	// ============
 	GameEngine* g = new GameEngine();
 	g->startGame();
-
-	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
 	g->mainGameLoop();
-
-	//cout << g << endl;
-	
-	
 
 	return 0;
 }

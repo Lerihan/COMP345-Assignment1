@@ -172,9 +172,22 @@ void GameEngine::createComponents()
 	this->deck = new Deck();
 
 	Player* p = nullptr; // for readability
+	string strategy;
 	for (int i = 0; i < numOfPlayers; i++)
 	{
-		p = new Player("human"); // deallocate memory later
+		do
+		{
+			cout << "Which Strategy would you like for Player " << i + 1 << " (human, aggressive, benevolent, neutral): ";
+			cin >> strategy;
+			cout << "Strategy chosen is: " << strategy << endl;
+			p = new Player(strategy); // deallocate memory later
+			
+			if(strategy != "human" && strategy != "aggressive" && strategy != "benevolent" && strategy != "neutral")
+			{
+				cout << "This strategy is invalid." << endl;
+			}
+		} while (strategy != "human" && strategy != "aggressive" && strategy != "benevolent" && strategy != "neutral");
+		
 
 		// Draw 5 cards from the deck and place it in the player's hand
 		for (int i = 0; i < 5; i++)
