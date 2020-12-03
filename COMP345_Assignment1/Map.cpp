@@ -102,7 +102,7 @@ Map::~Map()
 /*
 * Add a continent to listOfContinents vector
 */
-void Map::addContinent(Continent * c)
+void Map::addContinent(Continent* c)
 {
 	listOfContinents.push_back(c);
 }
@@ -110,7 +110,7 @@ void Map::addContinent(Continent * c)
 /*
 * Add a territory to listOfTerritories vector
 */
-void Map::addTerritory(Territory * t)
+void Map::addTerritory(Territory* t)
 {
 	listOfTerritories.push_back(t);
 }
@@ -128,7 +128,6 @@ void Map::printContinents()
 	cout << endl;
 }
 
-//Might delete these 2
 /*
 * Prints all adjacent continents of given continent (c param)
 */
@@ -252,24 +251,6 @@ ostream& operator << (ostream &out, const Map &m)
 	return out;
 }
 
-//istream & operator >> (istream &in, Map &m)
-//{
-//	string input;
-//	cout << "--------------------------------------" << endl;
-//	cout << "Map Creation ! Enter 'e' to end." << endl;
-//	cout << endl;
-//
-//	cout << "Enter map name: ";
-//	in >> m.name;
-//
-//	cout << "Enter continent name (make sure you have created a continent first!):";
-//	in >> input;
-//	
-//
-//	return in;
-//}
-
-
 /*
 * Continent Class Functions
 */
@@ -282,7 +263,6 @@ Continent::Continent()
 	int armyvalue = 0;
 }
 
-//TODO: Add player
 /*
 * Constructor of Continent
 * id is index, n is name, av is armyvalue

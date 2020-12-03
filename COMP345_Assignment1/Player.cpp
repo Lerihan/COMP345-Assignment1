@@ -88,7 +88,6 @@ Player::~Player()
 
 for (int i = 0; i < this->territories.size(); i++)
 {
-	//delete this->territories[i]; // delete pointer for each Territory
 	this->territories[i] = nullptr; // avoid dangling pointers
 }
 this->territories.clear(); // remove placeholder memory locations
@@ -173,12 +172,14 @@ int Player::getReinforcementPool()
 	return reinforcementPool;
 }
 
+// Changes the strategy of this Player
 void Player::setStrategy(PlayerStrategy* strategy)
 {
 	delete this->strategy;
 	this->strategy = strategy;
 }
 
+// Checks if this Player has a Negotiate order wit hthe input Player.
 bool Player::hasNegotiationWith(Player * enemy)
 {
 	for (int i = 0; i < orders->getOrdersList().size(); i++)
@@ -326,21 +327,6 @@ void Player::resetTotalPlayers()
 {
 	this->totalPlayers = 1;
 }
-
-//void Player::removePlayedCard(Card * c)
-//{
-//	int index = 0;
-//	for (int i = 0; i < this->hand->cardsInHand.size(); i++)
-//	{
-//		if (this->hand->getCardsInHand().at(i)->getType() == c->getType())
-//		{
-//			index = i;
-//			break;
-//		}
-//	}
-//
-//	hand->getCardsInHand().erase(find(hand->getCardsInHand().begin(), hand->getCardsInHand().end(), index));
-//}
 
 // Assignment operator, performs shallow copy only.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
