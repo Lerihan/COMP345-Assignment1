@@ -42,10 +42,10 @@ int main()
 
 	// create a Deck and some Territories to use in functions test
 	Deck* d = new Deck();
-	Territory* t1 = new Territory(0, "Canada"); // create Canada, part of continent 0
-	Territory* t2 = new Territory(0, "USA"); // create USA, part of continent 0
-	Territory* t3 = new Territory(1, "Mexico"); // create Mexico, part of continent 1
-	Territory* t4 = new Territory(2, "Guatemala"); // create Guatemla, part of continent 2
+	Territory* t1 = new Territory(0, "Canada", 0); // create Canada, part of continent 0
+	Territory* t2 = new Territory(0, "USA", 1); // create USA, part of continent 0
+	Territory* t3 = new Territory(1, "Mexico", 0); // create Mexico, part of continent 1
+	Territory* t4 = new Territory(2, "Guatemala", 0); // create Guatemla, part of continent 2
 	
 	// check that added Territories appear in Player member
 	p1->addTerritory(t1);
@@ -63,7 +63,7 @@ int main()
 	// draw five cards and add them to Player p1's Hand
 	cout << "Default Player will draw 5 Cards:\n";
 	for (int i = 1; i <= 5; i++) {
-		(*d).draw(*p1);
+		(*d).draw(p1);
 	}
 	cout << "=======================================\n";
 	cout << *p1 << endl << endl;
@@ -71,12 +71,13 @@ int main()
 	// draw five cards and add them to Player p2's Hand
 	cout << "Parameterized Player will draw 5 Cards:\n";
 	for (int i = 1; i <= 5; i++) {
-		(*d).draw(*p2);
+		(*d).draw(p2);
 	}
 	cout << "=======================================\n";
 	cout << *p2 << endl << endl;
 
 	// test issueOrder()
+	p1->setStrategy(new AggressivePlayerStrategy());
 	p1->issueOrder();
 	cout << "Default Constructor Player has issued 1 Order:\n";
 	cout << "==============================================\n";
@@ -94,6 +95,58 @@ int main()
 		cout << typeid(*(*p1).getOrders().at(i)).name();
 		cout << " ";
 	}
+
+	p2->setStrategy(new BenevolentPlayerStrategy());
+	p2->issueOrder();
+	cout << endl << endl;
+	cout << "Parameterized Constructor Player has issued an Order. There should now be 1:\n";
+	cout << "===========================================================================\n";
+	for (int i = 0; i < (*p2).getOrders().size(); i++)
+	{
+		cout << typeid(*(*p2).getOrders().at(i)).name();
+		cout << " ";
+	}
+	cout << *p2 << endl << endl;
+	p2->issueOrder();
+	cout << endl << endl;
+	cout << "Parameterized Constructor Player has issued an Order. There should now be 2:\n";
+	cout << "===========================================================================\n";
+	for (int i = 0; i < (*p2).getOrders().size(); i++)
+	{
+		cout << typeid(*(*p2).getOrders().at(i)).name();
+		cout << " ";
+	}
+	cout << *p2 << endl << endl;
+	p2->issueOrder();
+	cout << endl << endl;
+	cout << "Parameterized Constructor Player has issued an Order. There should now be 3:\n";
+	cout << "===========================================================================\n";
+	for (int i = 0; i < (*p2).getOrders().size(); i++)
+	{
+		cout << typeid(*(*p2).getOrders().at(i)).name();
+		cout << " ";
+	}
+	cout << *p2 << endl << endl;
+	p2->issueOrder();
+	cout << endl << endl;
+	cout << "Parameterized Constructor Player has issued an Order. There should now be 4:\n";
+	cout << "===========================================================================\n";
+	for (int i = 0; i < (*p2).getOrders().size(); i++)
+	{
+		cout << typeid(*(*p2).getOrders().at(i)).name();
+		cout << " ";
+	}
+	cout << *p2 << endl << endl;
+	p2->issueOrder();
+	cout << endl << endl;
+	cout << "Parameterized Constructor Player has issued an Order. There should now be 5:\n";
+	cout << "===========================================================================\n";
+	for (int i = 0; i < (*p2).getOrders().size(); i++)
+	{
+		cout << typeid(*(*p2).getOrders().at(i)).name();
+		cout << " ";
+	}
+	cout << *p2 << endl << endl;
 
 	cout << endl << endl;
 	cout << "Parameterized Constructor Player will now call toDefend(). Note this returns a list of arbitrary (newly-created) Territories.\n";
@@ -131,7 +184,7 @@ int main()
 	cout << "===========================================================\n";
 	cout << *p4 << endl << endl;
 
-	Territory* t5 = new Territory(3, "Mongolia");
+	Territory* t5 = new Territory(3, "Mongolia", 0);
 	p4->addTerritory(t5);
 	cout << "Will add the following Territory to the copy of the Parameterized Constructor Player and show it doesn't affect the\n";
 	cout << "original Parameterized Constructor Player\n";

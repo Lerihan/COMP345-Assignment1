@@ -174,7 +174,7 @@ void Player::setStrategy(PlayerStrategy* strategy)
 	this->strategy = strategy;
 }
 
-bool Player::hasNegotiationWith(Player * enemy)
+bool Player::HasNegotiationWith(Player * enemy)
 {
 	for (int i = 0; i < orders->getOrdersList().size(); i++)
 	{

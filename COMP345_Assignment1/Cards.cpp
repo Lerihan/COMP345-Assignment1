@@ -73,19 +73,12 @@ Hand& Hand::operator = (const Hand& h) {
 		{
 			this->cardsInHand.push_back(c);
 		}
-		//this->cardsInHand = h.cardsInHand;
 	}
 	return *this;
 }
 
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
-	/*
-	vector<Card*> h;
-	for (int i = 0; i < this->cardsInHand.size(); i++) {
-		h.push_back(this->cardsInHand.at(i));
-	}
-	*/
 	return this->cardsInHand;
 }
 
@@ -108,6 +101,11 @@ void Hand::play() {
 	//plays the first card of the player's hand automatically
 	this->cardsInHand.at(0)->play();
 	//deletes the card from the player's hand by placing it at the end and then erasing it.
+	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
+	this->cardsInHand.erase(cardToMove);
+}
+
+void Hand::deleteFirstCard() {
 	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
 	this->cardsInHand.erase(cardToMove);
 }
@@ -199,6 +197,7 @@ void Deck::draw(Player* p) {
 
 void Deck::insertBackToDeck(Card* c) {
 	//adding the card to the end of the deck
+	c->cardHolder = NULL;
 	this->cardsInDeck.push_back(c);
 }
 
@@ -236,7 +235,7 @@ void BombCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
 
-	bombOrder = nullptr;
+	//bombOrder = nullptr;
 	p = nullptr;
 	this->cardHolder = nullptr;
 }
@@ -331,7 +330,7 @@ void BlockadeCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Blockade Card has been added to the deck." << endl;
 
-	blockOrder = nullptr;
+	//blockOrder = nullptr;
 	p = nullptr;
 	this->cardHolder = nullptr;
 }
@@ -414,7 +413,7 @@ void AirliftCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Airlift Card has been added to the deck." << endl;
 
-	airliftOrder = nullptr;
+	//airliftOrder = nullptr;
 	p = nullptr;
 	this->cardHolder = nullptr;
 }
@@ -476,7 +475,7 @@ void DiplomacyCard::play() {
 	this->d->insertBackToDeck(this);
 	cout << "Diplomacy Card has been added to the deck." << endl;
 
-	diplomacyOrder = nullptr;
+	//diplomacyOrder = nullptr;
 	p = nullptr;
 	this->cardHolder = nullptr;
 }
