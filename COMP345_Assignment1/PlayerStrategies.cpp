@@ -284,7 +284,7 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
 
-	if (p->getReinforcementPool() != 0) // only issue deploy order is reinforcement pool is not empty
+	if (p->getReinforcementPool() > 0) // only issue deploy order is reinforcement pool is not empty
 	{
 		// deploy all reinforcements to the input Player's strongest Territory
 		p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
@@ -314,33 +314,6 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	}
 	currTerritory = nullptr;
 	adjTerritory = nullptr;
-
-	 // ==================== CONFLICT:  the following is from passiveandneutral branch 
-	//vector<Card*> v = p->getHand()->getCardsInHand();
-	//if (v.size() != 0)
-	//{
-	//	v.at(0)->play(); // Player plays first Card in their Hand
-	//	v.erase(v.begin()); // remove card from player's hand
-	//}
-  
-  // ==================== CONFLICT:  the following is from master 
-	/*
-	vector<Card*> v = p->getHand()->getCardsInHand();
-	if (v.size() != 0)
-	{
-		//cout << *p << endl;
-		cout << "start play" << endl;
-		p->getHand()->getCardsInHand().at(0)->play(); // Player plays first Card in their Hand
-		cout << "end play" << endl;
-		//cout << *p << endl;
-		cout << "start begin" << endl;
-		p->getHand()->getCardsInHand().erase(p->getHand()->getCardsInHand().begin()); // remove card from player's hand
-		cout << "end begin" << endl;
-		v.at(0)->play(); // Player plays first Card in their Hand
-		//cout << *p << endl;
-		v.erase(v.begin()); // remove card from player's hand
-	}
-	*/
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
@@ -441,17 +414,7 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() { }
 
 void NeutralPlayerStrategy::issueOrder(Player* p)
 {
-
-	//neutral player should not be able to play any cards
-	//goes through the player's hand and skips over the cards completely
-	//for (int i = 0; i < p->getHand()->cardsInHand.size(); i++) {	
-	//	p->getHand()->cardsInHand.erase(find(p->getHand()->cardsInHand.begin(), p->getHand()->cardsInHand.end(), p->getHand()->cardsInHand.at(i)));			//erase the card from the player's Hand
-	//	p->getHand()->cardsInHand.at(i)->d->insertBackToDeck(p->getHand()->cardsInHand.at(i));		//insert the card back into its deck
-	//}
-
-	//vector<Territory*> attack = p->toAttack();
-	//vector<Territory*> defend = p->toDefend();
-	//does nothing; does not issue orders
+	// intentionally left empty
 }
 
 // Returns the input vector of Territories sorted in increasing number of armies.

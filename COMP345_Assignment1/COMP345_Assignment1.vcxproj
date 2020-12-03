@@ -189,6 +189,10 @@
     <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Aden.map" />
+    <None Include="Africa.map" />
+    <None Include="Alabama.map" />
+    <None Include="Alberta.map" />
     <None Include="dortmund.map" />
     <None Include="eire.map" />
     <None Include="europe.map" />
