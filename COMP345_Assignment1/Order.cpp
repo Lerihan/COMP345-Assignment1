@@ -217,7 +217,7 @@ bool Advance::validate()
 */
 bool Advance::execute()
 {
-	if (player->hasNegotiationWith(next->getOwner()))
+	if (!player->hasNegotiationWith(next->getOwner()))
 	{
 		executed = true;
 		if (validate())
@@ -232,7 +232,7 @@ bool Advance::execute()
 				if (rand() % 10 < 6)
 					next->removeTroops(1);
 */
-        int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
+				int armiesToMove = std::min((int)numOfArmies, current->numberOfArmies);
 				if (armiesToMove != numOfArmies)
 					numOfArmies = armiesToMove;
 				current->removeTroops(numOfArmies);
@@ -344,7 +344,7 @@ bool Bomb::validate()
 */
 bool Bomb::execute()
 {
-	if (player->hasNegotiationWith(target->getOwner()))
+	if (!player->hasNegotiationWith(target->getOwner()))
 	{
 		executed = true;
 		if (validate())
@@ -513,7 +513,7 @@ bool Airlift::validate()
 */
 bool Airlift::execute()
 {
-	if (player->hasNegotiationWith(next->getOwner()))
+	if (!player->hasNegotiationWith(next->getOwner()))
 	{
 		executed = true;
 		if (validate())
@@ -654,6 +654,11 @@ bool Negotiate::execute()
 }
 
 string Negotiate::getType() { return "Negotiate"; }
+
+Player * Negotiate::getEnemy()
+{
+	return enemy;
+}
 
 /*Stream insertion operator for Negotiate class order
 */

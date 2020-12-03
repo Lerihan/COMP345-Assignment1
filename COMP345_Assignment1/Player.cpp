@@ -86,16 +86,16 @@ Player::~Player()
 		delete this->hand; // delete Player's Hand pointer
 	}
 
-	for (int i = 0; i < this->territories.size(); i++)
-	{
-		//delete this->territories[i]; // delete pointer for each Territory
-		this->territories[i] = nullptr; // avoid dangling pointers
-	}
-	this->territories.clear(); // remove placeholder memory locations
+for (int i = 0; i < this->territories.size(); i++)
+{
+	//delete this->territories[i]; // delete pointer for each Territory
+	this->territories[i] = nullptr; // avoid dangling pointers
+}
+this->territories.clear(); // remove placeholder memory locations
 
-	delete this->orders; // delete to OrdersList
+delete this->orders; // delete to OrdersList
 
-	delete this->strategy;
+delete this->strategy;
 }
 
 // Returns vector of Territories.
@@ -103,7 +103,7 @@ Player::~Player()
 vector<Territory*> Player::getTerritories()
 {
 	vector<Territory*> t = this->territories;
-	
+
 	return t;
 }
 
@@ -181,8 +181,19 @@ bool Player::hasNegotiationWith(Player * enemy)
 {
 	for (int i = 0; i < orders->getOrdersList().size(); i++)
 	{
-		if (orders->getOrdersList().at(i)->getPlayer()->playerNumber == enemy->playerNumber && this != enemy)
-			return true;
+		if (!orders->getOrdersList().at(i)->isExecuted())
+		{
+			if (orders->getOrdersList().at(i)->getType() == "Negotiate")
+			{
+				if (dynamic_cast<Negotiate*>(orders->getOrdersList().at(i))->getEnemy() == enemy)
+				{
+					if (dynamic_cast<Negotiate*>(orders->getOrdersList().at(i))->getEnemy() != this)
+					{
+						return true;
+					}
+				}
+			}
+		}
 	}
 	return false;
 }
@@ -313,6 +324,21 @@ void Player::resetTotalPlayers()
 {
 	this->totalPlayers = 1;
 }
+
+//void Player::removePlayedCard(Card * c)
+//{
+//	int index = 0;
+//	for (int i = 0; i < this->hand->cardsInHand.size(); i++)
+//	{
+//		if (this->hand->getCardsInHand().at(i)->getType() == c->getType())
+//		{
+//			index = i;
+//			break;
+//		}
+//	}
+//
+//	hand->getCardsInHand().erase(find(hand->getCardsInHand().begin(), hand->getCardsInHand().end(), index));
+//}
 
 // Assignment operator, performs shallow copy only.
 // Assume Cards, Order, Territory classes have correctly implemented assignment operators
