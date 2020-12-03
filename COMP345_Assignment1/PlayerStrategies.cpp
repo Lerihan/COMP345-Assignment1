@@ -313,31 +313,11 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	adjTerritory = nullptr;
 
 	 // ==================== CONFLICT:  the following is from passiveandneutral branch 
-	//vector<Card*> v = p->getHand()->getCardsInHand();
-	//if (v.size() != 0)
-	//{
-	//	v.at(0)->play(); // Player plays first Card in their Hand
-	//	v.erase(v.begin()); // remove card from player's hand
-	//}
-  
-  // ==================== CONFLICT:  the following is from master 
-	/*
 	vector<Card*> v = p->getHand()->getCardsInHand();
 	if (v.size() != 0)
 	{
-		//cout << *p << endl;
-		cout << "start play" << endl;
-		p->getHand()->getCardsInHand().at(0)->play(); // Player plays first Card in their Hand
-		cout << "end play" << endl;
-		//cout << *p << endl;
-		cout << "start begin" << endl;
-		p->getHand()->getCardsInHand().erase(p->getHand()->getCardsInHand().begin()); // remove card from player's hand
-		cout << "end begin" << endl;
-		v.at(0)->play(); // Player plays first Card in their Hand
-		//cout << *p << endl;
-		v.erase(v.begin()); // remove card from player's hand
+		p->getHand()->play(); // Player plays first Card in their Hand		
 	}
-	*/
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
