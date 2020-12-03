@@ -133,12 +133,6 @@ bool Deploy::execute()
 	{ 
 		cout << "Deploy order executed." << endl;
 
-		/*
-		int taken = player->takeArmiesFromReinforcement(numOfArmies);
-
-		if (taken != numOfArmies)
-			numOfArmies = taken;
-		*/
 		player->removeReinforcements(numOfArmies);
 		territory->addTroops(numOfArmies);
 		cout << "DEPLOY ORDER: Deploying " << numOfArmies << " armies to " << territory->name << "." << endl;
@@ -320,11 +314,6 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 */
 bool Bomb::validate()
 {
-	/*if (source->isAdjacent(target->index) && source->getOwner() == getPlayer() && target->getOwner() != getPlayer())
-	{
-		cout << "Bomb order validated." << endl;
-		return true;
-	}*/
 	if (target->owner != this->player)
 	{
 		cout << "Bomb order validated." << endl;
@@ -453,8 +442,7 @@ ostream& operator << (std::ostream& o, const Blockade& b)
 */
 Airlift::Airlift() : Order()
 {
-	//Territory(0, "current", 0);
-	//Territory(0, "next", 0);
+	// intentionally empty
 }
 
 /*Parametrized constructor for the Airlift class

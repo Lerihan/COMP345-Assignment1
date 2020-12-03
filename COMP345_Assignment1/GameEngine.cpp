@@ -12,10 +12,12 @@ GameEngine::GameEngine()
 	this->map = nullptr;
 	vector<Player*> players;
 	this->firstPlayer = nullptr;
-	this->deck = nullptr;;
+	this->deck = nullptr;
 	this->numOfPlayers = 0;
 	this->observerOn = false;
 	this->phase = "empty";
+	this->phaseObserver = nullptr;
+	this->gameStatsObserver = nullptr;
 }
 
 // Copy constructor. Creates a deep copy of this GameEngine, and all of its components.
@@ -54,6 +56,7 @@ GameEngine::~GameEngine()
 	delete this->gameStatsObserver;
 }
 
+// Starts the game
 void GameEngine::startGame()
 {
 	cout << "Welcome!" << endl;
@@ -71,6 +74,7 @@ void GameEngine::startGame()
 	startupPhase();
 }
 
+// Sets up elements of the game engine
 void GameEngine::startupPhase()
 {
 	setRandomOrder();
@@ -104,6 +108,7 @@ Deck* GameEngine::getDeck()
 	return this->deck;
 }
 
+// Sets the map format
 MapLoader* SelectMapFormat(string mapFormat) {
 	if (mapFormat == "conquest") {
 		ConquestFileReaderAdapter* conquestAdapter = new ConquestFileReaderAdapter();
@@ -116,6 +121,7 @@ MapLoader* SelectMapFormat(string mapFormat) {
 	else return nullptr;
 }
 
+// Allows player to choose a game map
 void GameEngine::selectMap()
 {
 	string dominationMap;
@@ -186,6 +192,7 @@ void GameEngine::createComponents()
 	p = nullptr;
 }
 
+// Allows user to toggle observers on or off
 void GameEngine::setObservers()
 {
 	char answer;
@@ -306,7 +313,6 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		//cout << *(this->players[0]) << endl; // TODO: removed by melina for testing
 
 		// Issuing Orders phase
 		for (int i = 0; i < this->players.size(); i++)
@@ -362,9 +368,7 @@ void GameEngine::reinforcementPhase(Player* currPlayer)
 	currPlayer->addReinforcements(newArmies + bonusArmies); // add armies
 }
 
-// Prompts user for Order to be issued and calls issueOrder()
-// TODO: generalize to call methodsof Player's strategy class; I think this method should pretty much be empty by the end
-// of the assignment
+// Calls the issueOrder method of the player's strategy class
 void GameEngine::issueOrdersPhase(Player* currPlayer) {
 
 	phase = "Issue Order Phase";
@@ -435,9 +439,6 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 		this->deck->draw(currPlayer);
 		currPlayer->setWonAttack(false);
 	}		
-
-
-	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 
 // Checks if a Player has lost the game.

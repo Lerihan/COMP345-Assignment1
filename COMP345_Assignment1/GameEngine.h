@@ -20,7 +20,7 @@ public:
 	vector<Player*> getPlayers();
 	string getPhase();
 
-	// made public for now so I can use them in part 3 driver
+	// made public for now so I can use them driver
 	void reinforcementPhase(Player* currPlayer); // void for now
 	void issueOrdersPhase(Player* currPlayer);
 	void executeOrdersPhase(Player* currPlayer);

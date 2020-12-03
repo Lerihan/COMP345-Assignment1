@@ -30,7 +30,7 @@ public:
 	Territory* getAdjTerritoryByName(string name);
 	Player* getOwner(); // get owner of this Territory
 	void setOwner(Player* p);
-	Player * getOwnerOfAdjacent(string name);
+	Player* getOwnerOfAdjacent(string name);
 	// set the owner of this Territory
 	bool isAdjacent(int id);
 	bool isAdjacent(string name);
@@ -96,7 +96,7 @@ public:
 	void addContinent(Continent* c);
 	void addTerritory(Territory* t);
 	void addAdjContinent(Continent* c1, Continent* c2);
-	void addAdjTerritory(Territory* t1, Territory* t2); //TODO: maybe move this in Continent ?
+	void addAdjTerritory(Territory* t1, Territory* t2);
 	bool isAdjacent(int id1, int id2);
 	void printContinents();
 	Continent* getContinent(int id);
@@ -104,7 +104,6 @@ public:
 	Territory* getTerritory(int id);
 	Territory* getTerritoryByName(string name);
 
-	//TODO: Might delete. Implemented in Continent and Territory class already
 	void printAdjContinents(Continent* c);
 	void printAdjTerritory(Territory* t);
 
