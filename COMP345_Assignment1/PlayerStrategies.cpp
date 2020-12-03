@@ -249,7 +249,10 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 		card = p->getCard(cardType);
 
 		if (card != NULL)
+		{
 			card->play();
+		}
+		cout << *p;
 	} while (card == NULL);
 }
 

@@ -21,6 +21,7 @@ public:
 
 	vector<string> SplitWords(string s); 
 	string FirstComponent(string s);
+	friend ostream& operator<<(std::ostream& o, const MapLoader& ml);
 };
 
 class ConquestFileReader {
@@ -36,6 +37,7 @@ class ConquestFileReader {
 		vector<string> SplitWords(string s);
 		//friend ostream& operator << (ostream& out, string conquestFileName);
 		~ConquestFileReader(); //destructor
+		friend ostream& operator<<(std::ostream& o, const ConquestFileReader& cfr);
 };
 
 class ConquestFileReaderAdapter: public MapLoader {
@@ -49,4 +51,5 @@ class ConquestFileReaderAdapter: public MapLoader {
 		~ConquestFileReaderAdapter(); //destructor
 		ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter); //copy constructor
 		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter); //assignment operator
+		friend ostream& operator<<(std::ostream& o, const ConquestFileReaderAdapter& cfra);
 };

@@ -218,6 +218,8 @@ public:
 	string getType(); // returns string indicating type of Order
 
 	friend ostream& operator<<(std::ostream& o, const Negotiate& negotiate);
+
+	Player* getEnemy();
 };
 
 //OrderList class, implementing a vector

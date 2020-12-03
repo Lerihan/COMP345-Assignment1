@@ -28,17 +28,15 @@ MapLoader::~MapLoader() {
 	delete dominationFileName;
 }
 
-//parametrized constructor
 MapLoader::MapLoader(string dominationFileName) {
 	this->dominationFileName = new std::string(dominationFileName);
 }
 
-//method to read map  
 Map* MapLoader::GetMap(string filePath) {
 	return ReadMap(filePath);
 }
 
-//reads through domination files
+	//Map map;
 Map* MapLoader::ReadMap(string dominationFileName) {
 	try {
 		Map* map = new Map();
@@ -183,10 +181,12 @@ vector<string> ConquestFileReader::SplitWords(string s)
 * This method is commented out because it results in an infinite loop...
 */
 
-//ostream& operator<<(ostream& out, const MapLoader &m)
+//istream& operator>>(istream& in, string dominationMap)
 //{	
-//	out << "Map name is: "<< m << endl;;
-//	return out;
+//	/*cout << "Enter map name: ";
+//	in >> dominationMap;
+//	cout << "Map details";*/
+//	return in;
 //}
 
 //Validate map is a connected graph
@@ -200,37 +200,36 @@ void MapLoader::ValidateConnectedGraph(Map* map)
 	}
 }
 
-//default constructor
+ostream& operator << (std::ostream& o, const MapLoader& ml)
+{
+	return o << "This is a domination map: " << ml.dominationFileName;
+}
+
 ConquestFileReader::ConquestFileReader()
 {
 	this->conquestFileName = NULL;
 }
 
-//parametrized constructor
 ConquestFileReader::ConquestFileReader(string conquestFileName)
 {
 	this->conquestFileName = new std::string(conquestFileName);;
 }
 
-//copy constructor
 ConquestFileReader::ConquestFileReader(ConquestFileReader& conquestFile)
 {
 	conquestFileName = conquestFile.conquestFileName;
 }
 
-//assignment operator
 ConquestFileReader& ConquestFileReader::operator=(const ConquestFileReader& conquestFile)
 {
 	conquestFileName = conquestFile.conquestFileName;
 	return *this;
 }
 
-//adapter to read conquest map 
 Map* ConquestFileReaderAdapter::GetMap(string filePath) {
 	return conquestReader->conquestReadMap(filePath);
 }
 
-//reads conquest map 
 Map* ConquestFileReader::conquestReadMap(string fileName)
 {
 	try {
@@ -341,36 +340,41 @@ Map* ConquestFileReader::conquestReadMap(string fileName)
 	}
 }
 
-//destructor
 ConquestFileReader::~ConquestFileReader()
 {
 	delete conquestFileName;
 }
 
-//default constructor for adapter
+ostream& operator << (std::ostream& o, const ConquestFileReader& cfr)
+{
+	return o << "This is a conquest map: " << cfr.conquestFileName;
+}
+
 ConquestFileReaderAdapter::ConquestFileReaderAdapter()
 {
 	this->conquestReader = conquestReader;
 }
 
-//destructor 
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
 {
 	delete conquestReader;
 	delete mapLoader;
 }
 
-//parametrized contrustor 
 ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter)
 {
 	conquestReader = conquestAdapter.conquestReader;
 	mapLoader = conquestAdapter.mapLoader;
 }
 
-//assignment operator
 ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFileReaderAdapter& conquestAdapter)
 {
 	conquestReader = conquestAdapter.conquestReader;
 	mapLoader = conquestAdapter.mapLoader;
 	return *this;
+}
+
+ostream& operator << (std::ostream& o, const ConquestFileReaderAdapter& cfra)
+{
+	return o << "This is Conquest File Reader Adapter: " << cfra.mapLoader;
 }

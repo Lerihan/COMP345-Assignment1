@@ -239,6 +239,7 @@ void BombCard::play() {
 	p->getOrdersList()->add(bombOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Bomb Card from their hand.\n" << endl;
 	//adds the bomb card to the end of the deck
+	//p->removePlayedCard(this);
 	this->d->insertBackToDeck(this);
 	cout << "Bomb Card has been added to the deck." << endl;
 
@@ -279,6 +280,7 @@ void ReinforcementCard::play() {
 	p->addReinforcements(5);
 	cout << "Player " << p->getPlayerNumber() << " has played a Reinforcement Card from their hand.\n" << endl;
 	//adds the reinforcement card to the end of the deck
+	//p->removePlayedCard(this);
 	this->d->insertBackToDeck(this);
 	cout << "Reinforcement Card has been added to the deck." << endl;
 
@@ -333,7 +335,6 @@ void BlockadeCard::play() {
 	p->getOrdersList()->add(blockOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Blockade Card from their hand.\n" << endl;
 	//adds the block card to the end of the deck
-
 	this->d->insertBackToDeck(this);
 	cout << "Blockade Card has been added to the deck." << endl;
 
@@ -416,7 +417,6 @@ void AirliftCard::play() {
 	p->getOrdersList()->add(airliftOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Airlift Card from their hand.\n" << endl;
 	//adds the airlift card to the end of the deck
-
 	this->d->insertBackToDeck(this);
 	cout << "Airlift Card has been added to the deck." << endl;
 
@@ -478,7 +478,6 @@ void DiplomacyCard::play() {
 	p->getOrdersList()->add(diplomacyOrder);
 	cout << "Player " << p->getPlayerNumber() << " has played a Diplomacy Card from their hand.\n" << endl;
 	//adds the diplomacy card to the end of the deck
-
 	this->d->insertBackToDeck(this);
 	cout << "Diplomacy Card has been added to the deck." << endl;
 
