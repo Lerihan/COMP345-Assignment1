@@ -12,7 +12,7 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 {
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
-
+	
 	// Add (Deploy) armies to Owned Territories From Reinforcement Pool (Until Empty)
 	int pool = p->getReinforcementPool();
 	string territoryName;
@@ -213,9 +213,9 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 			}
 		} while (!found);
 	}
-
+	
 	// Use one card
-	Card* card = NULL;
+	int cardIndex = -1;
 	int cardInput;
 	string cardType;
 	cout << endl << *p << endl;
@@ -246,14 +246,13 @@ void HumanPlayerStrategy::issueOrder(Player* p)
 			cardType = "ReinforcementCard";
 			break;
 		}
-		card = p->getCard(cardType);
-
-		if (card != NULL)
+		cardIndex = p->getCardIndex(cardType);
+		if (cardIndex != -1)
 		{
-			card->play();
+			p->getHand()->play(cardIndex);
 		}
 		cout << *p;
-	} while (card == NULL);
+	} while (cardIndex == -1);
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
@@ -314,6 +313,13 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	}
 	currTerritory = nullptr;
 	adjTerritory = nullptr;
+
+	 // ==================== CONFLICT:  the following is from passiveandneutral branch 
+	vector<Card*> v = p->getHand()->getCardsInHand();
+	if (v.size() != 0)
+	{
+		p->getHand()->play(); // Player plays first Card in their Hand		
+	}
 }
 
 // Returns the input vector of Territories sorted in increeasing number of armies.
@@ -340,34 +346,45 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 {
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
+	int territoryAmount = defend.size();
 
 	Territory* currTerritory = nullptr;													//for readability
 
-	//create a variable to count # of total armies, adding in reinforcement pool army
-	int totalNumOfArmies = p->getReinforcementPool();									//for readability, using an INT for step-down rounding
-	//loop to add in # of armies for each territory of the player
-	for (int i = 0; i < defend.size(); i++) {
-		totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
-	}
-	//variable to know how much armies should be evenly spread
-	int idealNumOfArmy = totalNumOfArmies / defend.size();	
-	
-	//for each territory, add in (from reinforcement pool) a number of army to match idealNumOfArmy
-	for (int i = 0; i < defend.size(); i++) {
-		currTerritory = defend.at(i);
-		//if territory's army has less than idealNumOfArmy, simply add in from reinforcement pool
-		if (idealNumOfArmy > currTerritory->numberOfArmies) {
-			int numOfArmyNeeded = idealNumOfArmy - currTerritory->numberOfArmies;		//calculate how much army does the player need to equaly distribute the reinforcement
-			p->getOrdersList()->add(new Deploy(p, currTerritory, numOfArmyNeeded));		//deploys the needed amount of soldiers for the territory to reach the needed number
-			p->removeReinforcements(numOfArmyNeeded);									//remove that amount from the reinforcement pool
+	if(p->getReinforcementPool() != 0)	{
+		//create a variable to count # of total armies, adding in reinforcement pool army
+		int totalNumOfArmies = p->getReinforcementPool();									//for readability, using an INT for step-down rounding
+		//loop to add in # of armies for each territory of the player
+		for (int i = 0; i < territoryAmount; i++) {
+			totalNumOfArmies = totalNumOfArmies + defend.at(i)->numberOfArmies;
 		}
-		//if territory's army is greater than idealNumOfArmy, remove excess and add to reinforcement pool
-		else if (idealNumOfArmy < currTerritory->numberOfArmies) {
-			int numOfExtraArmy = currTerritory->numberOfArmies - idealNumOfArmy;		//calculate how much army does the player need to equaly distribute the reinforcement
-			currTerritory->removeTroops(numOfExtraArmy);									//removes troops from the Territory
-			p->getOrdersList()->add(new Deploy(p, currTerritory, 0));					//makes a deploy order with 0 reinforcements
-			p->addReinforcements(numOfExtraArmy);										//add that amount to the reinforcement pool
+		//variable to know how much armies should be evenly spread
+		int idealNumOfArmy = totalNumOfArmies / defend.size();	
+
+		//for each territory, add in (from reinforcement pool) a number of army to match idealNumOfArmy
+		for (int i = 0; i < territoryAmount; i++) {
+			currTerritory = defend.at(i);
+			//if territory's army has less than idealNumOfArmy, simply add in from reinforcement pool
+			if (idealNumOfArmy > currTerritory->numberOfArmies) {
+				int numOfArmyNeeded = idealNumOfArmy - currTerritory->numberOfArmies;		//calculate how much army does the player need to equaly distribute the reinforcement
+				p->getOrdersList()->add(new Deploy(p, currTerritory, numOfArmyNeeded));		//deploys the needed amount of soldiers for the territory to reach the needed number
+				p->removeReinforcements(numOfArmyNeeded);									//remove that amount from the reinforcement pool
+			}
 		}
+		for (int i = 0; i < territoryAmount; i++) {											//advancing armies from the STRONGEST territory to the WEAKEST territory
+			defend = p->toDefend();															//repeats toDefend, to reorder weakest territories
+			Territory* strongestTerritory = defend.at(territoryAmount - 1);
+			Territory* weakestTerritory = defend.at(0);
+			int numOfExtraArmy = strongestTerritory->numberOfArmies - idealNumOfArmy;
+			int numOfArmyNeeded = idealNumOfArmy - weakestTerritory->numberOfArmies;
+			if (numOfExtraArmy < numOfArmyNeeded) {											//if weakest' army needs more than the strongest army can provide, advance all extra army of strongest to weakest 
+				p->getOrdersList() -> add(new Advance(p, strongestTerritory, weakestTerritory, numOfArmyNeeded));
+			}
+			else if (numOfExtraArmy > numOfArmyNeeded) {									//if weakest' army needs less than the strongest army can provide, advance a portion extra army of strongest to weakest 
+				p->getOrdersList()->add(new Advance(p, strongestTerritory, weakestTerritory, numOfExtraArmy));
+			}
+			strongestTerritory = nullptr;
+			weakestTerritory = nullptr;
+		}		
 	}
 	currTerritory = nullptr;
 
@@ -415,6 +432,8 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() { }
 void NeutralPlayerStrategy::issueOrder(Player* p)
 {
 	// intentionally left empty
+	//neutral player should not be able to play any cards
+	//does nothing; does not issue orders
 }
 
 // Returns the input vector of Territories sorted in increasing number of armies.

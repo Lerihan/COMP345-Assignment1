@@ -80,13 +80,6 @@ Hand& Hand::operator = (const Hand& h) {
 //returns the cards in the player's hands.
 vector<Card*> Hand::getCardsInHand() {
 	return this->cardsInHand;
-/* CONFLICT: from master:
-	vector<Card*> h;
-	for (int i = 0; i < this->cardsInHand.size(); i++) {
-		h.push_back(this->cardsInHand.at(i));
-	}
-	return h;
-*/
 }
 
 //stream insertion operators
@@ -109,6 +102,14 @@ void Hand::play() {
 	this->cardsInHand.at(0)->play();
 	//deletes the card from the player's hand by placing it at the end and then erasing it.
 	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(0));
+	this->cardsInHand.erase(cardToMove);
+}
+
+void Hand::play(int index) {
+	//plays the first card of the player's hand automatically
+	this->cardsInHand.at(index)->play();
+	//deletes the card from the player's hand by placing it at the end and then erasing it.
+	auto cardToMove = find(this->cardsInHand.begin(), this->cardsInHand.end(), this->cardsInHand.at(index));
 	this->cardsInHand.erase(cardToMove);
 }
 

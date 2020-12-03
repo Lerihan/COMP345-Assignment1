@@ -135,6 +135,7 @@ public:
 	Hand& operator =(const Hand &h);
 	std::vector<Card*> getCardsInHand();
 	void play();
+	void play(int index);
 	void deleteFirstCard();
 	friend ostream& operator << (ostream& out, const Hand& h);
 	friend istream& operator >> (istream& in, const Hand& h);

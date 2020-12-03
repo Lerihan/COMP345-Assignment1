@@ -13,29 +13,31 @@ public:
 	MapLoader& operator = (const MapLoader& map); //Assignment operator
 	~MapLoader(); //destructor
 
-	MapLoader(string dominationFileName);
-	Map* ReadMap(string dominationFileName);
-	virtual Map* GetMap(std::string filePath);
-	//friend istream& operator >> (istream& in, string dominationMap);
-	void ValidateConnectedGraph(Map* map);
+	MapLoader(string dominationFileName); //param constructor
+	Map* ReadMap(string dominationFileName); // read map file
+	virtual Map* GetMap(std::string filePath); //calls ReadMap
+	//friend ostream& operator << (ostream& out, const MapLoader *m);
+	void ValidateConnectedGraph(Map* map); //validate that map is a connected graph
 
-	vector<string> SplitWords(string s);
+	vector<string> SplitWords(string s); 
 	string FirstComponent(string s);
+	friend ostream& operator<<(std::ostream& o, const MapLoader& ml); //ostream operator
 };
 
 class ConquestFileReader {
 	private:
-		string* conquestFileName;
-	public:	
+		string* conquestFileName; // name of file
+	public:	 
 		ConquestFileReader(); //default constructor
 		ConquestFileReader(string); //parametrized constructor
 		ConquestFileReader(ConquestFileReader& conquestFile); //copy constructor
 		ConquestFileReader& operator= (const ConquestFileReader& conquestFile); //assignment operator
-		Map* conquestReadMap(string fileName); 
+		Map* conquestReadMap(string fileName); //reads conquest map format
 		string FirstComponent(string s);
 		vector<string> SplitWords(string s);
-		friend istream& operator >> (istream& in, string conquestFileName);
+		//friend ostream& operator << (ostream& out, string conquestFileName);
 		~ConquestFileReader(); //destructor
+		friend ostream& operator<<(std::ostream& o, const ConquestFileReader& cfr); //ostream operator
 };
 
 class ConquestFileReaderAdapter: public MapLoader {
@@ -44,9 +46,10 @@ class ConquestFileReaderAdapter: public MapLoader {
 		MapLoader* mapLoader;
 		Map* finalMap;
 	public:
-		virtual Map* GetMap(string filePath);
+		virtual Map* GetMap(string filePath); //adapter to choose between domination or conquest map
 		ConquestFileReaderAdapter(); //deault constructor
 		~ConquestFileReaderAdapter(); //destructor
 		ConquestFileReaderAdapter(ConquestFileReaderAdapter& conquestAdapter); //copy constructor
 		ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& conquestAdapter); //assignment operator
+		friend ostream& operator<<(std::ostream& o, const ConquestFileReaderAdapter& cfra); //ostream operator
 };
