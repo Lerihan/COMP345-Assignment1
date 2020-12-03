@@ -6,12 +6,12 @@
 
 int main() {
 	//create default cards
-	Cards* cards;
+	Card* cards;
 	//create default deck
 	Deck* deck = new Deck();
 	cout << "Creation of the default Deck: " << endl << endl;
 	for (int i = 0; i < deck->cardsInDeck.size(); i++) {
-		cout << deck->cardsInDeck.at(i) << " ";
+		cout << deck->cardsInDeck.at(i)->getType() << " ";
 		if (i == 22)		//line seperation in the output for clarity
 			cout << endl;
 	}
@@ -20,7 +20,7 @@ int main() {
 	cout << "Second Deck created, to demonstrate the random deck creation" << endl << endl;
 	Deck* deck2 = new Deck();
 	for (int i = 0; i < deck2->cardsInDeck.size(); i++) {
-		cout << deck2->cardsInDeck.at(i) << " ";
+		cout << deck2->cardsInDeck.at(i)->getType() << "	";
 		if (i == 22)		//line seperation in the output for clarity
 			cout << endl;
 	}
@@ -32,7 +32,7 @@ int main() {
 	//player's hand is currently empty, show player's hand
 	cout << "Player's Hand:" << endl;
 	for (int i = 0; i < h->cardsInHand.size(); i++) {
-		cout << h->cardsInHand.at(i) << " " << endl;
+		cout << h->cardsInHand.at(i)->getType() << "	" << endl;
 	}
 	cout << endl << h->getCardsInHand().size() << endl << endl;
 
@@ -43,7 +43,7 @@ int main() {
 
 	cout << endl << "Player's Hand:" << endl;
 	for (int i = 0; i < h->cardsInHand.size(); i++) {
-		cout << h->cardsInHand.at(i) << " " << endl;
+		cout << h->cardsInHand.at(i)->getType() << "	" << endl;
 	}
 	cout << endl << h->getCardsInHand().size() << endl << endl;
 

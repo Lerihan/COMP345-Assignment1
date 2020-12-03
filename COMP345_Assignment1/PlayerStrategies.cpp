@@ -312,6 +312,15 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	currTerritory = nullptr;
 	adjTerritory = nullptr;
 
+	 // ==================== CONFLICT:  the following is from passiveandneutral branch 
+	//vector<Card*> v = p->getHand()->getCardsInHand();
+	//if (v.size() != 0)
+	//{
+	//	v.at(0)->play(); // Player plays first Card in their Hand
+	//	v.erase(v.begin()); // remove card from player's hand
+	//}
+  
+  // ==================== CONFLICT:  the following is from master 
 	/*
 	vector<Card*> v = p->getHand()->getCardsInHand();
 	if (v.size() != 0)
@@ -353,7 +362,6 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy() { }
 
 void BenevolentPlayerStrategy::issueOrder(Player* p)
 {
-	vector<Territory*> attack = p->toAttack();
 	//creates territory vector listing the player's weakest to strongest Territories
 	vector<Territory*> defend = p->toDefend();
 
@@ -390,15 +398,20 @@ void BenevolentPlayerStrategy::issueOrder(Player* p)
 	//benevolent player should not be able to play Bomb & Airlift cards. If either type is found, skips the card
 	vector<Card*> v = p->getHand()->getCardsInHand();			//for readability
 	if (v.size() != 0) {
-		if (v.at(0)->getType() == "BombCard" || v.at(0)->getType() == "AirliftCard")			//check their type to see if the card is a Bomb or Airlift
+		if (v.at(0)->getType() == "BombCard" )			//check their type to see if the card is a Bomb or Airlift
 		{			
+			cout << "Benevolent Player can not play Bomb Cards.";
 			v.at(0)->d->insertBackToDeck(v.at(0));				//insert the card back into its deck
-			v.erase(v.begin());									//erase the card from the player's Hand
+			p->getHand()->deleteFirstCard();
 		}			
+		else if (v.at(0)->getType() == "AirliftCard") {
+			cout << "Benevolent Player can not play Airlift Cards.";
+			v.at(0)->d->insertBackToDeck(v.at(0));				//insert the card back into its deck
+			p->getHand()->deleteFirstCard();						//erase the card from the player's Hand
+		}
 		else
 		{
-			v.at(0)->play();									//plays the first card of the player's hand
-			v.erase(v.begin());									//erase the first card from the player's Hand
+			p->getHand()->play();							//plays the first card of the player's hand
 		}
 	}
 }
