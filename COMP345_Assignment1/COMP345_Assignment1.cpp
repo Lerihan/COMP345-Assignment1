@@ -26,63 +26,6 @@ void driverPart4(); // call for driver program for part 3
 
 int main()
 {
-	/*
-	//testing my toAttack bubble sort
-	MapLoader* mapLoader = new MapLoader();
-	Map* map = mapLoader->GetMap("europe.map");
-
-	cout << "TO ATTACK" << endl
-		<< "===========================" << endl;
-	Territory* t = nullptr;
-	srand(time(nullptr));  // Initialize random number generator.
-	for (int i = 0; i < map->listOfTerritories.size(); i++)
-	{
-		t = map->listOfTerritories.at(i);
-		t->addTroops((rand() % 50) + 1);
-		cout << t->name << " = " << t->numberOfArmies << endl;
-	}
-	cout << endl;
-
-	Player* temp = new Player();
-	PlayerStrategy* aggressive = new AggressivePlayerStrategy();
-	temp->setStrategy(aggressive);
-	temp->territories = map->listOfTerritories;
-	vector<Territory*> attack = temp->toAttack();
-	for (int i = 0; i < attack.size(); i++)
-	{
-		t = attack[i];
-		cout << t->name << " = " << t->numberOfArmies << endl;
-		//cout << *attack.at(i) << endl;
-	}
-
-	/*
-	cout << endl << "TO DEFEND" << endl
-		<< "===========================" << endl;
-	for (int i = 0; i < temp->getTerritories().size(); i++) 
-	{
-		if (i % 2 == 0 && i % 3 == 0) 
-		{
-			temp->territories.erase(temp->territories.begin() + i);
-		}
-	}
-	// print player's new territories
-	for (int i = 0; i < temp->territories.size(); i++) 
-	{
-		t = temp->territories.at(i);
-		cout << t->name << " = " << t->numberOfArmies << endl;
-	}
-	vector<Territory*> defend = temp->toDefend();
-	cout << endl;
-	for (int i = 0; i < defend.size(); i++)
-	{
-		t = defend.at(i);
-		cout << t->name << " = " << t->numberOfArmies << endl;
-	}
-	
-
-	delete mapLoader;
-	//delete temp;
-	*/
 
 	//driverPart1();
 	//driverPart2();
