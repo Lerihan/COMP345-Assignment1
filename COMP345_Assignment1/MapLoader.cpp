@@ -177,6 +177,10 @@ vector<string> ConquestFileReader::SplitWords(string s)
 	return words;
 }
 
+/*
+* This method is commented out because it results in an infinite loop...
+*/
+
 //istream& operator>>(istream& in, string dominationMap)
 //{	
 //	/*cout << "Enter map name: ";
