@@ -9,14 +9,13 @@
 #pragma once
 
 #include <iostream>
-//#include <vector>
 #include "Map.h"
 #include "Cards.h"
 #include "Order.h"
 #include "PlayerStrategies.h"
 
 class Order;
-class Cards;
+class Card;
 class OrdersList;
 class Hand;
 class PlayerStrategy;
@@ -32,7 +31,7 @@ private:
 	OrdersList* orders; // player's list of orders to be carried out
 	Hand* hand; // player's hand of cards
 	bool eliminated; // will store whether the Player has been eliminated from the game or not
-
+	bool wonAttack; //will store whether the Player has attacked and won the attack this turn
 	PlayerStrategy* strategy;
 
 public:
@@ -57,6 +56,8 @@ public:
 	int takeArmiesFromReinforcement(int numOfArmies); // take specific numOfArmies from pool, if numOfArmies>reinforcementPool, take what's left
 	bool isEliminated(); // return whether the Player is eliminated or not
 	void eliminatePlayer(); // sets the Player's eliminated data member to true
+	bool hasWonAttack();		//return whether the Player has attacked at least once or not
+	void setWonAttack(bool b);			//sets the Player's attacked data member to b
 	void resetTotalPlayers(); // needed to reset total number of players to 0; needed for part 3 driver
 
 	// accessors and mutators
@@ -70,7 +71,9 @@ public:
 	OrdersList* getOrdersList(); // returns this Player's OrdersList member
 	vector<Order*> getOrders(); // returns vector of Orders from the OrdersList member
 	Hand* getHand(); // returns Hand of this Player
+	Card* getCard(string type);
 	void setStrategy(PlayerStrategy* strategy); // to change Player strategy during game
+	bool hasNegotiationWith(Player* enemy);
 
 	// operators
 	Player& operator =(const Player& player);

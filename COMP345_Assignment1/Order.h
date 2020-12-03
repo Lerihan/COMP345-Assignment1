@@ -111,15 +111,13 @@ public:
 class Bomb : public Order
 {
 private:
-
-	Territory* source;
 	Territory* target;
 
 public:
 
 	Bomb();
 
-	Bomb(Player* player, Territory* source,  Territory* target);
+	Bomb(Player* player, Territory* target);
 
 	Bomb(const Bomb& bomb);
 

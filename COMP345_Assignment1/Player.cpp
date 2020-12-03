@@ -29,6 +29,7 @@ Player::Player()
 	this->numOfArmies = 0;
 	this->reinforcementPool = 0;
 	this->eliminated = false;
+	this->wonAttack = false;
 
 	vector<Territory*> terr;
 	this->territories = terr; // create empty vector of Territories
@@ -56,6 +57,7 @@ Player::Player(Player& p)
 	this->territories = p.territories;
 	this->numOfArmies = p.numOfArmies;
 	this->eliminated = p.eliminated;
+	this->wonAttack = p.wonAttack;
 	this->reinforcementPool = p.reinforcementPool;
 }
 
@@ -92,6 +94,8 @@ Player::~Player()
 	this->territories.clear(); // remove placeholder memory locations
 
 	delete this->orders; // delete to OrdersList
+
+	delete this->strategy;
 }
 
 // Returns vector of Territories.
@@ -108,6 +112,18 @@ vector<Territory*> Player::getTerritories()
 void Player::setTerritories(vector<Territory*> t)
 {
 	this->territories = t;
+}
+
+Card * Player::getCard(string type)
+{
+	for (int i = 0; i < this->hand->cardsInHand.size(); i++)
+	{
+		if (this->hand->getCardsInHand().at(i)->getType() == type)
+		{
+			return this->hand->getCardsInHand().at(i);
+		}
+	}
+	return NULL;
 }
 
 // Returns the Hand object of this Player
@@ -157,7 +173,18 @@ int Player::getReinforcementPool()
 
 void Player::setStrategy(PlayerStrategy* strategy)
 {
+	delete this->strategy;
 	this->strategy = strategy;
+}
+
+bool Player::hasNegotiationWith(Player * enemy)
+{
+	for (int i = 0; i < orders->getOrdersList().size(); i++)
+	{
+		if (orders->getOrdersList().at(i)->getPlayer()->playerNumber == enemy->playerNumber && this != enemy)
+			return true;
+	}
+	return false;
 }
 
 // Adds the input Territory pointer this Player's Territories vector.
@@ -271,6 +298,14 @@ void Player::eliminatePlayer()
 	this->eliminated = true;
 }
 
+bool Player::hasWonAttack() {
+	return this->wonAttack;
+}
+
+void Player::setWonAttack(bool b) {
+	this->wonAttack = b;
+}
+
 // Resets the total number of Players to 0.
 // needed if creating 2 GameEngines in one mian()
 // used for part 3 driver only
@@ -294,6 +329,7 @@ Player& Player::operator =(const Player& player)
 		this->numOfArmies = player.numOfArmies;
 		this->reinforcementPool = player.reinforcementPool;
 		this->eliminated = player.eliminated;
+		this->wonAttack = player.wonAttack;
 	}
 
 	return *this;

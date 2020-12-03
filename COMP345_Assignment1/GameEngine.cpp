@@ -125,23 +125,20 @@ void GameEngine::selectMap()
 		cout << "Select conquest or domination map format: ";
 		cin >> mapFormat;
 		mapLoader = SelectMapFormat(mapFormat);
-		if (mapLoader == nullptr) {
-			cout << "Choose a valid format." << endl;
-			continue;
-		}
-		else {
-			cout << "Select the map to play with: ";
-			cin >> dominationMap;
+		cout << "Select the map to play with: ";
+		cin >> dominationMap;
+		if (mapLoader != nullptr) {
 			map = mapLoader->GetMap(dominationMap);
 		}
 
 		if (map != NULL)
-			isValid = map->validate();
-		if (map == NULL || !isValid)
 		{
-			cout << "Map is invalid." << endl;
+			isValid = map->validate();
+			break;
 		}
-	} while (map == NULL /*|| isValid*/);
+		if (map == NULL || !isValid)
+			cout << "Map is invalid." << endl;
+	} while (map == NULL);
 
 	delete mapLoader;
 }
@@ -301,34 +298,32 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
+		//cout << *(this->players[0]) << endl; TODO: removed by melina for testing
 
 		// Issuing Orders phase
 		cout << "Issuing orders phase:" << endl;
 		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			cout << *this->players.at(i) << endl;
+			if (!this->players.at(i)->isEliminated())
 			{
-				issueOrdersPhase(players[i]);
+				issueOrdersPhase(this->players.at(i));
 			}
 		}
 		cout << endl;
-		cout << *(this->players[0]) << endl;
 
 		// Orders execution phase
 		cout << "Orders execution phase:" << endl;
 		cout << "-----------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
-			if (!this->players[i]->isEliminated())
+			if (!this->players.at(i)->isEliminated())
 			{
-				executeOrdersPhase(players[i]);
+				executeOrdersPhase(players.at(i));
 			}
 		}
 		cout << endl;
-		cout << *(this->players.at(0)) << endl;
-		cout << *(this->players.at(1)) << endl;
 
 		//notify();
 	}
@@ -430,6 +425,14 @@ void GameEngine::executeOrdersPhase(Player* currPlayer)
 			currPlayer->getOrders().at(i)->execute();
 		}
 	}
+
+	//if a player has issued an attack and won, they get to draw a card
+	if (currPlayer->hasWonAttack() ) {
+		this->deck->draw(currPlayer);
+		currPlayer->setWonAttack(false);
+	}		
+
+
 	// TODO: should we delete the execute orders here, or just leave them as executed?
 }
 

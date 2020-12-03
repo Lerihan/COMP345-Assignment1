@@ -92,10 +92,9 @@ int main()
 	/**/
 	GameEngine* g = new GameEngine();
 	g->startGame();
-	g->startupPhase();
 
 	//g->getPlayers().at(1)->getHand()->getCardsInHand().at(0)->play();
-	g->mainGameLoop();
+	//g->mainGameLoop();
 
 	//cout << g << endl;
 	
@@ -270,6 +269,8 @@ void driverPart4()
 	Territory* t6 = new Territory(6, "Phillipines", 1);
 
 	t3->addTroops(100);
+	t1->addTroops(50);
+	t2->addTroops(20);
 
 	t1->listOfAdjTerritories.push_back(t2);
 	t2->listOfAdjTerritories.push_back(t1);
@@ -284,7 +285,7 @@ void driverPart4()
 
 	Deploy* d1 = new Deploy(p1, t1, 10);
 	Advance* a1 = new Advance(p2, t2, t1, 20);
-	Bomb* b1 = new Bomb(p3, t3, t2);
+	Bomb* b1 = new Bomb(p3, t2);
 	Blockade* blck1 = new Blockade(p2, t5);
 	Airlift* air1 = new Airlift(p3, t3, t4, 15);
 	Negotiate* n1 = new Negotiate(p2, p3);
