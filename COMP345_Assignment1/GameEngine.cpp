@@ -125,10 +125,15 @@ void GameEngine::selectMap()
 		cout << "Select conquest or domination map format: ";
 		cin >> mapFormat;
 		mapLoader = SelectMapFormat(mapFormat);
-		cout << "Select the map to play with: ";
-		cin >> dominationMap;
+		
 		if (mapLoader != nullptr) {
-			map = mapLoader->GetMap(dominationMap);
+			cout << "Select the map to play with: ";
+			cin >> dominationMap;
+			map = mapLoader->GetMap(dominationMap);	
+		}
+		else {
+			cout << "Choose valid format" << endl;
+			continue;
 		}
 
 		if (map != NULL)
