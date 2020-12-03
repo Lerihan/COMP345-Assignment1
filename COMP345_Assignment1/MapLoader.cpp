@@ -200,6 +200,11 @@ void MapLoader::ValidateConnectedGraph(Map* map)
 	}
 }
 
+ostream& operator << (std::ostream& o, const MapLoader& ml)
+{
+	return o << "This is a domination map: " << ml.dominationFileName;
+}
+
 ConquestFileReader::ConquestFileReader()
 {
 	this->conquestFileName = NULL;
@@ -340,6 +345,11 @@ ConquestFileReader::~ConquestFileReader()
 	delete conquestFileName;
 }
 
+ostream& operator << (std::ostream& o, const ConquestFileReader& cfr)
+{
+	return o << "This is a conquest map: " << cfr.conquestFileName;
+}
+
 ConquestFileReaderAdapter::ConquestFileReaderAdapter()
 {
 	this->conquestReader = conquestReader;
@@ -362,4 +372,9 @@ ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFi
 	conquestReader = conquestAdapter.conquestReader;
 	mapLoader = conquestAdapter.mapLoader;
 	return *this;
+}
+
+ostream& operator << (std::ostream& o, const ConquestFileReaderAdapter& cfra)
+{
+	return o << "This is Conquest File Reader Adapter: " << cfra.mapLoader;
 }
