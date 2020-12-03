@@ -36,6 +36,9 @@ private:
 	bool observerOn;
 	string phase;
 
+	PhaseObserver* phaseObserver;
+	GameStatisticsObserver* gameStatsObserver;
+
 	void selectMap();
 	void createComponents();
 	void setObservers();

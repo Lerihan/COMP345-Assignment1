@@ -283,7 +283,7 @@ void AggressivePlayerStrategy::issueOrder(Player* p)
 	vector<Territory*> attack = p->toAttack();
 	vector<Territory*> defend = p->toDefend();
 
-	if (p->getReinforcementPool() != 0) // only issue deploy order is reinforcement pool is not empty
+	if (p->getReinforcementPool() > 0) // only issue deploy order is reinforcement pool is not empty
 	{
 		// deploy all reinforcements to the input Player's strongest Territory
 		p->getOrdersList()->add(new Deploy(p, defend.at(0), p->getReinforcementPool()));
@@ -431,7 +431,7 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() { }
 
 void NeutralPlayerStrategy::issueOrder(Player* p)
 {
-
+	// intentionally left empty
 	//neutral player should not be able to play any cards
 	//does nothing; does not issue orders
 }

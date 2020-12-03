@@ -59,7 +59,7 @@ PhaseObserver::PhaseObserver(GameEngine* gameEngine)
 //deletion operator
 PhaseObserver::~PhaseObserver()
 {
-	delete this->gameEngine;
+	this->gameEngine = nullptr;
 }
 
 //update method that prints out the current phase being played
@@ -72,37 +72,37 @@ void PhaseObserver::update() {
 		currentPhase.clear();
 	}
 	if (currentPhase == "Issue Order Phase") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Issue Order Phase: Issue Deploy Order") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Issue Order Phase: Issue Advance Order") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Execute Order Phase") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Execute Order Phase: Deploy Order") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Execute Order Phase: Airlift Order") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
 	if (currentPhase == "Execute Order Phase: Blockade Order") {
-		cout << "Current Phase: " << currentPhase << endl;
+		cout << "\nCurrent Phase: " << currentPhase << endl;
 		cout << "-------------------------------" << endl;
 		currentPhase.clear();
 	}
@@ -134,7 +134,7 @@ GameStatisticsObserver::GameStatisticsObserver(GameEngine* gameEngine)
 //deletion operator
 GameStatisticsObserver::~GameStatisticsObserver()
 {
-	delete this->gameEngine;
+	this->gameEngine = nullptr;
 }
 
 //update method that also prints the game statistics, about players, territories percentage owned, and who own the game.

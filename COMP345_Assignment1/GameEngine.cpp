@@ -46,9 +46,12 @@ GameEngine::~GameEngine()
 	for (int i = 0; i < this->players.size(); i++)
 	{
 		delete this->players[i];
-		this->players[i] = nullptr;
+		this->players.at(i) = nullptr;
 	}
 	this->players.clear();
+
+	delete this->phaseObserver;
+	delete this->gameStatsObserver;
 }
 
 void GameEngine::startGame()
@@ -195,14 +198,16 @@ void GameEngine::setObservers()
 		if (answer == 'y')
 		{
 			observerOn = true;
-			new PhaseObserver(this);
-			new GameStatisticsObserver(this);
+			phaseObserver = new PhaseObserver(this);
+			gameStatsObserver = new GameStatisticsObserver(this);
 			cout << "Observers will be on." << endl;
 			break;
 		}
 		else if (answer == 'n')
 		{
 			observerOn = false;
+			phaseObserver = nullptr;
+			gameStatsObserver = nullptr;
 			cout << "Observers will be off." << endl;
 			break;
 		}
@@ -293,8 +298,6 @@ void GameEngine::mainGameLoop()
 		cout << "========" << endl << endl;
 
 		// Reinforcement phase
-		cout << "Reinforcement phase:" << endl;
-		cout << "--------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			if (!this->players.at(i)->isEliminated())
@@ -303,11 +306,9 @@ void GameEngine::mainGameLoop()
 			}
 		}
 		cout << endl;
-		//cout << *(this->players[0]) << endl; TODO: removed by melina for testing
+		//cout << *(this->players[0]) << endl; // TODO: removed by melina for testing
 
 		// Issuing Orders phase
-		cout << "Issuing orders phase:" << endl;
-		cout << "---------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			cout << *this->players.at(i) << endl;
@@ -319,8 +320,6 @@ void GameEngine::mainGameLoop()
 		cout << endl;
 
 		// Orders execution phase
-		cout << "Orders execution phase:" << endl;
-		cout << "-----------------------" << endl;
 		for (int i = 0; i < this->players.size(); i++)
 		{
 			if (!this->players.at(i)->isEliminated())
